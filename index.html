@@ -279,25 +279,45 @@ header, .navbar {
       align-items: center;
       z-index: 200;
     }
+    .modal-shell {
+      position: relative;
+      width: 90%;
+      max-width: 650px;
+      max-height: 85vh;
+    }
+    .modal-shell-small {
+      max-width: 480px;
+    }
     .modal-content {
       background-color: var(--bg-card);
       padding: 2.2rem;
       border-radius: 16px;
-      width: 90%;
-      max-width: 650px;
+      width: 100%;
+      max-width: none;
       max-height: 85vh;
       overflow-y: auto;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       border: 2px solid var(--border-color);
-      position: relative;
     }
     .close-btn {
       position: absolute;
-      top: -1.8rem; right: -0.5rem;
-      background: none; border: none;
-      font-size: 1.8rem; color: #ffffff;
-      cursor: pointer; opacity: 0.85;
+      top: -1.1rem;
+      right: -1.1rem;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      border: 2px solid var(--bg-main);
+      border-radius: 50%;
+      font-size: 1.15rem;
+      color: var(--text-light);
+      cursor: pointer;
+      opacity: 1;
       line-height: 1;
+      z-index: 5;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
     .close-btn:hover { opacity: 1; }
 
@@ -522,29 +542,34 @@ header, .navbar {
 
   <!-- 詳細介紹 Modal 彈窗 -->
   <div class="modal" id="detail-modal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeDetail()">✕</button>
-      <div id="detail-content"></div>
+    <div class="modal-shell">
+      <div class="modal-content">
+        <div id="detail-content"></div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()" aria-label="關閉">✕</button>
     </div>
   </div>
 
   <!-- 購物車 Modal -->
   <div class="modal" id="cart-modal">
-    <div class="modal-content" style="max-width: 480px;">
-      <button class="close-btn" onclick="closeCart()">✕</button>
+    <div class="modal-shell modal-shell-small">
+      <div class="modal-content" style="max-width: 480px;">
+        <h3 style="font-family: 'Noto Serif TC', serif; color: var(--text-main); margin-bottom: 1.5rem;">已選擇的項目</h3>
       <h3 style="font-family: 'Noto Serif TC', serif; color: var(--text-main); margin-bottom: 1.5rem;">已選擇的項目</h3>
       <div id="cart-items"></div>
       <div style="margin-top: 1.5rem; text-align: right; font-weight: 500; color: var(--text-main); font-size: 1.05rem;">
         總金額：NT$ <span id="cart-total">0</span>
       </div>
       <button class="checkout-btn" onclick="openBankModal()">前往結帳與對帳</button>
+      </div>
+      <button class="close-btn" onclick="closeCart()" aria-label="關閉">✕</button>
     </div>
   </div>
 
   <!-- 訂單與永豐銀行 Modal -->
   <div class="modal" id="bank-modal">
-    <div class="modal-content" style="max-width: 480px;">
-      <button class="close-btn" onclick="closeBankModal()">✕</button>
+    <div class="modal-shell modal-shell-small">
+      <div class="modal-content" style="max-width: 480px;">
       <h3 style="font-family: 'Noto Serif TC', serif; color: var(--text-main); margin-bottom: 0.8rem;">填寫訂購資料</h3>
       
       <p style="font-size: 0.88rem; color: #827266; margin-bottom: 1rem;">
@@ -567,6 +592,8 @@ header, .navbar {
       </div>
 
       <button class="checkout-btn" onclick="submitOrderToLine()">成立訂單，前往 LINE 領取匯款指引</button>
+      </div>
+      <button class="close-btn" onclick="closeBankModal()" aria-label="關閉">✕</button>
     </div>
   </div>
 
@@ -750,9 +777,6 @@ header, .navbar {
 
             <label style="display:block; margin-top:1.2rem; margin-bottom:0.4rem; font-weight:600; line-height:1.8;">【加購線材顏色】</label>
             <input type="text" id="color-code-input" class="form-input" placeholder="請填入編號，例如：001">
-
-            <label style="display:block; margin-top:1.2rem; margin-bottom:0.4rem; font-weight:600; line-height:1.8;">【收件地址與門市資訊】*</label>
-            <input type="text" id="shipping-info-input" class="form-input" placeholder="請填寫門市名稱（7-11寄送）或收件地址（郵局寄送）、收件人姓名及收件人電話">
 
             <label style="display:block; margin-top:1.2rem; margin-bottom:0.4rem; font-weight:600; line-height:1.8;">【Google Drive 影片觀看權限 Email】*</label>
             <input type="email" id="drive-email-input" class="form-input" placeholder="例如：example@gmail.com">
@@ -1159,7 +1183,6 @@ header, .navbar {
       const sessionSelect = document.getElementById('session-select-input');
       const colorSelect = document.getElementById('color-code-input');
       const driveEmail = document.getElementById('drive-email-input');
-      const shippingInfo = document.getElementById('shipping-info-input');
 
       // 檢查實體課「開課場次」必填
       if (sessionSelect && !sessionSelect.disabled && !sessionSelect.value) {
@@ -1183,12 +1206,6 @@ header, .navbar {
         if (driveEmail && !driveEmail.value.trim()) {
           alert('請完成必填欄位：Google Drive 影片觀看權限 Email');
           driveEmail.focus();
-          return;
-        }
-
-        if (shippingInfo && !shippingInfo.value.trim()) {
-          alert('請完成必填欄位：收件地址與門市資訊');
-          shippingInfo.focus();
           return;
         }
 
@@ -1417,16 +1434,32 @@ header, .navbar {
       document.getElementById('bank-modal').style.display = 'none';
     }
 
+    function generateOrderNumber() {
+      const now = new Date();
+      const dateKey = [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, '0'),
+        String(now.getDate()).padStart(2, '0')
+      ].join('');
+      const seqKey = `knitter_order_seq_${dateKey}`;
+      const nextSeq = Number(localStorage.getItem(seqKey) || 0) + 1;
+      localStorage.setItem(seqKey, String(nextSeq));
+      return `${dateKey}${String(nextSeq).padStart(3, '0')}`;
+    }
+
     function submitOrderToLine() {
       const name = document.getElementById('buyer-name').value.trim();
       const phone = document.getElementById('buyer-phone').value.trim();
       const storeName = document.getElementById('store-name').value.trim();
       if (!name || !phone || !storeName) { alert('請填寫訂購人姓名、聯絡電話及 7-11 收貨門市！'); return; }
+
+      const orderNumber = generateOrderNumber();
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       const shippingFee = subtotal < 1800 ? 60 : 0;
       const total = subtotal + shippingFee;
       const itemList = cart.map(item => `${item.name} x${item.qty}`).join('、');
       const orderText = `【織造所｜訂單成立通知】\n` +
+                        `訂單編號：${orderNumber}\n` +
                         `------------------------\n` +
                         `訂購姓名：${name}\n` +
                         `聯絡電話：${phone}\n` +
@@ -1443,21 +1476,25 @@ header, .navbar {
                         `帳號末 5 碼：\n\n` +
                         `（訂單已送出！請於完成轉帳後，直接在此回覆帳號末 5 碼，我們將儘速為您對帳與安排製作，謝謝！）`;
 
-      navigator.clipboard.writeText(orderText).then(() => {
-        alert('訂單已送出！資料已自動複製。\n按下「確定」將開啟官方 LINE，請直接「貼上訊息」送出即可！');
-        
-        window.open('https://lin.ee/yyzyhp2', '_blank'); 
+      // 在使用者點擊「成立訂單」的同一個事件中直接開啟 LINE，避免瀏覽器因非同步 callback 而封鎖新分頁。
+      const lineWindow = window.open('https://lin.ee/yyzyhp2', '_blank');
 
-        cart = [];
-        document.getElementById('buyer-name').value = '';
-        document.getElementById('buyer-phone').value = '';
-        document.getElementById('store-name').value = '';
-        updateCartUI();
-        closeBankModal();
-      }).catch(() => {
-        alert('訂單已送出！請私訊官方 LINE 告知您的姓名與訂購品項。');
-        closeBankModal();
+      navigator.clipboard.writeText(orderText).catch(() => {
+        // 部分瀏覽器可能不允許自動複製，但不影響訂單成立與 LINE 開啟。
       });
+
+      if (lineWindow) {
+        alert(`訂單已送出！\n訂單編號：${orderNumber}\n訂單明細已嘗試自動複製，請前往 LINE 貼上後送出。`);
+      } else {
+        alert(`訂單已送出！\n訂單編號：${orderNumber}\n瀏覽器阻擋了 LINE 自動開啟，請手動開啟官方 LINE，並提供訂單編號：${orderNumber}`);
+      }
+
+      cart = [];
+      document.getElementById('buyer-name').value = '';
+      document.getElementById('buyer-phone').value = '';
+      document.getElementById('store-name').value = '';
+      updateCartUI();
+      closeBankModal();
     }
 
     function updateCartUI() {
