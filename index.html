@@ -572,6 +572,7 @@
   <header>
     <div class="logo">織造所</div>
     <nav>
+      <a href="#about">關於織造所</a>
       <a href="#classes">熱門手作課程</a>
       <a href="#shop">織造所原創系列</a>
       <a href="https://lin.ee/yyzyhp2" target="_blank" rel="noopener noreferrer" class="contact-link">聯絡我們</a>
@@ -657,7 +658,7 @@
 
   <!-- 4. 原創系列 -->
   <div class="container" id="shop">
-    <h2 class="section-title">織造所原創系列</h2>
+    <h2 class="section-title">原創系列</h2>
 
     <div class="grid">
 
@@ -757,8 +758,7 @@
         </h3>
 
         <p style="font-size: 0.88rem; color: #827266; margin-bottom: 1rem;">
-          請填寫完整聯絡資料。成立訂單後，系統會將訂單送至織造所後台並寄送訂單確認 Email。
-          完成付款後，再至官方 LINE 回覆訂單編號與匯款帳號末 5 碼。
+          請填寫完整聯絡資料並點擊「成立訂單」。成立訂單後，系統將自動寄送訂單確認 Email。完成付款後，請至官方 LINE 回覆訂單編號與匯款帳號末 5 碼以便對帳。
         </p>
 
         <input
@@ -785,12 +785,14 @@
           autocomplete="tel"
         >
 
-        <input
-          type="text"
-          id="store-name"
-          class="form-input"
-          placeholder="7-11 收貨門市 *"
-        >
+        <div id="shipping-address-field">
+          <input
+            type="text"
+            id="store-name"
+            class="form-input"
+            placeholder="7-11 收貨門市 *"
+          >
+        </div>
 
         <div class="bank-box">
 
@@ -817,7 +819,7 @@
           class="checkout-btn"
           onclick="submitOrderToLine()"
         >
-          成立訂單，前往 LINE 領取匯款指引
+          成立訂單
         </button>
 
       </div>
@@ -1564,6 +1566,7 @@
                   type="checkbox"
                   name="east-west-option"
                   value="材料包"
+                  checked
                   data-price="1380"
                 >
 
@@ -1668,6 +1671,7 @@
                   type="checkbox"
                   name="petit-walk-option"
                   value="材料包"
+                  checked
                   data-price="1180"
                 >
 
@@ -1785,6 +1789,7 @@
                   <option
                     value="材料包 - 草莓布蕾（上: 07*1 / 下: 27*2，示範色）"
                     data-price="1280"
+                    selected
                   >
                     材料包 - 草莓布蕾 （上: 07*1 / 下: 27*2，示範色） $1280
                   </option>
@@ -2000,6 +2005,7 @@
                   type="checkbox"
                   name="mesh-option"
                   value="材料包"
+                  checked
                   data-price="680"
                 >
 
@@ -3335,6 +3341,8 @@
 
       updateCartUI();
 
+      updateShippingFieldVisibility();
+
       openCart();
     }
 
@@ -3359,6 +3367,32 @@
        7. 開啟結帳 Modal
        ========================================================= */
 
+    function isGroupClassItem(item) {
+      return !!(item && (
+        item.name.includes('基礎鉤織團體課程 (1)') ||
+        item.name.includes('基礎鉤織團體課程 (2)')
+      ));
+    }
+
+    function cartRequiresShipping() {
+      return cart.some(function(item) { return !isGroupClassItem(item); });
+    }
+
+    function updateShippingFieldVisibility() {
+      const shippingField = document.getElementById('shipping-address-field');
+      const storeInput = document.getElementById('store-name');
+      const needsShipping = cartRequiresShipping();
+      if (shippingField) shippingField.style.display = needsShipping ? 'block' : 'none';
+      if (storeInput) {
+        storeInput.required = needsShipping;
+        if (!needsShipping) storeInput.value = '';
+      }
+    }
+
+    function calculateShippingFee(subtotal) {
+      return cartRequiresShipping() && subtotal < 1800 ? 60 : 0;
+    }
+
     function openBankModal() {
 
       if (cart.length === 0) {
@@ -3380,9 +3414,7 @@
 
 
       const shippingFee =
-        subtotal < 1800
-          ? 60
-          : 0;
+        calculateShippingFee(subtotal);
 
 
       document.getElementById(
@@ -3396,6 +3428,7 @@
       ).innerText =
         shippingFee;
 
+      updateShippingFieldVisibility();
 
       closeCart();
 
@@ -3408,10 +3441,6 @@
 
 
     function closeBankModal() {
-
-      if (isSubmittingOrder) {
-        return;
-      }
 
       document.getElementById(
         'bank-modal'
@@ -3451,7 +3480,7 @@
         `訂購姓名：${name}`,
         `Email：${email}`,
         `聯絡電話：${phone}`,
-        `7-11 收貨門市：${storeName}`,
+        ...(storeName ? [`7-11 收貨門市：${storeName}`] : []),
         '------------------------',
         '【訂購項目】',
         itemList,
@@ -3587,7 +3616,7 @@
       }
 
 
-      if (!storeName) {
+      if (cartRequiresShipping() && !storeName) {
 
         alert(
           '請填寫 7-11 收貨門市！'
@@ -3612,9 +3641,7 @@
 
 
       const shippingFee =
-        subtotal < 1800
-          ? 60
-          : 0;
+        calculateShippingFee(subtotal);
 
 
       const total =
@@ -3725,6 +3752,17 @@
 
       form.submit();
 
+      setTimeout(() => {
+        if (isSubmittingOrder) {
+          isSubmittingOrder = false;
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerText = '成立訂單';
+          }
+          console.warn('訂單回傳逾時，請先確認是否已收到訂單確認 Email，再決定是否重新送出。');
+        }
+      }, 30000);
+
 
       /*
        * 表單送出後即可移除 DOM。
@@ -3799,7 +3837,7 @@
             false;
 
           submitButton.innerText =
-            '成立訂單，前往 LINE 領取匯款指引';
+            '成立訂單';
         }
 
 
@@ -3874,9 +3912,7 @@
 
 
         const shippingFee =
-          subtotal < 1800
-            ? 60
-            : 0;
+          calculateShippingFee(subtotal);
 
 
         const total =
@@ -3943,15 +3979,6 @@
           'bank-modal'
         ).style.display =
           'none';
-
-
-        /* ---------- 開啟 LINE ---------- */
-
-        const lineWindow =
-          window.open(
-            STORE_LINE_URL,
-            '_blank'
-          );
 
 
         /* ---------- 顯示統一成功訊息 ---------- */
