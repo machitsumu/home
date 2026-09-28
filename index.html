@@ -536,6 +536,12 @@
         display: none;
       }
 
+      nav a.contact-link {
+        display: inline-block;
+        margin-left: 0.8rem;
+        font-size: 0.82rem;
+      }
+
       .cart-btn {
         margin-left: 0;
       }
@@ -569,6 +575,7 @@
       <a href="#about">關於織造所</a>
       <a href="#classes">熱門手作課程</a>
       <a href="#shop">織造所原創系列</a>
+      <a href="https://lin.ee/yyzyhp2" target="_blank" rel="noopener noreferrer" class="contact-link">聯絡我們</a>
       <button class="cart-btn" onclick="openCart()">
         購物車 (<span id="cart-count">0</span>)
       </button>
@@ -3948,35 +3955,12 @@
           );
 
 
-        /* ---------- 顯示成功訊息 ---------- */
-
-        if (lineWindow) {
-
-          alert(
-            '訂單已成功成立！\n\n' +
-            `正式訂單編號：${orderNo}\n` +
-            (
-              orderDate
-                ? `訂單時間：${orderDate}\n`
-                : ''
-            ) +
-            '\n' +
-            '訂單明細已嘗試自動複製。\n' +
-            '請前往官方 LINE 貼上後送出，並在完成匯款後提供帳號末 5 碼。\n\n' +
-            '訂單確認 Email 也會寄到您填寫的信箱。'
-          );
-
-        } else {
-
-          alert(
-            '訂單已成功成立！\n\n' +
-            `正式訂單編號：${orderNo}\n\n` +
-            '訂單明細已嘗試自動複製。\n' +
-            '但瀏覽器阻擋了 LINE 自動開啟。\n' +
-            '請手動開啟織造所官方 LINE，並提供以上訂單編號。\n\n' +
-            '訂單確認 Email 也會寄到您填寫的信箱。'
-          );
-        }
+        /* ---------- 顯示統一成功訊息 ---------- */
+        alert(
+          '訂單已成功送出，請保存您的訂單編號：' +
+          `${orderNo}\n\n` +
+          '如有需要，請透過 LINE 官方帳號與我們聯絡。'
+        );
 
       }
     );
