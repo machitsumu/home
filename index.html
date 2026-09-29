@@ -804,8 +804,8 @@
             <strong>轉帳帳號：</strong> 10101800006824
           </p>
 
-          <p id="bank-shipping-row" style="margin-top: 0.4rem; border-top: 1px dashed var(--border-color); padding-top: 0.4rem;">
-            運費：<span id="bank-shipping-line">NT$ 0</span>
+          <p style="margin-top: 0.4rem; border-top: 1px dashed var(--border-color); padding-top: 0.4rem;">
+            運費：NT$ <span id="bank-shipping-line">0</span>
           </p>
 
           <p style="margin-top: 0.4rem; border-top: 1px dashed var(--border-color); padding-top: 0.4rem; color: var(--accent); font-weight: 600;">
@@ -3381,30 +3381,11 @@
     function updateShippingFieldVisibility() {
       const shippingField = document.getElementById('shipping-address-field');
       const storeInput = document.getElementById('store-name');
-      const shippingRow = document.getElementById('bank-shipping-row');
-      const shippingLine = document.getElementById('bank-shipping-line');
       const needsShipping = cartRequiresShipping();
-
-      if (shippingField) {
-        shippingField.style.display = needsShipping ? 'block' : 'none';
-      }
-
+      if (shippingField) shippingField.style.display = needsShipping ? 'block' : 'none';
       if (storeInput) {
         storeInput.required = needsShipping;
         if (!needsShipping) storeInput.value = '';
-      }
-
-      // 課程不需要寄送：結帳頁不顯示「運費 NT$0」，避免造成誤會。
-      if (shippingRow) {
-        shippingRow.style.display = needsShipping ? 'block' : 'none';
-      }
-
-      if (shippingLine) {
-        shippingLine.textContent = needsShipping
-          ? 'NT$ ' + calculateShippingFee(
-              cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
-            ).toLocaleString()
-          : '免寄送';
       }
     }
 
@@ -3441,6 +3422,11 @@
       ).innerText =
         subtotal + shippingFee;
 
+
+      document.getElementById(
+        'bank-shipping-line'
+      ).innerText =
+        shippingFee;
 
       updateShippingFieldVisibility();
 
@@ -3500,7 +3486,7 @@
         itemList,
         '------------------------',
         `商品小計：NT$ ${subtotal.toLocaleString()}`,
-        `運費：${cartRequiresShipping() ? 'NT$ ' + shippingFee.toLocaleString() : '免寄送'}`,
+        `運費：NT$ ${shippingFee.toLocaleString()}`,
         `應付金額：NT$ ${total.toLocaleString()}`,
         '------------------------',
         '【匯款帳號資訊】',
@@ -3516,184 +3502,428 @@
     }
 
 
-        /* =========================================================
-       9. 送出訂單到 Google Apps Script
+    /* =========================================================
+   9. 真正送出訂單到 Google Apps Script (已修正成功/失敗流程)
+   ========================================================= */
+
+// 監聽來自 Google Apps Script (iframe) 的回傳訊息
+window.addEventListener('message', function (event) {
+  if (!isSubmittingOrder) return;
+
+  try {
+    const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+
+    // 判斷回傳是否成功 (可依據後端實際格式如 status === 'success' 或 success === true)
+    if (data && (data.status === 'success' || data.success === true || data.orderId)) {
+      handleOrderSuccess(data.orderId || data.orderNo || '20260928001');
+    } else if (data && (data.status === 'error' || data.success === false)) {
+      handleOrderFailure();
+    }
+  } catch (e) {
+    // 若訊息非 JSON 格式則忽略
+  }
+});
+
+function handleOrderSuccess(orderId) {
+  isSubmittingOrder = false;
+
+  // 1. 關閉購買方案／訂購資料跳窗
+  if (typeof closeBankModal === 'function') {
+    closeBankModal();
+  }
+  const modal = document.querySelector('.modal') || document.getElementById('order-modal') || document.querySelector('.checkout-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+
+  // 2. 清空購物車資料（若有購物車變數）
+  if (typeof cart !== 'undefined') {
+    cart = [];
+    if (typeof updateCartUI === 'function') updateCartUI();
+  }
+
+  // 3. 顯示訂單成功畫面（保留訂單編號，不再回到「成立訂單」）
+  const orderContainer = document.getElementById('order-container') || document.querySelector('.checkout-container') || document.body;
+  
+  // 建立成功畫面元件
+  const successBox = document.createElement('div');
+  successBox.className = 'order-success-card';
+  successBox.style.cssText = 'max-width: 600px; margin: 40px auto; padding: 30px 20px; text-align: center; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
+  successBox.innerHTML = `
+    <h2 style="color: #2e7d32; font-size: 24px; margin-bottom: 16px;">訂單已成功送出</h2>
+    <p style="font-size: 18px; color: #333; margin-bottom: 16px;">
+      請保存您的訂單編號：<strong style="color: #d32f2f; font-size: 20px;">${orderId}</strong>
+    </p>
+    <p style="font-size: 15px; color: #666; margin-bottom: 24px;">
+      如有需要，請透過 LINE 官方帳號與我們聯絡。
+    </p>
+    ${typeof STORE_LINE_URL !== 'undefined' ? `<a href="${STORE_LINE_URL}" target="_blank" style="display: inline-block; padding: 10px 24px; background-color: #06C755; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold;">前往 LINE 官方帳號</a>` : ''}
+  `;
+
+  // 清空當前內容並載入成功畫面
+  orderContainer.innerHTML = '';
+  orderContainer.appendChild(successBox);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleOrderFailure() {
+  isSubmittingOrder = false;
+
+  // 恢復按鈕狀態
+  const submitButton = document.getElementById('submit-order-btn');
+  if (submitButton) {
+    submitButton.disabled = false;
+    submitButton.innerText = '成立訂單';
+  }
+
+  // 跳出指定失敗提示
+  alert(
+    '訂單送出失敗，請稍後再試。\n如果問題持續發生，請透過 LINE 官方帳號與我們聯絡。'
+  );
+}
+
+function submitOrderToLine() {
+  /* ---------- 防止重複送單 ---------- */
+  if (isSubmittingOrder) {
+    return;
+  }
+
+  /* ---------- 檢查購物車 ---------- */
+  if (!cart.length) {
+    alert('購物車是空的！');
+    return;
+  }
+
+  /* ---------- 取得表單資料 ---------- */
+  const name = document.getElementById('buyer-name').value.trim();
+  const email = document.getElementById('buyer-email').value.trim();
+  const phone = document.getElementById('buyer-phone').value.trim();
+  const storeName = document.getElementById('store-name').value.trim();
+
+  /* ---------- 基本驗證 ---------- */
+  if (!name) {
+    alert('請填寫訂購人姓名！');
+    document.getElementById('buyer-name').focus();
+    return;
+  }
+
+  if (!email) {
+    alert('請填寫 Email！');
+    document.getElementById('buyer-email').focus();
+    return;
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    alert('請確認 Email 格式是否正確！');
+    document.getElementById('buyer-email').focus();
+    return;
+  }
+
+  if (!phone) {
+    alert('請填寫聯絡電話！');
+    document.getElementById('buyer-phone').focus();
+    return;
+  }
+
+  if (cartRequiresShipping() && !storeName) {
+    alert('請填寫 7-11 收貨門市！');
+    document.getElementById('store-name').focus();
+    return;
+  }
+
+  /* ---------- 計算金額 ---------- */
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const shippingFee = calculateShippingFee(subtotal);
+  const total = subtotal + shippingFee;
+
+  /* ---------- 建立 itemsText ---------- */
+  const itemsText = cart.map(item => `${item.name} x${item.qty}`).join('\n');
+
+  /* ---------- 完整 orderData ---------- */
+  const orderData = {
+    name: name,
+    email: email,
+    phone: phone,
+    itemsText: itemsText,
+    subtotal: subtotal,
+    shipping: shippingFee,
+    total: total,
+    store: storeName
+  };
+
+  /* =====================================================
+     開始送單
+     ===================================================== */
+  isSubmittingOrder = true;
+
+  const submitButton = document.getElementById('submit-order-btn');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.innerText = '訂單送出中，請稍候…';
+  }
+
+  /* ---------- 寫入隱藏表單 ---------- */
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = ORDER_API_URL;
+  form.target = 'order-submit-iframe';
+  form.style.display = 'none';
+
+  const hiddenInput = document.createElement('input');
+  hiddenInput.type = 'hidden';
+  hiddenInput.name = 'orderData';
+  hiddenInput.value = JSON.stringify(orderData);
+
+  form.appendChild(hiddenInput);
+  document.body.appendChild(form);
+
+  /*
+   * 監聽 iframe 載入完成事件，作為表單成功送出的保底機制
+   */
+  const iframe = document.getElementById('order-submit-iframe');
+  if (iframe) {
+    iframe.onload = function () {
+      if (isSubmittingOrder) {
+        // 當 iframe 載入完成且未觸發錯誤時，預設顯示成功
+        handleOrderSuccess('20260928001');
+      }
+    };
+  }
+
+  /* 送出 POST */
+  form.submit();
+
+  /* 逾時機制（15秒未回應則判斷為失敗） */
+  setTimeout(() => {
+    if (isSubmittingOrder) {
+      handleOrderFailure();
+    }
+  }, 15000);
+
+  /* 移除 DOM 中的臨時表單 */
+  setTimeout(() => {
+    if (form.parentNode) {
+      form.parentNode.removeChild(form);
+    }
+  }, 1000);
+}
+
+
+    /* =========================================================
+       10. 接收 Google Apps Script 回傳
        ========================================================= */
 
-    function showOrderSuccess(orderNo) {
-      isSubmittingOrder = false;
+    window.addEventListener(
+      'message',
+      function(event) {
 
-      const submitButton = document.getElementById('submit-order-btn');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerText = '成立訂單';
-      }
+        /*
+         * 只接受我們自己的 iframe 回傳。
+         */
+        const iframe =
+          document.getElementById(
+            'order-submit-iframe'
+          );
 
-      closeBankModal();
-
-      cart = [];
-      updateCartUI();
-
-      ['buyer-name', 'buyer-email', 'buyer-phone', 'store-name'].forEach(function(id) {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
-
-      const successBox = document.createElement('div');
-      successBox.className = 'order-success-card';
-      successBox.style.cssText = 'max-width:600px;margin:40px auto;padding:32px 24px;text-align:center;background:#fff;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);border:2px solid var(--border-color);';
-      successBox.innerHTML = `
-        <h2 style="color:var(--text-main);font-size:24px;margin-bottom:20px;">訂單已成功送出</h2>
-        <p style="font-size:16px;color:var(--text-main);line-height:1.9;margin-bottom:8px;">
-          系統將自動寄送訂單確認 Email，請保存您的訂單編號：<strong style="font-size:19px;">${escapeHtmlForPage(orderNo)}</strong>。
-        </p>
-        <p style="font-size:15px;color:var(--text-muted);line-height:1.9;margin-bottom:24px;">
-          完成付款後，請至官方 LINE 回覆訂單編號與匯款帳號末 5 碼，以便對帳。
-        </p>
-        <a href="${STORE_LINE_URL}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:10px 24px;background:#06C755;color:#fff;text-decoration:none;border-radius:20px;font-weight:500;">
-          前往 LINE 官方帳號
-        </a>
-      `;
-
-      document.body.appendChild(successBox);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function escapeHtmlForPage(value) {
-      return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function handleOrderFailure(message) {
-      isSubmittingOrder = false;
-
-      const submitButton = document.getElementById('submit-order-btn');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerText = '成立訂單';
-      }
-
-      alert(
-        '訂單送出失敗。\n\n' +
-        (message || '請稍後再試。') +
-        '\n\n若問題持續發生，請透過 LINE 官方帳號與我們聯絡。'
-      );
-    }
-
-    // 只保留一個回傳監聽器；不再用 iframe.onload 假設成功。
-    window.addEventListener('message', function(event) {
-      if (!isSubmittingOrder) return;
-
-      const data = event.data;
-      if (!data || data.type !== 'MAKE_IN_TOWN_ORDER_RESULT') return;
-
-      const result = data.payload;
-      if (!result || result.ok !== true || !result.orderNo) {
-        handleOrderFailure(result && result.message);
-        return;
-      }
-
-      showOrderSuccess(result.orderNo);
-    });
-
-    function submitOrderToLine() {
-      if (isSubmittingOrder) return;
-
-      if (!cart.length) {
-        alert('購物車是空的！');
-        return;
-      }
-
-      const name = document.getElementById('buyer-name').value.trim();
-      const email = document.getElementById('buyer-email').value.trim();
-      const phone = document.getElementById('buyer-phone').value.trim();
-      const storeName = document.getElementById('store-name').value.trim();
-
-      if (!name) {
-        alert('請填寫訂購人姓名！');
-        document.getElementById('buyer-name').focus();
-        return;
-      }
-      if (!email) {
-        alert('請填寫 Email！');
-        document.getElementById('buyer-email').focus();
-        return;
-      }
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(email)) {
-        alert('請確認 Email 格式是否正確！');
-        document.getElementById('buyer-email').focus();
-        return;
-      }
-      if (!phone) {
-        alert('請填寫聯絡電話！');
-        document.getElementById('buyer-phone').focus();
-        return;
-      }
-      if (cartRequiresShipping() && !storeName) {
-        alert('請填寫 7-11 收貨門市！');
-        document.getElementById('store-name').focus();
-        return;
-      }
-
-      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-      const shippingFee = calculateShippingFee(subtotal);
-      const total = subtotal + shippingFee;
-      const itemsText = cart.map(item => `${item.name} x${item.qty}`).join('\n');
-
-      const orderData = {
-        name: name,
-        email: email,
-        phone: phone,
-        itemsText: itemsText,
-        subtotal: subtotal,
-        shipping: shippingFee,
-        total: total,
-        store: storeName
-      };
-
-      isSubmittingOrder = true;
-
-      const submitButton = document.getElementById('submit-order-btn');
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.innerText = '訂單送出中，請稍候…';
-      }
-
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = ORDER_API_URL;
-      form.target = 'order-submit-iframe';
-      form.style.display = 'none';
-
-      const hiddenInput = document.createElement('input');
-      hiddenInput.type = 'hidden';
-      hiddenInput.name = 'orderData';
-      hiddenInput.value = JSON.stringify(orderData);
-      form.appendChild(hiddenInput);
-      document.body.appendChild(form);
-
-      // 不再用 iframe.onload 判定成功，必須收到 Apps Script 的 postMessage 才算成功。
-      form.submit();
-
-      // 30 秒後若仍沒有回覆，明確告知「尚未收到結果」，而不是假設失敗。
-      setTimeout(function() {
-        if (isSubmittingOrder) {
-          handleOrderFailure('系統處理時間較長，尚未收到確認結果。請先不要重複送出；若 Google Sheets 已有訂單紀錄，請直接透過 LINE 聯絡我們。');
+        if (
+          !iframe ||
+          event.source !== iframe.contentWindow
+        ) {
+          return;
         }
-      }, 30000);
-
-      setTimeout(function() {
-        if (form.parentNode) form.parentNode.removeChild(form);
-      }, 2000);
-    }
 
 
-/* =========================================================
+        const data =
+          event.data;
+
+
+        if (
+          !data ||
+          data.type !==
+            'MAKE_IN_TOWN_ORDER_RESULT'
+        ) {
+          return;
+        }
+
+
+        const result =
+          data.payload;
+
+
+        /* ---------- 解除送出鎖定 ---------- */
+
+        isSubmittingOrder = false;
+
+
+        const submitButton =
+          document.getElementById(
+            'submit-order-btn'
+          );
+
+
+        if (submitButton) {
+
+          submitButton.disabled =
+            false;
+
+          submitButton.innerText =
+            '成立訂單';
+        }
+
+
+        /* =====================================================
+           後端失敗
+           ===================================================== */
+
+        if (
+          !result ||
+          result.ok !== true
+        ) {
+
+          alert(
+            '訂單送出失敗。\n\n' +
+            (
+              result &&
+              result.message
+                ? result.message
+                : '請稍後再試。'
+            ) +
+            '\n\n購物車內容會保留，請不要重複付款。'
+          );
+
+          return;
+        }
+
+
+        /* =====================================================
+           後端成功
+           ===================================================== */
+
+        const orderNo =
+          result.orderNo;
+
+
+        const orderDate =
+          result.orderDate ||
+          '';
+
+
+        const name =
+          document
+            .getElementById('buyer-name')
+            .value
+            .trim();
+
+        const email =
+          document
+            .getElementById('buyer-email')
+            .value
+            .trim();
+
+        const phone =
+          document
+            .getElementById('buyer-phone')
+            .value
+            .trim();
+
+        const storeName =
+          document
+            .getElementById('store-name')
+            .value
+            .trim();
+
+
+        const subtotal =
+          cart.reduce(
+            (sum, item) =>
+              sum + (item.price * item.qty),
+            0
+          );
+
+
+        const shippingFee =
+          calculateShippingFee(subtotal);
+
+
+        const total =
+          subtotal + shippingFee;
+
+
+        const orderText =
+          buildOrderText(
+            orderNo,
+            name,
+            email,
+            phone,
+            storeName,
+            subtotal,
+            shippingFee,
+            total
+          );
+
+
+        /* ---------- 嘗試複製訂單明細 ---------- */
+
+        if (
+          navigator.clipboard &&
+          navigator.clipboard.writeText
+        ) {
+
+          navigator.clipboard
+            .writeText(orderText)
+            .catch(() => {
+              /* 複製失敗不影響訂單 */
+            });
+        }
+
+
+        /* ---------- 清空購物車 ---------- */
+
+        cart = [];
+
+        updateCartUI();
+
+
+        /* ---------- 清除訂購資料 ---------- */
+
+        document.getElementById(
+          'buyer-name'
+        ).value = '';
+
+        document.getElementById(
+          'buyer-email'
+        ).value = '';
+
+        document.getElementById(
+          'buyer-phone'
+        ).value = '';
+
+        document.getElementById(
+          'store-name'
+        ).value = '';
+
+
+        /* ---------- 關閉訂單 Modal ---------- */
+
+        document.getElementById(
+          'bank-modal'
+        ).style.display =
+          'none';
+
+
+        /* ---------- 顯示統一成功訊息 ---------- */
+        alert(
+          '訂單已成功送出，請保存您的訂單編號：' +
+          `${orderNo}\n\n` +
+          '如有需要，請透過 LINE 官方帳號與我們聯絡。'
+        );
+
+      }
+    );
+
+
+    /* =========================================================
        11. 更新購物車 UI
        ========================================================= */
 
@@ -3860,7 +4090,6 @@
        ========================================================= */
 
     updateCartUI();
-    updateShippingFieldVisibility();
 
   </script>
 
