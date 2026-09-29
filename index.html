@@ -12,28 +12,30 @@
   <style>
     :root {
       /* 60%｜米白底：溫暖、乾淨、保留手作紙張感 */
-      --bg-main: #F6F2E9;
-      --card-bg: #F6F2E9;
+      --bg-main: #F8F6F2;
+      --card-bg: #F8F6F2;
 
       /* 25%｜杏粉：品牌溫度與主要視覺亮點 */
-      --header-bg: #E8C9B8;
-      --secondary: #E8C9B8;
-      --accent-hover: #E8C9B8;
+      --header-bg: #F0E5D8;
+      --secondary: #F0E5D8;
+      --accent-hover: #B28C77;
 
       /* 5%｜灰紫：記憶點，用於卡片邊框與細節提亮 */
-      --border-color: #C7C2D0;
+      --border-color: #D8CEC4;
 
       /* 10%｜灰棕：主要文字、按鈕與穩定視覺 */
-      --text-main: #827266;
-      --accent: #827266;
+      --text-main: #4A433E;
+      --accent: #B28C77;
 
       /* 次要文字 */
-      --text-muted: #A38F7F;
-      --text-light: #F6F2E9;
+      --text-muted: #7A7068;
+      --text-light: #F8F6F2;
 
       /* 舊元件共用變數 */
-      --bg-card: #F6F2E9;
-      --accent-btn: #827266;
+      --bg-card: #F8F6F2;
+      --accent-btn: #B28C77;
+      --hero-bg: #F0E5D8;
+      --tag-accent: #7F8C78;
     }
 
     /* 修正頂部 Header 樣式 */
@@ -107,7 +109,7 @@
 
     nav a {
       margin-left: 1.8rem;
-      color: var(--text-light);
+      color: #4A433E;
       text-decoration: none;
       font-size: 0.92rem;
       font-weight: 500;
@@ -117,7 +119,7 @@
 
     nav a:hover {
       opacity: 1;
-      color: #E8C9B8;
+      color: #4A433E;
     }
 
     .cart-btn {
@@ -137,8 +139,10 @@
     .hero {
       text-align: center;
       padding: 3.5rem 1.5rem 2rem;
-      max-width: 880px;
-      margin: 0 auto;
+      max-width: 980px;
+      margin: 0 auto 2rem;
+      background-color: var(--hero-bg);
+      border-radius: 0 0 20px 20px;
     }
 
     .hero h1 {
@@ -255,6 +259,33 @@
       background-color: var(--header-bg);
       color: var(--text-main);
       border: 1px solid var(--header-bg);
+    }
+
+    .difficulty-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .difficulty-tag {
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+      display: inline-block;
+      background-color: var(--header-bg);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .product-card-image {
+      width: calc(100% + 3.6rem);
+      height: 210px;
+      margin: -1.8rem -1.8rem 1.2rem;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px 12px 0 0;
     }
 
     /* Cards */
@@ -516,11 +547,12 @@
     footer {
       text-align: center;
       padding: 2.5rem;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid #4A433E;
       margin-top: 4rem;
       font-size: 0.8rem;
-      color: #E9E2D6;
-      opacity: 0.8;
+      color: #F8F6F2;
+      background-color: #4A433E;
+      opacity: 1;
     }
 
     @media (max-width: 768px) {
@@ -658,13 +690,19 @@
 
   <!-- 4. 原創系列 -->
   <div class="container" id="shop">
-    <h2 class="section-title">原創系列</h2>
+    <h2 class="section-title">織造所原創系列</h2>
+    <div class="filter-tabs" aria-label="原創系列難易度">
+      <span class="difficulty-tag">1顆星</span>
+      <span class="difficulty-tag">2顆星</span>
+    </div>
 
     <div class="grid">
 
       <!-- 卡片 1 -->
       <div class="card">
         <div>
+          <img class="product-card-image" src="East-West - 1.jpg" alt="East-West 都會漫遊者成品">
+          <div class="difficulty-tags"><span class="difficulty-tag">2顆星</span></div>
           <h3>【織造所原創系列】East-West 都會漫遊者</h3>
           <p>嚴選台製線材搭配五金扣環、純黑傘繩與皮標，附帶文字織圖與 30 分鐘專屬線上邏輯輔導。</p>
         </div>
@@ -677,6 +715,8 @@
       <!-- 卡片 2 -->
       <div class="card">
         <div>
+          <img class="product-card-image" src="Petit Walk - 1.jpg" alt="Petit Walk 小步隨行包成品">
+          <div class="difficulty-tags"><span class="difficulty-tag">1顆星</span></div>
           <h3>【織造所原創系列】Petit Walk 小步隨行包</h3>
           <p>包含台製嚴選線材、彈簧圈與磁吸扣，結構簡潔輕巧，隨附完整文字織圖與 30 分鐘線上邏輯輔導。</p>
         </div>
@@ -689,6 +729,8 @@
       <!-- 卡片 3 -->
       <div class="card">
         <div>
+          <img class="product-card-image" src="花漾氣球包 - 1.jpg" alt="花漾氣球包成品">
+          <div class="difficulty-tags"><span class="difficulty-tag">2顆星</span></div>
           <h3>【織造所原創系列】花漾氣球包</h3>
           <p>嚴選台製甜芯棉，線材滑順圓潤、手感佳且不勾紗，新手也能輕鬆快速完工。</p>
         </div>
@@ -701,6 +743,8 @@
       <!-- 卡片 4 -->
       <div class="card">
         <div>
+          <img class="product-card-image" src="法式網格手機袋.jpg" alt="法式網格手機袋成品">
+          <div class="difficulty-tags"><span class="difficulty-tag">1顆星</span></div>
           <h3>【織造所原創系列】法式網格手機袋</h3>
           <p>結合極簡俐落與法式優雅，不論搭配日常休閒或俐落上班穿搭，都能為造型加分。</p>
         </div>
@@ -958,10 +1002,10 @@
 
         sessions: [
           "10/17（六）13:00-16:00 嘉義 好好生活",
-          "10/21（三）18:00-21:00 北港",
           "10/31（六）13:00-16:00 台南 小樹屋（虹樹）",
+          "11/04（三）18:00-21:00 北港",
           "11/14（六）13:00-16:00 北港",
-          "11/18（三）18:00-21:00 嘉義 好好生活"
+          "11/18（三）18:00-21:00 嘉義"
         ],
 
         body: `
@@ -1020,8 +1064,8 @@
         tag: '鉤織課程',
 
         sessions: [
-          "10/28（三）18:00-21:00 北港",
           "11/7（六）13:00-16:00 嘉義",
+          "11/11（三）18:00-21:00 北港",
           "11/25（三）18:00-21:00 嘉義",
           "11/28（六）13:00-16:00 北港"
         ],
