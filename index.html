@@ -40,7 +40,7 @@
 
     /* 修正頂部 Header 樣式 */
     header, .navbar {
-      background-color: #FFFFFF !important;
+      background-color: #F0E5D8 !important;
       color: var(--text-main) !important;
     }
 
@@ -104,7 +104,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1.1rem 2.5rem;
-      background-color: #FFFFFF;
+      background-color: #F0E5D8;
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
@@ -195,18 +195,22 @@
     }
 
     .machitsumu-word {
-      display: inline-block;
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 0.045em;
+      line-height: 1.2;
     }
 
     .about-title-cn {
       display: block;
-      margin-top: 1.2rem;
+      margin-top: 0.65rem;
       font-family: 'Noto Serif TC', serif;
-      font-size: 1.2rem;
+      font-size: 2.2rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
-      line-height: 1.7;
+      letter-spacing: 0.08em;
+      line-height: 1.55;
     }
 
     .about-text {
@@ -231,6 +235,11 @@
       text-align: center;
       padding-top: 0.8rem;
       color: var(--text-main) !important;
+      font-family: 'Noto Serif TC', serif !important;
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1.8;
+      letter-spacing: 0.06em;
     }
 
     .hero-slider {
@@ -658,10 +667,15 @@
       }
 
       .about-title-cn {
-        margin-top: 1rem;
-        font-size: 1.02rem;
-        line-height: 1.8;
+        margin-top: 0.55rem;
+        font-size: 1.85rem;
+        line-height: 1.6;
         letter-spacing: 0.05em;
+      }
+
+      .about-closing {
+        font-size: 1.18rem;
+        line-height: 1.8;
       }
 
       .about-text p {
@@ -729,7 +743,7 @@
     <div class="about-copy">
       <h2 class="about-title">
         <span class="machitsumu-word">MACHITSUMU</span>
-        <span class="about-title-cn">—— 編織生活與人際連結的地方。</span>
+        <span class="about-title-cn">編織生活與人際連結的地方</span>
       </h2>
 
       <div class="about-text">
@@ -739,7 +753,7 @@
 
         <p>我們相信，編織不單是技藝的展現，更是一種沉澱心靈、自我療癒的生活哲學。</p>
 
-        <p class="about-closing"><strong><span class="machitsumu-word">MACHITSUMU</span> <span class="brand-word">織造所</span>，編織的不只是作品，更是理想生活的模樣。</strong></p>
+        <p class="about-closing">織造所 MACHITSUMU，編織的不只是作品，更是理想生活的模樣。</p>
       </div>
     </div>
 
@@ -3880,14 +3894,16 @@ function submitOrderToLine() {
         if (!data || data.type !== 'MAKE_IN_TOWN_ORDER_RESULT') {
           return;
         }
-
-        let result = data.payload;
+        let result =
+          data.payload !== undefined
+            ? data.payload
+            : (data.result !== undefined ? data.result : data);
 
         if (typeof result === 'string') {
           try {
             result = JSON.parse(result);
           } catch (e) {
-            /* payload 不是 JSON 時保留原值，下面會安全判斷。 */
+            /* result 不是 JSON 時保留原值，下面會安全判斷。 */
           }
         }
 
@@ -4025,7 +4041,7 @@ function submitOrderToLine() {
         if (modalContent) {
           modalContent.innerHTML = `
             <div style="text-align:center; padding:1.2rem 0 0.5rem;">
-              <h3 style="font-family:'Shippori Mincho', 'Noto Serif TC', serif; color:var(--text-main); margin-bottom:1.2rem;">
+              <h3 style="font-family:'Noto Serif TC', serif; color:var(--text-main); margin-bottom:1.2rem;">
                 訂單已成功送出
               </h3>
 
@@ -4047,6 +4063,20 @@ function submitOrderToLine() {
         document.getElementById('bank-modal').style.display = 'flex';
       }
     );
+
+
+    /* =========================================================
+       訂單回傳資料安全處理
+       ========================================================= */
+
+    function escapeHtml_(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
 
 
     /* =========================================================
