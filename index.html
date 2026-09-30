@@ -3827,7 +3827,7 @@ function submitOrderToLine() {
   /* 送出 POST */
   form.submit();
 
-  /* 逾時機制：60 秒仍未收到後端回覆才提示失敗。
+  /* 逾時機制：90 秒仍未收到後端回覆才提示需人工確認。
      不再把 iframe 的 onload 當成成功，避免訂單尚未真正寫入就誤判。 */
   setTimeout(() => {
     if (isSubmittingOrder) {
@@ -3839,7 +3839,7 @@ function submitOrderToLine() {
       }
       alert('目前尚未收到訂單系統的確認結果。\n\n請先不要重複送出或付款；如果 Google 試算表已出現訂單，代表訂單已成立，請再透過 LINE 聯絡我們確認。');
     }
-  }, 60000);
+  }, 90000);
 
   /* 移除 DOM 中的臨時表單 */
   setTimeout(() => {
@@ -3858,25 +3858,12 @@ function submitOrderToLine() {
       'message',
       function(event) {
 
-        const iframe =
-          document.getElementById('order-submit-iframe');
-
-        if (!iframe) {
-          return;
-        }
-
         /*
-         * Apps Script 在導向不同回應頁時，部分瀏覽器情況下
-         * event.source / event.origin 的表現可能不同；
-         * 優先確認 iframe，並只接受我們約定的訊息格式。
+         * Google Apps Script Web App 可能經過多層 sandbox iframe，
+         * 因此 event.source / event.origin 不一定會等於外層 iframe。
+         * 這裡不再用來源條件把合法回傳擋掉，改以「訊息內容」驗證。
          */
-        const isTrustedSource =
-          event.source === iframe.contentWindow ||
-          event.origin === 'https://script.google.com' ||
-          event.origin === 'https://script.googleusercontent.com' ||
-          event.origin === 'https://makeintown.github.io';
-
-        if (!isTrustedSource) {
+        if (!isSubmittingOrder) {
           return;
         }
 
@@ -3891,13 +3878,39 @@ function submitOrderToLine() {
           }
         }
 
-        if (!data || data.type !== 'MAKE_IN_TOWN_ORDER_RESULT') {
+        if (!data || typeof data !== 'object') {
           return;
         }
+
+        /*
+         * 相容兩種可能的 Apps Script 回傳格式：
+         * 1. { type: 'MAKE_IN_TOWN_ORDER_RESULT', payload: {...} }
+         * 2. 直接回傳 { ok: true, orderNo: '...' } / { success: true, ... }
+         */
+        const isTypedOrderResult =
+          data.type === 'MAKE_IN_TOWN_ORDER_RESULT';
+
+        const isDirectOrderResult =
+          !!(
+            data.orderNo ||
+            data.orderId ||
+            data.success === true ||
+            data.success === 'true' ||
+            data.ok === true ||
+            data.ok === 'true' ||
+            data.status === 'success'
+          );
+
+        if (!isTypedOrderResult && !isDirectOrderResult) {
+          return;
+        }
+
         let result =
-          data.payload !== undefined
-            ? data.payload
-            : (data.result !== undefined ? data.result : data);
+          isTypedOrderResult
+            ? (data.payload !== undefined
+                ? data.payload
+                : (data.result !== undefined ? data.result : data))
+            : data;
 
         if (typeof result === 'string') {
           try {
@@ -3907,26 +3920,26 @@ function submitOrderToLine() {
           }
         }
 
+        if (!result || typeof result !== 'object') {
+          return;
+        }
+
         /* ---------- 正規化後端回傳 ---------- */
         const orderNo =
-          result && (result.orderNo || result.orderId);
+          result.orderNo || result.orderId || '';
 
         const explicitSuccess =
-          !!(
-            result &&
-            (
-              result.ok === true ||
-              result.ok === 'true' ||
-              result.success === true ||
-              result.success === 'true' ||
-              result.status === 'success'
-            )
+          (
+            result.ok === true ||
+            result.ok === 'true' ||
+            result.success === true ||
+            result.success === 'true' ||
+            result.status === 'success'
           );
 
         /*
-         * 重要：只要後端已經帶回訂單編號，就視為訂單已成立。
-         * 例如試算表已成功寫入，但 Email 後續寄送失敗，
-         * 不應再把前端顯示成「訂單送出失敗」。
+         * 重要：只要後端帶回訂單編號，就視為訂單成立。
+         * Email 是否寄送成功不應影響前端訂單成立狀態。
          */
         const orderSucceeded = explicitSuccess || !!orderNo;
 
@@ -3944,7 +3957,7 @@ function submitOrderToLine() {
           alert(
             '訂單送出失敗。\n\n' +
             (
-              result && result.message
+              result.message
                 ? result.message
                 : '請稍後再試。'
             ) +
