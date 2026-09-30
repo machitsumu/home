@@ -38,9 +38,9 @@
       --tag-accent: #7F8C78;
     }
 
-    /* 修正頂部 Header 樣式：依指示背景色改為 #F0E5D8 */
+    /* 修正頂部 Header 樣式 */
     header, .navbar {
-      background-color: #F0E5D8 !important;
+      background-color: #FFFFFF !important;
       color: var(--text-main) !important;
     }
 
@@ -104,7 +104,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1.1rem 2.5rem;
-      background-color: #F0E5D8;
+      background-color: #FFFFFF;
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
@@ -195,27 +195,18 @@
     }
 
     .machitsumu-word {
-      display: block;
-      font-family: 'Cormorant Garamond', serif;
+      display: inline-block;
       font-size: 2.2rem;
-      font-weight: 600;
     }
 
     .about-title-cn {
       display: block;
-      margin-top: 0.5rem;
-      font-family: 'Noto Serif TC', serif;
-      font-size: 2.2rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      line-height: 1.4;
-    }
-
-    .about-closing {
+      margin-top: 1.2rem;
       font-family: 'Noto Serif TC', serif;
       font-size: 1.2rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
+      line-height: 1.7;
     }
 
     .about-text {
@@ -667,9 +658,9 @@
       }
 
       .about-title-cn {
-        margin-top: 0.5rem;
-        font-size: 1.85rem;
-        line-height: 1.4;
+        margin-top: 1rem;
+        font-size: 1.02rem;
+        line-height: 1.8;
         letter-spacing: 0.05em;
       }
 
@@ -738,7 +729,7 @@
     <div class="about-copy">
       <h2 class="about-title">
         <span class="machitsumu-word">MACHITSUMU</span>
-        <span class="about-title-cn">編織生活與人際連結的地方</span>
+        <span class="about-title-cn">—— 編織生活與人際連結的地方。</span>
       </h2>
 
       <div class="about-text">
@@ -748,7 +739,7 @@
 
         <p>我們相信，編織不單是技藝的展現，更是一種沉澱心靈、自我療癒的生活哲學。</p>
 
-        <p class="about-closing">織造所 MACHITSUMU，編織的不只是作品，更是理想生活的模樣。</p>
+        <p class="about-closing"><strong><span class="machitsumu-word">MACHITSUMU</span> <span class="brand-word">織造所</span>，編織的不只是作品，更是理想生活的模樣。</strong></p>
       </div>
     </div>
 
@@ -1790,119 +1781,2443 @@
                 <input
                   type="checkbox"
                   name="east-west-option"
-                  value="材料包"
-                  data-price="1380"
+                  value="線材＆五金配件加購"
+                  data-price="880"
                 >
 
-                材料包 $1380
+                線材 ＆ 五金配件加購 $880（不含織圖及線上課程）
 
+                <input
+                  type="text"
+                  id="east-west-yarn-color-input"
+                  class="form-input"
+                  placeholder="請填寫您選擇的 QQ 線顏色編號（例：Q15 深卡其）"
+                  style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);"
+                >
+
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="east-west-option"
+                  value="日本廣島紅柄鉤針 5 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 5 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="east-west-option"
+                  value="日本廣島紅柄鉤針 6 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 6 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="east-west-option"
+                  value="成品包"
+                  data-price="2680"
+                >
+                成品包 $2680
               </label>
 
             </div>
 
           </div>
         `;
+
+        actionBtnHtml = `
+          <button
+            class="btn-primary"
+            style="width:auto; padding:0.7rem 1.8rem;"
+            onclick="addDetailToCart('${data.title}', 0)"
+          >
+            加入購物車 / 購買
+          </button>
+        `;
       }
 
+
+      /* =====================================================
+         Petit Walk
+         ===================================================== */
+
+      if (key === 'item2') {
+
+        selectsHtml += `
+          <div style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--border-color);">
+
+            <p style="font-weight:600; margin-bottom:0.6rem;">
+              【購買項目】*
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:0.55rem; line-height:1.8; font-size:0.92rem;">
+
+              <label style="display:block;">
+
+                <input
+                  type="checkbox"
+                  name="petit-walk-option"
+                  value="材料包"
+                  checked
+                  data-price="1180"
+                >
+
+                材料包 $1180
+
+                <input
+                  type="text"
+                  id="petit-walk-kit-color-input"
+                  class="form-input"
+                  placeholder="請填寫您選擇的 QQ 線顏色編號（例：Q15 深卡其）"
+                  style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);"
+                >
+
+              </label>
+
+              <label style="display:block;">
+
+                <input
+                  type="checkbox"
+                  name="petit-walk-option"
+                  value="線材＆五金配件加購"
+                  data-price="780"
+                >
+
+                線材 ＆ 五金配件加購 $780（不含織圖及線上課程）
+
+                <input
+                  type="text"
+                  id="petit-walk-yarn-color-input"
+                  class="form-input"
+                  placeholder="請填寫您選擇的 QQ 線顏色編號（例：Q15 深卡其）"
+                  style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);"
+                >
+
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="petit-walk-option"
+                  value="日本廣島紅柄鉤針 5 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 5 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="petit-walk-option"
+                  value="日本廣島紅柄鉤針 6 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 6 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="petit-walk-option"
+                  value="成品包"
+                  data-price="2280"
+                >
+                成品包 $2280
+              </label>
+
+            </div>
+
+          </div>
+        `;
+
+        actionBtnHtml = `
+          <button
+            class="btn-primary"
+            style="width:auto; padding:0.7rem 1.8rem;"
+            onclick="addDetailToCart('${data.title}', 0)"
+          >
+            加入購物車 / 購買
+          </button>
+        `;
+      }
+
+
+      /* =====================================================
+         花漾氣球包
+         ===================================================== */
+
+      if (key === 'item3') {
+
+        selectsHtml += `
+          <div style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--border-color);">
+
+            <p style="font-weight:600; margin-bottom:0.6rem;">
+              【購買項目】*
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:0.55rem; line-height:1.8; font-size:0.92rem;">
+
+              <div style="display:flex; flex-direction:column; gap:0.35rem;">
+
+                <label style="font-weight:600; color:var(--text-main);">
+                  材料包：
+                </label>
+
+                <select
+                  id="balloon-kit-select"
+                  class="form-input"
+                  style="margin-bottom:0.35rem;"
+                >
+
+                  <option value="" data-price="0">
+                    -- 請選擇材料包配色 --
+                  </option>
+
+                  <option
+                    value="材料包 - 草莓布蕾（上: 07*1 / 下: 27*2，示範色）"
+                    data-price="1280"
+                    selected
+                  >
+                    材料包 - 草莓布蕾 （上: 07*1 / 下: 27*2，示範色） $1280
+                  </option>
+
+                  <option
+                    value="材料包 - 苔原晨霧（上: 21*1 / 下: 22*2）"
+                    data-price="1280"
+                  >
+                    材料包 - 苔原晨霧（上: 21*1 / 下: 22*2） $1280
+                  </option>
+
+                  <option
+                    value="材料包 - 俐落對比（上: 01*1 / 下: 29*2）"
+                    data-price="1280"
+                  >
+                    材料包 - 俐落對比（上: 01*1 / 下: 29*2） $1280
+                  </option>
+
+                  <option
+                    value="材料包 - 煙燻森林（上: 13*1 / 下: 20*2）"
+                    data-price="1280"
+                  >
+                    材料包 - 煙燻森林（上: 13*1 / 下: 20*2） $1280
+                  </option>
+
+                  <option
+                    value="材料包 - 燕麥拿鐵（上: 23*1 / 下: 28*2）"
+                    data-price="1280"
+                  >
+                    材料包 - 燕麥拿鐵（上: 23*1 / 下: 28*2） $1280
+                  </option>
+
+                  <option
+                    value="材料包 - 蜜桃晚霞（上: 03*1 / 下: 09*2）"
+                    data-price="1280"
+                  >
+                    材料包 - 蜜桃晚霞（上: 03*1 / 下: 09*2） $1280
+                  </option>
+
+                  <option
+                    value="材料包 - 自行配色（上*1 / 下*2）"
+                    data-price="1280"
+                  >
+                    材料包 - 自行配色（上*1 / 下*2） $1280
+                  </option>
+
+                </select>
+
+                <input
+                  type="text"
+                  id="balloon-kit-custom-color"
+                  class="form-input"
+                  placeholder="請填寫您選擇的甜芯棉顏色編號（例：上16下27）"
+                  style="display:none; margin-bottom:0.6rem;"
+                >
+
+              </div>
+
+
+              <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.4rem;">
+
+                <label style="font-weight:600; color:var(--text-main);">
+                  線材 ＆ 五金配件加購 $780（不含織圖及線上課程）：
+                </label>
+
+                <select
+                  id="balloon-addon-select"
+                  class="form-input"
+                  style="margin-bottom:0.35rem;"
+                >
+
+                  <option value="" data-price="0">
+                    -- 請選擇加購線材＆配件配色 --
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 草莓布蕾（上: 07*1 / 下: 27*2，示範色）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 草莓布蕾 $780
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 苔原晨霧（上: 21*1 / 下: 22*2）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 苔原晨霧 $780
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 俐落對比（上: 01*1 / 下: 29*2）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 俐落對比 $780
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 煙燻森林（上: 13*1 / 下: 20*2）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 煙燻森林 $780
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 燕麥拿鐵（上: 23*1 / 下: 28*2）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 燕麥拿鐵 $780
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 蜜桃晚霞（上: 03*1 / 下: 09*2）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 蜜桃晚霞 $780
+                  </option>
+
+                  <option
+                    value="線材 ＆ 五金配件加購 - 自行配色（上*1 / 下*2）"
+                    data-price="780"
+                  >
+                    線材 ＆ 五金配件加購 - 自行配色 $780
+                  </option>
+
+                </select>
+
+                <input
+                  type="text"
+                  id="balloon-addon-custom-color"
+                  class="form-input"
+                  placeholder="請填寫您選擇的甜芯棉顏色編號（例：上16下27）"
+                  style="display:none; margin-bottom:0.6rem;"
+                >
+
+              </div>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="balloon-option"
+                  value="日本廣島紅柄鉤針 6 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 6 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="balloon-option"
+                  value="日本廣島紅柄鉤針 7 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 7 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="balloon-option"
+                  value="日本廣島紅柄鉤針 8 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 8 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="balloon-option"
+                  value="成品包"
+                  data-price="2280"
+                >
+                成品包 $2280
+              </label>
+
+            </div>
+
+          </div>
+        `;
+
+        actionBtnHtml = `
+          <button
+            class="btn-primary"
+            style="width:auto; padding:0.7rem 1.8rem;"
+            onclick="addDetailToCart('${data.title}', 0)"
+          >
+            加入購物車 / 購買
+          </button>
+        `;
+      }
+
+
+      /* =====================================================
+         法式網格手機袋
+         ===================================================== */
+
+      if (key === 'item4') {
+
+        selectsHtml += `
+          <div style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--border-color);">
+
+            <p style="font-weight:600; margin-bottom:0.6rem;">
+              【購買項目】*
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:0.55rem; line-height:1.8; font-size:0.92rem;">
+
+              <label style="display:block;">
+
+                <input
+                  type="checkbox"
+                  name="mesh-option"
+                  value="材料包"
+                  checked
+                  data-price="680"
+                >
+
+                材料包 $680
+
+                <input
+                  type="text"
+                  id="mesh-kit-color-input"
+                  class="form-input"
+                  placeholder="請填寫您選擇的純棉線顏色編號（例：20）"
+                  style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);"
+                >
+
+              </label>
+
+              <label style="display:block;">
+
+                <input
+                  type="checkbox"
+                  name="mesh-option"
+                  value="線材＆配件加購"
+                  data-price="480"
+                >
+
+                線材 ＆ 配件加購 $480（不含織圖及線上課程）
+
+                <input
+                  type="text"
+                  id="mesh-yarn-color-input"
+                  class="form-input"
+                  placeholder="請填寫您選擇的純棉線顏色編號（例：20）"
+                  style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);"
+                >
+
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="mesh-option"
+                  value="日本廣島紅柄鉤針 3 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 3 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="mesh-option"
+                  value="日本廣島紅柄鉤針 4 號"
+                  data-price="280"
+                >
+                日本廣島紅柄鉤針 4 號 $280
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="mesh-option"
+                  value="成品包"
+                  data-price="1080"
+                >
+                成品包 $1080
+              </label>
+
+            </div>
+
+          </div>
+        `;
+
+        actionBtnHtml = `
+          <button
+            class="btn-primary"
+            style="width:auto; padding:0.7rem 1.8rem;"
+            onclick="addDetailToCart('${data.title}', 0)"
+          >
+            加入購物車 / 購買
+          </button>
+        `;
+      }
+
+
+      /* ---------- 場次規劃中 ---------- */
+
+      if (isPlanningOnly) {
+
+        actionBtnHtml = `
+          <button
+            class="btn-primary"
+            style="width:auto; padding:0.7rem 1.8rem; background-color:#827266; border-color:#827266; cursor:not-allowed;"
+            disabled
+          >
+            場次規劃中，暫未開放報名
+          </button>
+        `;
+      }
+
+
+      /* ---------- Modal 內容 ---------- */
+
       content.innerHTML = `
-        <div class="card-tags"><span class="tag tag-main">${data.tag}</span></div>
-        <h2 style="font-size:1.4rem; margin-bottom:0.5rem; color:var(--text-main); font-family:'Noto Serif TC', serif;">${data.title}</h2>
-        <div style="font-size:1.2rem; color:var(--accent); font-weight:700; margin-bottom:1.2rem;">NT$ ${data.price}</div>
-        <div class="detail-body">${data.body}</div>
+        <span class="tag tag-main">${data.tag}</span>
+
+        <h2
+          style="margin:0.5rem 0 1rem; color:var(--text-main); font-size:1.5rem;"
+        >
+          ${data.title}
+        </h2>
+
+        <div class="detail-body">
+          ${data.body}
+        </div>
+
         ${selectsHtml}
-        <div style="margin-top:1.5rem; display:flex; justify-content:flex-end;">
+
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:1.2rem; flex-wrap:wrap; gap:10px;"
+        >
+
+          <div
+            style="font-size:1.3rem; font-weight:700; color:var(--accent);"
+          >
+            NT$
+            <span id="modal-price-display">
+              ${typeof data.price === 'number' ? data.price : '990'}
+            </span>
+          </div>
+
           ${actionBtnHtml}
+
         </div>
       `;
+
+
+      /* =====================================================
+         線上課程價格
+         ===================================================== */
+
+      if (key === 'class4') {
+
+        const updateClass4Price = () => {
+
+          let currentTotal = 990;
+
+          const selectedPlan =
+            document.querySelector(
+              'input[name="course-plan"]:checked'
+            );
+
+          if (
+            selectedPlan &&
+            selectedPlan.value.includes('1,090')
+          ) {
+            currentTotal = 1090;
+          }
+
+          const selectedAddons =
+            document.querySelectorAll(
+              'input[name="addon-option"]:checked'
+            );
+
+          selectedAddons.forEach(addon => {
+
+            if (addon.value.includes('+$60')) {
+              currentTotal += 60;
+            }
+
+            if (addon.value.includes('+$200')) {
+              currentTotal += 200;
+            }
+
+          });
+
+          const priceDisplay =
+            document.getElementById(
+              'modal-price-display'
+            );
+
+          if (priceDisplay) {
+            priceDisplay.innerText =
+              currentTotal.toLocaleString();
+          }
+
+        };
+
+        document
+          .querySelectorAll(
+            'input[name="course-plan"], input[name="addon-option"]'
+          )
+          .forEach(input => {
+
+            input.addEventListener(
+              'change',
+              updateClass4Price
+            );
+
+          });
+
+        updateClass4Price();
+      }
+
+
+      /* =====================================================
+         East-West 價格
+         ===================================================== */
+
+      if (key === 'item1') {
+
+        const updateEastWestPrice = () => {
+
+          const options =
+            document.querySelectorAll(
+              'input[name="east-west-option"]:checked'
+            );
+
+          const total =
+            Array.from(options).reduce(
+              (sum, option) =>
+                sum + Number(option.dataset.price || 0),
+              0
+            );
+
+          const priceDisplay =
+            document.getElementById(
+              'modal-price-display'
+            );
+
+          if (priceDisplay) {
+            priceDisplay.innerText =
+              total.toLocaleString();
+          }
+
+        };
+
+        document
+          .querySelectorAll(
+            'input[name="east-west-option"]'
+          )
+          .forEach(input => {
+
+            input.addEventListener(
+              'change',
+              updateEastWestPrice
+            );
+
+          });
+
+        updateEastWestPrice();
+      }
+
+
+      /* =====================================================
+         Petit Walk 價格
+         ===================================================== */
+
+      if (key === 'item2') {
+
+        const updatePetitWalkPrice = () => {
+
+          const options =
+            document.querySelectorAll(
+              'input[name="petit-walk-option"]:checked'
+            );
+
+          const total =
+            Array.from(options).reduce(
+              (sum, option) =>
+                sum + Number(option.dataset.price || 0),
+              0
+            );
+
+          const priceDisplay =
+            document.getElementById(
+              'modal-price-display'
+            );
+
+          if (priceDisplay) {
+            priceDisplay.innerText =
+              total.toLocaleString();
+          }
+
+        };
+
+        document
+          .querySelectorAll(
+            'input[name="petit-walk-option"]'
+          )
+          .forEach(input => {
+
+            input.addEventListener(
+              'change',
+              updatePetitWalkPrice
+            );
+
+          });
+
+        updatePetitWalkPrice();
+      }
+
+
+      /* =====================================================
+         花漾氣球包價格
+         ===================================================== */
+
+      if (key === 'item3') {
+
+        const balloonKitSelect =
+          document.getElementById(
+            'balloon-kit-select'
+          );
+
+        const balloonAddonSelect =
+          document.getElementById(
+            'balloon-addon-select'
+          );
+
+        const balloonKitCustomColor =
+          document.getElementById(
+            'balloon-kit-custom-color'
+          );
+
+        const balloonAddonCustomColor =
+          document.getElementById(
+            'balloon-addon-custom-color'
+          );
+
+
+        const updateBalloonPrice = () => {
+
+          let total = 0;
+
+          if (balloonKitSelect) {
+
+            const opt =
+              balloonKitSelect.options[
+                balloonKitSelect.selectedIndex
+              ];
+
+            total += Number(
+              opt ? opt.dataset.price || 0 : 0
+            );
+          }
+
+          if (balloonAddonSelect) {
+
+            const opt =
+              balloonAddonSelect.options[
+                balloonAddonSelect.selectedIndex
+              ];
+
+            total += Number(
+              opt ? opt.dataset.price || 0 : 0
+            );
+          }
+
+          const options =
+            document.querySelectorAll(
+              'input[name="balloon-option"]:checked'
+            );
+
+          total += Array.from(options).reduce(
+            (sum, option) =>
+              sum + Number(option.dataset.price || 0),
+            0
+          );
+
+          const priceDisplay =
+            document.getElementById(
+              'modal-price-display'
+            );
+
+          if (priceDisplay) {
+            priceDisplay.innerText =
+              total.toLocaleString();
+          }
+
+        };
+
+
+        if (balloonKitSelect) {
+
+          balloonKitSelect.addEventListener(
+            'change',
+            () => {
+
+              if (
+                balloonKitSelect.value.includes(
+                  '自行配色'
+                )
+              ) {
+                balloonKitCustomColor.style.display =
+                  'block';
+              } else {
+                balloonKitCustomColor.style.display =
+                  'none';
+              }
+
+              updateBalloonPrice();
+            }
+          );
+        }
+
+
+        if (balloonAddonSelect) {
+
+          balloonAddonSelect.addEventListener(
+            'change',
+            () => {
+
+              if (
+                balloonAddonSelect.value.includes(
+                  '自行配色'
+                )
+              ) {
+                balloonAddonCustomColor.style.display =
+                  'block';
+              } else {
+                balloonAddonCustomColor.style.display =
+                  'none';
+              }
+
+              updateBalloonPrice();
+            }
+          );
+        }
+
+
+        document
+          .querySelectorAll(
+            'input[name="balloon-option"]'
+          )
+          .forEach(input => {
+
+            input.addEventListener(
+              'change',
+              updateBalloonPrice
+            );
+
+          });
+
+        updateBalloonPrice();
+      }
+
+
+      /* =====================================================
+         法式網格價格
+         ===================================================== */
+
+      if (key === 'item4') {
+
+        const updateMeshPrice = () => {
+
+          const options =
+            document.querySelectorAll(
+              'input[name="mesh-option"]:checked'
+            );
+
+          const total =
+            Array.from(options).reduce(
+              (sum, option) =>
+                sum + Number(option.dataset.price || 0),
+              0
+            );
+
+          const priceDisplay =
+            document.getElementById(
+              'modal-price-display'
+            );
+
+          if (priceDisplay) {
+            priceDisplay.innerText =
+              total.toLocaleString();
+          }
+
+        };
+
+        document
+          .querySelectorAll(
+            'input[name="mesh-option"]'
+          )
+          .forEach(input => {
+
+            input.addEventListener(
+              'change',
+              updateMeshPrice
+            );
+
+          });
+
+        updateMeshPrice();
+      }
+
 
       modal.style.display = 'flex';
     }
 
+
     function closeDetail() {
-      document.getElementById('detail-modal').style.display = 'none';
+
+      const modal =
+        document.getElementById(
+          'detail-modal'
+        );
+
+      if (modal) {
+        modal.style.display = 'none';
+      }
     }
+
+
+    /* =========================================================
+       6. 加入購物車
+       ========================================================= */
+
+    function addDetailToCart(title, price) {
+
+      const sessionSelect =
+        document.getElementById(
+          'session-select-input'
+        );
+
+      const colorSelect =
+        document.getElementById(
+          'color-code-input'
+        );
+
+      const driveEmail =
+        document.getElementById(
+          'drive-email-input'
+        );
+
+
+      /* ---------- 實體課程場次 ---------- */
+
+      if (
+        sessionSelect &&
+        !sessionSelect.disabled &&
+        !sessionSelect.value
+      ) {
+
+        alert(
+          '請完成必填欄位：請選擇開課場次'
+        );
+
+        sessionSelect.focus();
+
+        return;
+      }
+
+
+      /* ---------- 線上課程 ---------- */
+
+      const selectedPlan =
+        document.querySelector(
+          'input[name="course-plan"]:checked'
+        );
+
+      const selectedAddons =
+        document.querySelectorAll(
+          'input[name="addon-option"]:checked'
+        );
+
+
+      if (
+        title === '線上基礎課程 - 1' ||
+        title.includes('線上基礎課程')
+      ) {
+
+        if (!selectedPlan) {
+
+          alert(
+            '請完成必填欄位：請選擇購買方案'
+          );
+
+          const firstPlan =
+            document.querySelector(
+              'input[name="course-plan"]'
+            );
+
+          if (firstPlan) {
+            firstPlan.focus();
+          }
+
+          return;
+        }
+
+
+        if (
+          driveEmail &&
+          !driveEmail.value.trim()
+        ) {
+
+          alert(
+            '請完成必填欄位：Google Drive 影片觀看權限 Email'
+          );
+
+          driveEmail.focus();
+
+          return;
+        }
+
+
+        const addonYarnSelected =
+          Array.from(selectedAddons).some(
+            addon =>
+              addon.value.includes('線材')
+          );
+
+
+        if (
+          addonYarnSelected &&
+          (!colorSelect ||
+            !colorSelect.value.trim())
+        ) {
+
+          alert(
+            '您有加購線材，請填寫加購線材顏色編號，例如：001'
+          );
+
+          if (colorSelect) {
+            colorSelect.focus();
+          }
+
+          return;
+        }
+      }
+
+
+      /* ---------- 計算品項 ---------- */
+
+      let detailsText = [];
+
+      let finalPrice =
+        typeof price === 'number'
+          ? price
+          : 990;
+
+
+      /* =====================================================
+         East-West
+         ===================================================== */
+
+      if (
+        title ===
+          '【織造所原創系列】East-West 都會漫遊者' ||
+        title.includes('East-West')
+      ) {
+
+        const selectedOptions =
+          document.querySelectorAll(
+            'input[name="east-west-option"]:checked'
+          );
+
+        if (!selectedOptions.length) {
+
+          alert(
+            '請至少選擇一項購買項目'
+          );
+
+          return;
+        }
+
+
+        const kitColorInput =
+          document.getElementById(
+            'east-west-kit-color-input'
+          );
+
+        const yarnColorInput =
+          document.getElementById(
+            'east-west-yarn-color-input'
+          );
+
+
+        const kitSelected =
+          Array.from(selectedOptions).some(
+            option =>
+              option.value === '材料包'
+          );
+
+        const yarnSelected =
+          Array.from(selectedOptions).some(
+            option =>
+              option.value ===
+              '線材＆五金配件加購'
+          );
+
+
+        if (
+          kitSelected &&
+          (!kitColorInput ||
+            !kitColorInput.value.trim())
+        ) {
+
+          alert(
+            '請填寫材料包的 QQ 線顏色編號，例如：Q15 深卡其'
+          );
+
+          if (kitColorInput) {
+            kitColorInput.focus();
+          }
+
+          return;
+        }
+
+
+        if (
+          yarnSelected &&
+          (!yarnColorInput ||
+            !yarnColorInput.value.trim())
+        ) {
+
+          alert(
+            '請填寫線材＆五金配件加購的 QQ 線顏色編號，例如：Q15 深卡其'
+          );
+
+          if (yarnColorInput) {
+            yarnColorInput.focus();
+          }
+
+          return;
+        }
+
+
+        finalPrice = 0;
+
+
+        selectedOptions.forEach(option => {
+
+          detailsText.push(
+            `${option.value} $${Number(option.dataset.price).toLocaleString()}`
+          );
+
+
+          if (
+            option.value === '材料包' &&
+            kitColorInput &&
+            kitColorInput.value.trim()
+          ) {
+
+            detailsText.push(
+              `材料包 QQ 線顏色：${kitColorInput.value.trim()}`
+            );
+          }
+
+
+          if (
+            option.value ===
+              '線材＆五金配件加購' &&
+            yarnColorInput &&
+            yarnColorInput.value.trim()
+          ) {
+
+            detailsText.push(
+              `加購線材 QQ 線顏色：${yarnColorInput.value.trim()}`
+            );
+          }
+
+
+          finalPrice +=
+            Number(option.dataset.price);
+        });
+      }
+
+
+      /* =====================================================
+         Petit Walk
+         ===================================================== */
+
+      if (
+        title ===
+          '【織造所原創系列】Petit Walk 小步隨行包' ||
+        title.includes('Petit Walk')
+      ) {
+
+        const selectedOptions =
+          document.querySelectorAll(
+            'input[name="petit-walk-option"]:checked'
+          );
+
+        if (!selectedOptions.length) {
+
+          alert(
+            '請至少選擇一項購買項目'
+          );
+
+          return;
+        }
+
+
+        const kitColorInput =
+          document.getElementById(
+            'petit-walk-kit-color-input'
+          );
+
+        const yarnColorInput =
+          document.getElementById(
+            'petit-walk-yarn-color-input'
+          );
+
+
+        const kitSelected =
+          Array.from(selectedOptions).some(
+            option =>
+              option.value === '材料包'
+          );
+
+        const yarnSelected =
+          Array.from(selectedOptions).some(
+            option =>
+              option.value ===
+              '線材＆五金配件加購'
+          );
+
+
+        if (
+          kitSelected &&
+          (!kitColorInput ||
+            !kitColorInput.value.trim())
+        ) {
+
+          alert(
+            '請填寫材料包的 QQ 線顏色編號，例如：Q15 深卡其'
+          );
+
+          if (kitColorInput) {
+            kitColorInput.focus();
+          }
+
+          return;
+        }
+
+
+        if (
+          yarnSelected &&
+          (!yarnColorInput ||
+            !yarnColorInput.value.trim())
+        ) {
+
+          alert(
+            '請填寫線材＆五金配件加購的 QQ 線顏色編號，例如：Q15 深卡其'
+          );
+
+          if (yarnColorInput) {
+            yarnColorInput.focus();
+          }
+
+          return;
+        }
+
+
+        finalPrice = 0;
+
+
+        selectedOptions.forEach(option => {
+
+          detailsText.push(
+            `${option.value} $${Number(option.dataset.price).toLocaleString()}`
+          );
+
+
+          if (
+            option.value === '材料包' &&
+            kitColorInput &&
+            kitColorInput.value.trim()
+          ) {
+
+            detailsText.push(
+              '材料包 QQ 線顏色：' +
+              kitColorInput.value.trim()
+            );
+          }
+
+
+          if (
+            option.value ===
+              '線材＆五金配件加購' &&
+            yarnColorInput &&
+            yarnColorInput.value.trim()
+          ) {
+
+            detailsText.push(
+              '加購線材 QQ 線顏色：' +
+              yarnColorInput.value.trim()
+            );
+          }
+
+
+          finalPrice +=
+            Number(option.dataset.price);
+        });
+      }
+
+
+      /* =====================================================
+         花漾氣球包
+         ===================================================== */
+
+      if (
+        title ===
+          '【織造所原創系列】花漾氣球包' ||
+        title.includes('花漾氣球包')
+      ) {
+
+        const balloonKitSelect =
+          document.getElementById(
+            'balloon-kit-select'
+          );
+
+        const balloonAddonSelect =
+          document.getElementById(
+            'balloon-addon-select'
+          );
+
+        const balloonKitCustomColor =
+          document.getElementById(
+            'balloon-kit-custom-color'
+          );
+
+        const balloonAddonCustomColor =
+          document.getElementById(
+            'balloon-addon-custom-color'
+          );
+
+        const selectedOptions =
+          document.querySelectorAll(
+            'input[name="balloon-option"]:checked'
+          );
+
+
+        const kitVal =
+          balloonKitSelect
+            ? balloonKitSelect.value
+            : '';
+
+        const addonVal =
+          balloonAddonSelect
+            ? balloonAddonSelect.value
+            : '';
+
+
+        if (
+          !kitVal &&
+          !addonVal &&
+          !selectedOptions.length
+        ) {
+
+          alert(
+            '請至少選擇一項購買項目'
+          );
+
+          return;
+        }
+
+
+        if (
+          kitVal.includes('自行配色') &&
+          (!balloonKitCustomColor ||
+            !balloonKitCustomColor.value.trim())
+        ) {
+
+          alert(
+            '請填寫材料包選擇的甜芯棉顏色編號，例如：上16下27'
+          );
+
+          if (balloonKitCustomColor) {
+            balloonKitCustomColor.focus();
+          }
+
+          return;
+        }
+
+
+        if (
+          addonVal.includes('自行配色') &&
+          (!balloonAddonCustomColor ||
+            !balloonAddonCustomColor.value.trim())
+        ) {
+
+          alert(
+            '請填寫加購線材選擇的甜芯棉顏色編號，例如：上16下27'
+          );
+
+          if (balloonAddonCustomColor) {
+            balloonAddonCustomColor.focus();
+          }
+
+          return;
+        }
+
+
+        finalPrice = 0;
+
+
+        if (kitVal) {
+
+          const opt =
+            balloonKitSelect.options[
+              balloonKitSelect.selectedIndex
+            ];
+
+          const p =
+            Number(
+              opt
+                ? opt.dataset.price || 0
+                : 0
+            );
+
+          finalPrice += p;
+
+          let text =
+            `${kitVal} $${p}`;
+
+          if (
+            kitVal.includes('自行配色')
+          ) {
+
+            text +=
+              ` (顏色: ${balloonKitCustomColor.value.trim()})`;
+          }
+
+          detailsText.push(text);
+        }
+
+
+        if (addonVal) {
+
+          const opt =
+            balloonAddonSelect.options[
+              balloonAddonSelect.selectedIndex
+            ];
+
+          const p =
+            Number(
+              opt
+                ? opt.dataset.price || 0
+                : 0
+            );
+
+          finalPrice += p;
+
+          let text =
+            `${addonVal} $${p}`;
+
+          if (
+            addonVal.includes('自行配色')
+          ) {
+
+            text +=
+              ` (顏色: ${balloonAddonCustomColor.value.trim()})`;
+          }
+
+          detailsText.push(text);
+        }
+
+
+        selectedOptions.forEach(option => {
+
+          detailsText.push(
+            `${option.value} $${Number(option.dataset.price).toLocaleString()}`
+          );
+
+          finalPrice +=
+            Number(option.dataset.price);
+        });
+      }
+
+
+      /* =====================================================
+         法式網格手機袋
+         ===================================================== */
+
+      if (
+        title ===
+          '【織造所原創系列】法式網格手機袋' ||
+        title.includes('網格手機袋')
+      ) {
+
+        const selectedOptions =
+          document.querySelectorAll(
+            'input[name="mesh-option"]:checked'
+          );
+
+
+        if (!selectedOptions.length) {
+
+          alert(
+            '請至少選擇一項購買項目'
+          );
+
+          return;
+        }
+
+
+        const kitColorInput =
+          document.getElementById(
+            'mesh-kit-color-input'
+          );
+
+        const yarnColorInput =
+          document.getElementById(
+            'mesh-yarn-color-input'
+          );
+
+
+        const kitSelected =
+          Array.from(selectedOptions).some(
+            option =>
+              option.value === '材料包'
+          );
+
+        const yarnSelected =
+          Array.from(selectedOptions).some(
+            option =>
+              option.value ===
+              '線材＆配件加購'
+          );
+
+
+        if (
+          kitSelected &&
+          (!kitColorInput ||
+            !kitColorInput.value.trim())
+        ) {
+
+          alert(
+            '請填寫材料包的純棉線顏色編號，例如：20'
+          );
+
+          if (kitColorInput) {
+            kitColorInput.focus();
+          }
+
+          return;
+        }
+
+
+        if (
+          yarnSelected &&
+          (!yarnColorInput ||
+            !yarnColorInput.value.trim())
+        ) {
+
+          alert(
+            '請填寫線材＆配件加購的純棉線顏色編號，例如：20'
+          );
+
+          if (yarnColorInput) {
+            yarnColorInput.focus();
+          }
+
+          return;
+        }
+
+
+        finalPrice = 0;
+
+
+        selectedOptions.forEach(option => {
+
+          detailsText.push(
+            `${option.value} $${Number(option.dataset.price).toLocaleString()}`
+          );
+
+
+          if (
+            option.value === '材料包' &&
+            kitColorInput &&
+            kitColorInput.value.trim()
+          ) {
+
+            detailsText.push(
+              `材料包純棉線顏色：${kitColorInput.value.trim()}`
+            );
+          }
+
+
+          if (
+            option.value ===
+              '線材＆配件加購' &&
+            yarnColorInput &&
+            yarnColorInput.value.trim()
+          ) {
+
+            detailsText.push(
+              `加購純棉線顏色：${yarnColorInput.value.trim()}`
+            );
+          }
+
+
+          finalPrice +=
+            Number(option.dataset.price);
+        });
+      }
+
+
+      /* =====================================================
+         共用：場次
+         ===================================================== */
+
+      if (
+        sessionSelect &&
+        sessionSelect.value
+      ) {
+
+        detailsText.push(
+          sessionSelect.value
+        );
+      }
+
+
+      /* =====================================================
+         共用：線上課程顏色
+         ===================================================== */
+
+      if (
+        colorSelect &&
+        colorSelect.value
+      ) {
+
+        detailsText.push(
+          `配色: ${colorSelect.value.split(' ')[0]}`
+        );
+      }
+
+
+      /* =====================================================
+         線上課程方案
+         ===================================================== */
+
+      if (selectedPlan) {
+
+        detailsText.push(
+          selectedPlan.value
+        );
+
+        finalPrice =
+          selectedPlan.value.includes('1,090')
+            ? 1090
+            : 990;
+      }
+
+
+      /* =====================================================
+         線上課程加購
+         ===================================================== */
+
+      selectedAddons.forEach(addon => {
+
+        detailsText.push(
+          addon.value
+        );
+
+        if (
+          addon.value.includes('+$60')
+        ) {
+          finalPrice += 60;
+        }
+
+        if (
+          addon.value.includes('+$200')
+        ) {
+          finalPrice += 200;
+        }
+
+      });
+
+
+      /* =====================================================
+         Google Drive Email
+         ===================================================== */
+
+      if (
+        driveEmail &&
+        driveEmail.value.trim() &&
+        (
+          title === '線上基礎課程 - 1' ||
+          title.includes('線上基礎課程')
+        )
+      ) {
+
+        detailsText.push(
+          `Google Drive 影片觀看權限 Email：${driveEmail.value.trim()}`
+        );
+      }
+
+
+      /* =====================================================
+         建立購物車品項
+         ===================================================== */
+
+      let finalName = title;
+
+      if (detailsText.length > 0) {
+
+        finalName =
+          `${title} (${detailsText.join(' / ')})`;
+      }
+
+
+      addToCart(
+        finalName,
+        finalPrice
+      );
+
+      closeDetail();
+    }
+
+
+    function addToCart(name, price) {
+
+      const existing =
+        cart.find(
+          item => item.name === name
+        );
+
+
+      if (existing) {
+
+        existing.qty += 1;
+
+      } else {
+
+        cart.push({
+          name,
+          price,
+          qty: 1
+        });
+
+      }
+
+
+      updateCartUI();
+
+      updateShippingFieldVisibility();
+
+      openCart();
+    }
+
 
     function openCart() {
-      renderCart();
-      document.getElementById('cart-modal').style.display = 'flex';
+
+      document.getElementById(
+        'cart-modal'
+      ).style.display = 'flex';
     }
 
+
     function closeCart() {
-      document.getElementById('cart-modal').style.display = 'none';
+
+      document.getElementById(
+        'cart-modal'
+      ).style.display = 'none';
+    }
+
+
+    /* =========================================================
+       7. 開啟結帳 Modal
+       ========================================================= */
+
+    function isGroupClassItem(item) {
+      return !!(item && (
+        item.name.includes('基礎鉤織團體課程 (1)') ||
+        item.name.includes('基礎鉤織團體課程 (2)')
+      ));
+    }
+
+    function cartRequiresShipping() {
+      return cart.some(function(item) { return !isGroupClassItem(item); });
+    }
+
+    function updateShippingFieldVisibility() {
+      const shippingField = document.getElementById('shipping-address-field');
+      const storeInput = document.getElementById('store-name');
+      const shippingRow = document.getElementById('bank-shipping-row');
+      const shippingLine = document.getElementById('bank-shipping-line');
+      const needsShipping = cartRequiresShipping();
+
+      if (shippingField) {
+        shippingField.style.display = needsShipping ? 'block' : 'none';
+      }
+
+      if (storeInput) {
+        storeInput.required = needsShipping;
+        if (!needsShipping) storeInput.value = '';
+      }
+
+      // 基礎鉤織團體課程不需要寄送：整列隱藏，避免顯示 NT$ 0。
+      if (shippingRow) {
+        shippingRow.style.display = needsShipping ? 'block' : 'none';
+      }
+
+      if (shippingLine) {
+        shippingLine.textContent = needsShipping
+          ? 'NT$ ' + calculateShippingFee(
+              cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
+            ).toLocaleString()
+          : '免寄送';
+      }
+    }
+
+    function calculateShippingFee(subtotal) {
+      return cartRequiresShipping() && subtotal < 1800 ? 60 : 0;
     }
 
     function openBankModal() {
+
       if (cart.length === 0) {
-        alert('購物車是空的！');
+
+        alert(
+          '購物車是空的！'
+        );
+
         return;
       }
+
+
+      const subtotal =
+        cart.reduce(
+          (sum, item) =>
+            sum + (item.price * item.qty),
+          0
+        );
+
+
+      const shippingFee =
+        calculateShippingFee(subtotal);
+
+
+      document.getElementById(
+        'bank-total'
+      ).innerText =
+        subtotal + shippingFee;
+
+
+      updateShippingFieldVisibility();
+
       closeCart();
-      document.getElementById('bank-modal').style.display = 'flex';
+
+
+      document.getElementById(
+        'bank-modal'
+      ).style.display =
+        'flex';
     }
+
 
     function closeBankModal() {
-      document.getElementById('bank-modal').style.display = 'none';
+
+      document.getElementById(
+        'bank-modal'
+      ).style.display =
+        'none';
     }
 
-    function addDetailToCart(title, price) {
-      cart.push({ title, price });
-      localStorage.setItem('kit_cart', JSON.stringify(cart));
-      updateCartCount();
-      closeDetail();
-      alert('已加入購物車');
+
+    /* =========================================================
+       8. 建立訂單文字
+       ========================================================= */
+
+    function buildOrderText(
+      orderNo,
+      name,
+      email,
+      phone,
+      storeName,
+      subtotal,
+      shippingFee,
+      total
+    ) {
+
+      const itemList =
+        cart
+          .map(
+            item =>
+              `${item.name} x${item.qty}`
+          )
+          .join('\n');
+
+
+      return [
+        '【織造所｜訂單成立通知】',
+        `訂單編號：${orderNo}`,
+        '------------------------',
+        `訂購姓名：${name}`,
+        `Email：${email}`,
+        `聯絡電話：${phone}`,
+        ...(storeName ? [`7-11 收貨門市：${storeName}`] : []),
+        '------------------------',
+        '【訂購項目】',
+        itemList,
+        '------------------------',
+        `商品小計：NT$ ${subtotal.toLocaleString()}`,
+        `運費：${cartRequiresShipping() ? 'NT$ ' + shippingFee.toLocaleString() : '免寄送'}`,
+        `應付金額：NT$ ${total.toLocaleString()}`,
+        '------------------------',
+        '【匯款帳號資訊】',
+        '銀行代碼：807 (永豐銀行)',
+        '轉帳帳號：10101800006824',
+        '------------------------',
+        '完成轉帳後，請於官方 LINE 回覆：',
+        `① 訂單編號：${orderNo}`,
+        '② 匯款帳號末 5 碼',
+        '',
+        '謝謝您的訂購！'
+      ].join('\n');
     }
 
-    function renderCart() {
-      const container = document.getElementById('cart-items');
-      const totalEl = document.getElementById('cart-total');
-      const bankTotalEl = document.getElementById('bank-total');
 
-      if (!container) return;
+    /* =========================================================
+   9. 真正送出訂單到 Google Apps Script (已修正成功/失敗流程)
+   ========================================================= */
 
-      if (cart.length === 0) {
-        container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">購物車目前是空的</p>';
-        if (totalEl) totalEl.textContent = '0';
-        if (bankTotalEl) bankTotalEl.textContent = '0';
-        return;
+function submitOrderToLine() {
+  /* ---------- 防止重複送單 ---------- */
+  if (isSubmittingOrder) {
+    return;
+  }
+
+  /* ---------- 檢查購物車 ---------- */
+  if (!cart.length) {
+    alert('購物車是空的！');
+    return;
+  }
+
+  /* ---------- 取得表單資料 ---------- */
+  const name = document.getElementById('buyer-name').value.trim();
+  const email = document.getElementById('buyer-email').value.trim();
+  const phone = document.getElementById('buyer-phone').value.trim();
+  const storeName = document.getElementById('store-name').value.trim();
+
+  /* ---------- 基本驗證 ---------- */
+  if (!name) {
+    alert('請填寫訂購人姓名！');
+    document.getElementById('buyer-name').focus();
+    return;
+  }
+
+  if (!email) {
+    alert('請填寫 Email！');
+    document.getElementById('buyer-email').focus();
+    return;
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    alert('請確認 Email 格式是否正確！');
+    document.getElementById('buyer-email').focus();
+    return;
+  }
+
+  if (!phone) {
+    alert('請填寫聯絡電話！');
+    document.getElementById('buyer-phone').focus();
+    return;
+  }
+
+  if (cartRequiresShipping() && !storeName) {
+    alert('請填寫 7-11 收貨門市！');
+    document.getElementById('store-name').focus();
+    return;
+  }
+
+  /* ---------- 計算金額 ---------- */
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const shippingFee = calculateShippingFee(subtotal);
+  const total = subtotal + shippingFee;
+
+  /* ---------- 建立 itemsText ---------- */
+  const itemsText = cart.map(item => `${item.name} x${item.qty}`).join('\n');
+
+  /* ---------- 完整 orderData ---------- */
+  const orderData = {
+    name: name,
+    email: email,
+    phone: phone,
+    itemsText: itemsText,
+    subtotal: subtotal,
+    shipping: shippingFee,
+    total: total,
+    store: storeName
+  };
+
+  /* =====================================================
+     開始送單
+     ===================================================== */
+  isSubmittingOrder = true;
+
+  const submitButton = document.getElementById('submit-order-btn');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.innerText = '訂單送出中，請稍候…';
+  }
+
+  /* ---------- 寫入隱藏表單 ---------- */
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = ORDER_API_URL;
+  form.target = 'order-submit-iframe';
+  form.style.display = 'none';
+
+  const hiddenInput = document.createElement('input');
+  hiddenInput.type = 'hidden';
+  hiddenInput.name = 'orderData';
+  hiddenInput.value = JSON.stringify(orderData);
+
+  form.appendChild(hiddenInput);
+  document.body.appendChild(form);
+
+  /* 送出 POST */
+  form.submit();
+
+  /* 逾時機制：60 秒仍未收到後端回覆才提示失敗。
+     不再把 iframe 的 onload 當成成功，避免訂單尚未真正寫入就誤判。 */
+  setTimeout(() => {
+    if (isSubmittingOrder) {
+      isSubmittingOrder = false;
+      const btn = document.getElementById('submit-order-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = '成立訂單';
       }
+      alert('目前尚未收到訂單系統的確認結果。\n\n請先不要重複送出或付款；如果 Google 試算表已出現訂單，代表訂單已成立，請再透過 LINE 聯絡我們確認。');
+    }
+  }, 60000);
+
+  /* 移除 DOM 中的臨時表單 */
+  setTimeout(() => {
+    if (form.parentNode) {
+      form.parentNode.removeChild(form);
+    }
+  }, 1000);
+}
+
+
+    /* =========================================================
+       10. 接收 Google Apps Script 回傳
+       ========================================================= */
+
+    window.addEventListener(
+      'message',
+      function(event) {
+
+        const iframe =
+          document.getElementById('order-submit-iframe');
+
+        if (!iframe) {
+          return;
+        }
+
+        /*
+         * Apps Script 在導向不同回應頁時，部分瀏覽器情況下
+         * event.source / event.origin 的表現可能不同；
+         * 優先確認 iframe，並只接受我們約定的訊息格式。
+         */
+        const isTrustedSource =
+          event.source === iframe.contentWindow ||
+          event.origin === 'https://script.google.com' ||
+          event.origin === 'https://script.googleusercontent.com' ||
+          event.origin === 'https://makeintown.github.io';
+
+        if (!isTrustedSource) {
+          return;
+        }
+
+        let data = event.data;
+
+        /* 回傳可能是物件，也可能是 JSON 字串。 */
+        if (typeof data === 'string') {
+          try {
+            data = JSON.parse(data);
+          } catch (e) {
+            return;
+          }
+        }
+
+        if (!data || data.type !== 'MAKE_IN_TOWN_ORDER_RESULT') {
+          return;
+        }
+
+        let result = data.payload;
+
+        if (typeof result === 'string') {
+          try {
+            result = JSON.parse(result);
+          } catch (e) {
+            /* payload 不是 JSON 時保留原值，下面會安全判斷。 */
+          }
+        }
+
+        /* ---------- 正規化後端回傳 ---------- */
+        const orderNo =
+          result && (result.orderNo || result.orderId);
+
+        const explicitSuccess =
+          !!(
+            result &&
+            (
+              result.ok === true ||
+              result.ok === 'true' ||
+              result.success === true ||
+              result.success === 'true' ||
+              result.status === 'success'
+            )
+          );
+
+        /*
+         * 重要：只要後端已經帶回訂單編號，就視為訂單已成立。
+         * 例如試算表已成功寫入，但 Email 後續寄送失敗，
+         * 不應再把前端顯示成「訂單送出失敗」。
+         */
+        const orderSucceeded = explicitSuccess || !!orderNo;
+
+        if (!orderSucceeded) {
+          isSubmittingOrder = false;
+
+          const submitButton =
+            document.getElementById('submit-order-btn');
+
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerText = '成立訂單';
+          }
+
+          alert(
+            '訂單送出失敗。\n\n' +
+            (
+              result && result.message
+                ? result.message
+                : '請稍後再試。'
+            ) +
+            '\n\n購物車內容會保留，請不要重複付款。'
+          );
+
+          return;
+        }
+
+        /* ---------- 解除送出鎖定 ---------- */
+        isSubmittingOrder = false;
+
+        const submitButton =
+          document.getElementById('submit-order-btn');
+
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerText = '成立訂單';
+        }
+
+        /* =====================================================
+           後端成功（試算表已成立訂單）
+           ===================================================== */
+
+        const confirmedOrderNo = orderNo || '訂單已建立';
+
+        const orderDate =
+          (result && result.orderDate) ||
+          '';
+
+        const name =
+          document.getElementById('buyer-name').value.trim();
+
+        const email =
+          document.getElementById('buyer-email').value.trim();
+
+        const phone =
+          document.getElementById('buyer-phone').value.trim();
+
+        const storeName =
+          document.getElementById('store-name').value.trim();
+
+        const subtotal =
+          cart.reduce(
+            (sum, item) =>
+              sum + (item.price * item.qty),
+            0
+          );
+
+        const shippingFee =
+          calculateShippingFee(subtotal);
+
+        const total =
+          subtotal + shippingFee;
+
+        const orderText =
+          buildOrderText(
+            confirmedOrderNo,
+            name,
+            email,
+            phone,
+            storeName,
+            subtotal,
+            shippingFee,
+            total
+          );
+
+        /* ---------- 嘗試複製訂單明細 ---------- */
+        if (
+          navigator.clipboard &&
+          navigator.clipboard.writeText
+        ) {
+          navigator.clipboard
+            .writeText(orderText)
+            .catch(() => {
+              /* 複製失敗不影響訂單 */
+            });
+        }
+
+        /* ---------- 清空購物車 ---------- */
+        cart = [];
+        updateCartUI();
+
+        /* ---------- 清除訂購資料 ---------- */
+        document.getElementById('buyer-name').value = '';
+        document.getElementById('buyer-email').value = '';
+        document.getElementById('buyer-phone').value = '';
+        document.getElementById('store-name').value = '';
+
+        /* ---------- 顯示訂單成功畫面 ---------- */
+        const modalContent =
+          document.querySelector('#bank-modal .modal-content');
+
+        if (modalContent) {
+          modalContent.innerHTML = `
+            <div style="text-align:center; padding:1.2rem 0 0.5rem;">
+              <h3 style="font-family:'Shippori Mincho', 'Noto Serif TC', serif; color:var(--text-main); margin-bottom:1.2rem;">
+                訂單已成功送出
+              </h3>
+
+              <p style="font-size:0.95rem; color:var(--text-main); line-height:1.9; margin-bottom:0.8rem;">
+                系統將自動寄送訂單確認 Email，請保存您的訂單編號：<strong>${escapeHtml_(confirmedOrderNo)}</strong>。
+              </p>
+
+              <p style="font-size:0.9rem; color:#827266; line-height:1.9; margin-bottom:1.4rem;">
+                完成付款後，請至官方 LINE 回覆訂單編號與匯款帳號末 5 碼，以便對帳。
+              </p>
+
+              <a href="${STORE_LINE_URL}" target="_blank" rel="noopener noreferrer" class="checkout-btn" style="display:inline-block; text-decoration:none;">
+                前往 LINE 官方帳號
+              </a>
+            </div>
+          `;
+        }
+
+        document.getElementById('bank-modal').style.display = 'flex';
+      }
+    );
+
+
+    /* =========================================================
+       11. 更新購物車 UI
+       ========================================================= */
+
+    function updateCartUI() {
+
+      const cartCount =
+        document.getElementById(
+          'cart-count'
+        );
+
+      const cartItems =
+        document.getElementById(
+          'cart-items'
+        );
+
+      const cartTotal =
+        document.getElementById(
+          'cart-total'
+        );
+
+
+      cartCount.innerText =
+        cart.reduce(
+          (sum, item) =>
+            sum + item.qty,
+          0
+        );
+
+
+      cartItems.innerHTML = '';
+
 
       let total = 0;
-      container.innerHTML = cart.map((item, index) => {
-        total += item.price;
-        return `
-          <div class="cart-item">
-            <span>${item.title}</span>
-            <span>NT$ ${item.price} <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer; margin-left:8px;">✕</button></span>
-          </div>
-        `;
-      }).join('');
 
-      if (totalEl) totalEl.textContent = total;
-      if (bankTotalEl) bankTotalEl.textContent = total;
+
+      if (cart.length === 0) {
+
+        cartItems.innerHTML =
+          '<p style="color:#827266; opacity:0.7; text-align:center; padding:1rem 0;">購物車目前是空的</p>';
+
+      } else {
+
+        cart.forEach(
+          (item, index) => {
+
+            total +=
+              item.price * item.qty;
+
+
+            cartItems.innerHTML += `
+              <div
+                class="cart-item"
+                style="display:flex; justify-content:space-between; align-items:center; padding:0.8rem 0; border-bottom:1px dashed var(--border-color);"
+              >
+
+                <div
+                  style="flex:1; padding-right:0.8rem;"
+                >
+
+                  <div
+                    style="font-weight:600; font-size:0.92rem; color:var(--text-main);"
+                  >
+                    ${item.name}
+                  </div>
+
+                  <div
+                    style="font-size:0.85rem; color:var(--accent); margin-top:0.2rem;"
+                  >
+                    NT$ ${(
+                      item.price *
+                      item.qty
+                    ).toLocaleString()}
+                  </div>
+
+                </div>
+
+                <div
+                  style="display:flex; align-items:center; gap:6px;"
+                >
+
+                  <button
+                    onclick="changeQty(${index}, -1)"
+                    style="width:26px; height:26px; border-radius:4px; border:2px solid var(--border-color); background:#FAF7F2; cursor:pointer; font-weight:bold; color:var(--text-main);"
+                  >
+                    -
+                  </button>
+
+                  <span
+                    style="font-size:0.9rem; font-weight:600; min-width:20px; text-align:center;"
+                  >
+                    ${item.qty}
+                  </span>
+
+                  <button
+                    onclick="changeQty(${index}, 1)"
+                    style="width:26px; height:26px; border-radius:4px; border:2px solid var(--border-color); background:#FAF7F2; cursor:pointer; font-weight:bold; color:var(--text-main);"
+                  >
+                    +
+                  </button>
+
+                  <button
+                    onclick="removeFromCart(${index})"
+                    style="background:none; border:none; color:#827266; cursor:pointer; font-size:1.1rem; margin-left:6px; padding:0 4px;"
+                    title="刪除"
+                  >
+                    ✕
+                  </button>
+
+                </div>
+
+              </div>
+            `;
+          }
+        );
+      }
+
+
+      cartTotal.innerText =
+        total.toLocaleString();
+
+
+      localStorage.setItem(
+        'kit_cart',
+        JSON.stringify(cart)
+      );
     }
+
+
+    /* =========================================================
+       12. 購物車數量
+       ========================================================= */
+
+    function changeQty(index, delta) {
+
+      if (cart[index]) {
+
+        cart[index].qty += delta;
+
+
+        if (cart[index].qty <= 0) {
+
+          cart.splice(index, 1);
+        }
+
+
+        updateCartUI();
+      }
+    }
+
 
     function removeFromCart(index) {
-      cart.splice(index, 1);
-      localStorage.setItem('kit_cart', JSON.stringify(cart));
-      updateCartCount();
-      renderCart();
+
+      if (cart[index]) {
+
+        cart.splice(index, 1);
+
+        updateCartUI();
+      }
     }
 
-    function updateCartCount() {
-      const countEl = document.getElementById('cart-count');
-      if (countEl) countEl.textContent = cart.length;
-    }
 
-    function submitOrderToLine() {
-      alert('感謝您的訂購！');
-      cart = [];
-      localStorage.removeItem('kit_cart');
-      updateCartCount();
-      closeBankModal();
-    }
+    /* =========================================================
+       13. 初始化
+       ========================================================= */
 
-    // 初始化購物車數量
-    updateCartCount();
+    updateCartUI();
+
   </script>
+
 </body>
 </html>
