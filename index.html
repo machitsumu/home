@@ -181,7 +181,7 @@
       max-width: 880px;
       margin: 0 auto 2.6rem;
       padding: 3.25rem 4.25rem;
-      text-align: left;
+      text-align: center;
       background-color: var(--hero-bg);
       border-radius: 18px;
       box-shadow: 0 8px 24px rgba(106, 64, 40, 0.06);
@@ -311,11 +311,16 @@
       transition: all 0.2s ease;
     }
 
-    .tab-btn:hover,
+    .tab-btn:hover {
+      background-color: rgba(127, 140, 120, 0.10);
+      color: var(--tag-accent);
+      border-color: rgba(127, 140, 120, 0.45);
+    }
+
     .tab-btn.active {
-      background-color: var(--header-bg);
-      color: var(--text-main);
-      border-color: var(--header-bg);
+      background-color: var(--tag-accent);
+      color: #FFFFFF;
+      border-color: var(--tag-accent);
     }
 
     /* Tags */
@@ -332,9 +337,9 @@
     }
 
     .tag-sub {
-      background-color: var(--header-bg);
-      color: var(--text-main);
-      border: 1px solid var(--header-bg);
+      background-color: rgba(127, 140, 120, 0.12);
+      color: var(--tag-accent);
+      border: 1px solid rgba(127, 140, 120, 0.35);
     }
 
     .difficulty-tags {
@@ -367,10 +372,14 @@
       transition: all 0.2s ease;
     }
 
-    .difficulty-filter:hover,
+    .difficulty-filter:hover {
+      background-color: rgba(127, 140, 120, 0.10);
+      color: var(--tag-accent);
+    }
+
     .difficulty-filter.active {
-      background-color: var(--accent);
-      color: var(--text-light);
+      background-color: var(--tag-accent);
+      color: #FFFFFF;
     }
 
     .product-card-image {
@@ -922,7 +931,7 @@
         </div>
 
         <button class="checkout-btn" onclick="openBankModal()">
-          前往結帳與對帳
+          結帳
         </button>
 
       </div>
@@ -3583,7 +3592,13 @@
     }
 
     function cartRequiresShipping() {
+      // 線上課程仍需填寫 7-11 收貨門市（材料包需寄送），
+      // 因此只要不是現場團體課程，就需要收貨資訊。
       return cart.some(function(item) { return !isGroupClassItem(item); });
+    }
+
+    function isOnlineCourseItem(item) {
+      return !!(item && item.name && item.name.includes('線上基礎課程'));
     }
 
     function updateShippingFieldVisibility() {
@@ -3617,7 +3632,19 @@
     }
 
     function calculateShippingFee(subtotal) {
-      return cartRequiresShipping() && subtotal < 1800 ? 60 : 0;
+      const shippableSubtotal = cart
+        .filter(function(item) { return !isOnlineCourseItem(item); })
+        .reduce(function(sum, item) {
+          return sum + (item.price * item.qty);
+        }, 0);
+
+      const hasSeparateShippableItems = cart.some(function(item) {
+        return !isOnlineCourseItem(item);
+      });
+
+      // 線上課程價格已含寄送費；若購物車只有線上課程，運費為 NT$ 0。
+      // 若與其他實體商品混購，只針對實體商品計算運費。
+      return hasSeparateShippableItems && shippableSubtotal < 1800 ? 60 : 0;
     }
 
     function openBankModal() {
