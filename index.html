@@ -103,7 +103,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.1rem 2.5rem;
+      padding: 0.72rem 2.2rem;
       background-color: #F0E5D8;
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-color);
@@ -126,7 +126,7 @@
     }
 
     nav a {
-      margin-left: 1.8rem;
+      margin-left: 1.4rem;
       color: #4A433E;
       text-decoration: none;
       font-size: 0.92rem;
@@ -144,23 +144,44 @@
       background-color: var(--accent);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 0.55rem 1.4rem;
+      padding: 0.48rem 0.72rem;
       border-radius: 20px;
       cursor: pointer;
       font-weight: 500;
       font-size: 0.88rem;
-      margin-left: 1.8rem;
+      margin-left: 1.4rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 42px;
+    }
+
+    .cart-icon {
+      width: 18px;
+      height: 18px;
+      display: block;
+      flex: 0 0 auto;
     }
 
     /* Hero */
     .hero {
       text-align: center;
-      padding: 3rem 1.5rem 2.5rem;
-      max-width: 980px;
+      padding: 2.2rem 1.5rem 2.5rem;
+      max-width: 1180px;
       margin: 0 auto 2rem;
       background-color: #FFFFFF;
       border-radius: 0;
+    }
+
+    .about-layout {
+      max-width: 1120px;
+      margin: 0 auto 1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 2rem;
+      align-items: stretch;
     }
 
     .hero h1 {
@@ -178,13 +199,17 @@
     }
 
     .about-copy {
-      max-width: 880px;
-      margin: 0 auto 2.6rem;
-      padding: 3.25rem 4.25rem;
+      max-width: none;
+      margin: 0;
+      padding: 2.55rem 2.8rem;
       text-align: center;
       background-color: var(--hero-bg);
       border-radius: 18px;
       box-shadow: 0 8px 24px rgba(106, 64, 40, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
     }
 
     .about-title {
@@ -207,24 +232,26 @@
       display: block;
       margin-top: 0.65rem;
       font-family: 'Noto Serif TC', serif;
-      font-size: 2.2rem;
+      font-size: 1.85rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       line-height: 1.55;
     }
 
     .about-text {
-      max-width: 760px;
+      max-width: 520px;
       margin: 0 auto;
     }
 
     .about-text p {
-      margin-bottom: 1.45rem;
+      margin-bottom: 1.1rem;
       color: var(--text-main);
       font-family: 'Noto Sans TC', sans-serif;
-      font-size: 0.98rem;
-      letter-spacing: 0.04em;
-      line-height: 2;
+      font-size: 0.94rem;
+      letter-spacing: 0.02em;
+      line-height: 1.88;
+      overflow-wrap: normal;
+      word-break: normal;
     }
 
     .about-text p:last-child {
@@ -236,16 +263,16 @@
       padding-top: 0.8rem;
       color: var(--text-main) !important;
       font-family: 'Noto Serif TC', serif !important;
-      font-size: 1.45rem;
+      font-size: 1.28rem;
       font-weight: 600;
       line-height: 1.8;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
     .hero-slider {
       position: relative;
       width: 100%;
-      height: 420px;
+      height: 520px;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 12px 30px rgba(106, 64, 40, 0.12);
@@ -391,6 +418,54 @@
       border-radius: 12px 12px 0 0;
     }
 
+    .course-note {
+      margin-top: 0.55rem;
+      text-align: center;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .store-picker-row {
+      display: flex;
+      gap: 0.55rem;
+      align-items: stretch;
+    }
+
+    .store-picker-row .form-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin-bottom: 0;
+    }
+
+    .store-picker-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      background-color: rgba(127, 140, 120, 0.12);
+      border: 1px solid rgba(127, 140, 120, 0.35);
+      color: var(--tag-accent);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .store-picker-btn:hover {
+      background-color: var(--tag-accent);
+      color: #FFFFFF;
+    }
+
+    .store-picker-help {
+      margin: 0.35rem 0 0.6rem;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      line-height: 1.55;
+    }
+
     /* Cards */
     .grid {
       display: grid;
@@ -478,6 +553,10 @@
     }
 
     /* Modal */
+    body.modal-open {
+      overflow: hidden !important;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -511,6 +590,8 @@
       max-width: none;
       max-height: 85vh;
       overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       border: 2px solid var(--border-color);
     }
@@ -660,11 +741,16 @@
 
     @media (max-width: 768px) {
       header {
-        padding: 1rem 1.2rem;
+        padding: 0.65rem 1rem;
+      }
+
+      .about-layout {
+        grid-template-columns: 1fr;
+        gap: 1.4rem;
       }
 
       .about-copy {
-        padding: 2.4rem 1.5rem;
+        padding: 2.2rem 1.5rem;
       }
 
       .about-title {
@@ -713,6 +799,15 @@
 
       .hero-slider {
         height: 300px;
+        min-height: 0;
+      }
+
+      .store-picker-row {
+        flex-direction: column;
+      }
+
+      .store-picker-btn {
+        width: 100%;
       }
 
       .modal-shell {
@@ -741,36 +836,43 @@
       <a href="#classes">熱門手作課程</a>
       <a href="#shop">織造所原創系列</a>
       <a href="https://lin.ee/yyzyhp2" target="_blank" rel="noopener noreferrer" class="contact-link">聯絡我們</a>
-      <button class="cart-btn" onclick="openCart()">
-        購物車 (<span id="cart-count">0</span>)
+      <button class="cart-btn" onclick="openCart()" aria-label="購物車" title="購物車">
+        <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 7H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9.5" cy="19" r="1.4" fill="currentColor"/>
+          <circle cx="17.5" cy="19" r="1.4" fill="currentColor"/>
+        </svg>
+        <span id="cart-count">0</span>
       </button>
     </nav>
   </header>
 
   <!-- 2. Hero -->
   <section class="hero" id="about">
-    <div class="about-copy">
-      <h2 class="about-title">
-        <span class="machitsumu-word">MACHITSUMU</span>
-        <span class="about-title-cn">編織生活與人際連結的地方</span>
-      </h2>
+    <div class="about-layout">
+      <div class="hero-slider">
+        <img src="hero1.jpg" alt="織造所手作課程教學側拍" class="hero-slide active">
+        <img src="hero2.jpg" alt="織造所學員溫馨手作體驗" class="hero-slide">
+      </div>
 
-      <div class="about-text">
-        <p>在快節奏的日常生活中，我們常常忘了留給自己一段安靜的空白時間。</p>
+      <div class="about-copy">
+        <h2 class="about-title">
+          <span class="machitsumu-word">MACHITSUMU</span>
+          <span class="about-title-cn">編織生活與人際連結的地方</span>
+        </h2>
 
-        <p><strong class="brand-word">織造所 machitsumu</strong> 誕生於對手作溫度的熱愛。從精選的優質線材、邏輯清晰的教學引導，到一件件融入生活的作品，我們希望能像一道溫柔的光，陪伴你在手作的時光裡，重新尋回專屬於自己的生活節奏。</p>
+        <div class="about-text">
+          <p>在快節奏的日常生活中，我們常常忘了留給自己一段安靜的空白時間。</p>
 
-        <p>我們相信，編織不單是技藝的展現，更是一種沉澱心靈、自我療癒的生活哲學。</p>
+          <p><strong class="brand-word">織造所 machitsumu</strong> 誕生於對手作溫度的熱愛。從精選的優質線材、邏輯清晰的教學引導，到一件件融入生活的作品，我們希望能像一道溫柔的光，陪伴你在手作的時光裡，重新尋回專屬於自己的生活節奏。</p>
 
-        <p class="about-closing">織造所 MACHITSUMU，編織的不只是作品，更是理想生活的模樣。</p>
+          <p>我們相信，編織不單是技藝的展現，更是一種沉澱心靈、自我療癒的生活哲學。</p>
+
+          <p class="about-closing">織造所 MACHITSUMU，編織的不只是作品，更是理想生活的模樣。</p>
+        </div>
       </div>
     </div>
-
-    <div class="hero-slider">
-      <img src="hero1.jpg" alt="織造所手作課程教學側拍" class="hero-slide active">
-      <img src="hero2.jpg" alt="織造所學員溫馨手作體驗" class="hero-slide">
-    </div>
-  </section>
+  </section>n>
 
   <!-- 3. 熱門手作課程 -->
   <div class="container" id="classes">
@@ -797,6 +899,7 @@
         <div>
           <div class="price">NT$ 1,400</div>
           <button class="btn-full" onclick="openDetail('class1')">詳細內容及報名</button>
+          <p class="course-note">每次最多購買 3 人｜每場上限 6 人｜人數大於 3 人請聯絡我們</p>
         </div>
       </div>
 
@@ -813,6 +916,7 @@
         <div>
           <div class="price">NT$ 1,500</div>
           <button class="btn-full" onclick="openDetail('class2')">詳細內容及報名</button>
+          <p class="course-note">每次最多購買 3 人｜每場上限 6 人｜人數大於 3 人請聯絡我們</p>
         </div>
       </div>
 
@@ -839,9 +943,9 @@
   <div class="container" id="shop">
     <h2 class="section-title">織造所原創系列</h2>
     <div class="filter-tabs" aria-label="原創系列難易度篩選">
-      <button type="button" class="difficulty-tag difficulty-filter active" onclick="filterOriginalSeries('all', this)">全部</button>
-      <button type="button" class="difficulty-tag difficulty-filter" onclick="filterOriginalSeries('1', this)">難易度：★</button>
-      <button type="button" class="difficulty-tag difficulty-filter" onclick="filterOriginalSeries('2', this)">難易度：★★</button>
+      <button type="button" class="tab-btn difficulty-filter active" onclick="filterOriginalSeries('all', this)">全部</button>
+      <button type="button" class="tab-btn difficulty-filter" onclick="filterOriginalSeries('1', this)">難易度：★</button>
+      <button type="button" class="tab-btn difficulty-filter" onclick="filterOriginalSeries('2', this)">難易度：★★</button>
     </div>
 
     <div class="grid">
@@ -978,12 +1082,21 @@
         >
 
         <div id="shipping-address-field">
-          <input
-            type="text"
-            id="store-name"
-            class="form-input"
-            placeholder="7-11 收貨門市 *"
-          >
+          <div class="store-picker-row">
+            <input
+              type="text"
+              id="store-name"
+              class="form-input"
+              placeholder="7-11 收貨門市 *"
+            >
+            <a
+              class="store-picker-btn"
+              href="https://www.ibon.com.tw/retail_inquiry.aspx"
+              target="_blank"
+              rel="noopener noreferrer"
+            >7-ELEVEN 門市查詢</a>
+          </div>
+          <p class="store-picker-help">可先用 7-ELEVEN 官方門市查詢找到門市，再將門市名稱或店號填入。</p>
         </div>
 
         <div class="bank-box">
@@ -1048,6 +1161,7 @@
       'https://lin.ee/yyzyhp2';
 
     let isSubmittingOrder = false;
+    let bankModalDefaultHTML = '';
 
 
     /* =========================================================
@@ -2716,7 +2830,9 @@
       }
 
 
+      content.scrollTop = 0;
       modal.style.display = 'flex';
+      document.body.classList.add('modal-open');
     }
 
 
@@ -2730,6 +2846,8 @@
       if (modal) {
         modal.style.display = 'none';
       }
+
+      document.body.classList.remove('modal-open');
     }
 
 
@@ -2738,6 +2856,8 @@
        ========================================================= */
 
     function addDetailToCart(title, price) {
+
+      const isGroupClass = title.includes('基礎鉤織團體課程');
 
       const sessionSelect =
         document.getElementById(
@@ -2772,6 +2892,24 @@
         return;
       }
 
+
+      /* ---------- 基礎團體課程：單次購買最多 3 人 ---------- */
+
+      if (isGroupClass && sessionSelect && sessionSelect.value) {
+        const existingClassItem = cart.find(function(item) {
+          return isGroupClassItem(item)
+            ? (
+                item.name.includes(title) &&
+                item.name.includes(sessionSelect.value)
+              )
+            : false;
+        });
+
+        if (existingClassItem && existingClassItem.qty >= 3) {
+          alert('此場次每次最多購買 3 人；人數大於 3 人請聯絡我們。');
+          return;
+        }
+      }
 
       /* ---------- 線上課程 ---------- */
 
@@ -3492,25 +3630,6 @@
 
 
       /* =====================================================
-         Google Drive Email
-         ===================================================== */
-
-      if (
-        driveEmail &&
-        driveEmail.value.trim() &&
-        (
-          title === '線上基礎課程 - 1' ||
-          title.includes('線上基礎課程')
-        )
-      ) {
-
-        detailsText.push(
-          `Google Drive 影片觀看權限 Email：${driveEmail.value.trim()}`
-        );
-      }
-
-
-      /* =====================================================
          建立購物車品項
          ===================================================== */
 
@@ -3523,51 +3642,92 @@
       }
 
 
+      const cartMeta = {};
+
+      if (isGroupClass) {
+        cartMeta.courseKey = title;
+        cartMeta.session = sessionSelect && sessionSelect.value
+          ? sessionSelect.value
+          : '';
+      }
+
+      if (
+        driveEmail &&
+        driveEmail.value.trim() &&
+        (
+          title === '線上基礎課程 - 1' ||
+          title.includes('線上基礎課程')
+        )
+      ) {
+        cartMeta.driveEmail = driveEmail.value.trim();
+      }
+
       addToCart(
         finalName,
-        finalPrice
+        finalPrice,
+        cartMeta
       );
 
       closeDetail();
     }
 
 
-    function addToCart(name, price) {
+    function addToCart(name, price, meta) {
 
       const existing =
         cart.find(
           item => item.name === name
         );
 
+      const isClassItem =
+        !!(
+          existing &&
+          isGroupClassItem(existing)
+        ) ||
+        name.includes('基礎鉤織團體課程');
 
       if (existing) {
+        if (isClassItem && existing.qty >= 3) {
+          alert('此場次每次最多購買 3 人；人數大於 3 人請聯絡我們。');
+          return;
+        }
 
         existing.qty += 1;
 
+        if (meta && typeof meta === 'object') {
+          Object.assign(existing, meta);
+        }
       } else {
-
         cart.push({
           name,
           price,
-          qty: 1
+          qty: 1,
+          ...(meta || {})
         });
-
       }
 
-
       updateCartUI();
-
       updateShippingFieldVisibility();
-
       openCart();
     }
 
 
     function openCart() {
 
+      const cartModalContent =
+        document.querySelector(
+          '#cart-modal .modal-content'
+        );
+
+      if (cartModalContent) {
+        cartModalContent.scrollTop = 0;
+      }
+
       document.getElementById(
         'cart-modal'
       ).style.display = 'flex';
+
+      document.body.classList.add('modal-open');
     }
 
 
@@ -3576,6 +3736,8 @@
       document.getElementById(
         'cart-modal'
       ).style.display = 'none';
+
+      document.body.classList.remove('modal-open');
     }
 
 
@@ -3681,19 +3843,67 @@
       closeCart();
 
 
+      const bankModalContent =
+        document.querySelector(
+          '#bank-modal .modal-content'
+        );
+
+      if (bankModalContent) {
+        bankModalContent.scrollTop = 0;
+      }
+
       document.getElementById(
         'bank-modal'
       ).style.display =
         'flex';
+
+      document.body.classList.add('modal-open');
     }
 
 
     function closeBankModal() {
 
+      const modalContent =
+        document.querySelector(
+          '#bank-modal .modal-content'
+        );
+
+      if (
+        modalContent &&
+        bankModalDefaultHTML
+      ) {
+        modalContent.innerHTML =
+          bankModalDefaultHTML;
+      }
+
       document.getElementById(
         'bank-modal'
       ).style.display =
         'none';
+
+      document.body.classList.remove('modal-open');
+
+      updateShippingFieldVisibility();
+
+      const totalEl =
+        document.getElementById(
+          'bank-total'
+        );
+
+      if (totalEl) {
+        const subtotal =
+          cart.reduce(
+            (sum, item) =>
+              sum + (item.price * item.qty),
+            0
+          );
+
+        totalEl.innerText =
+          (
+            subtotal +
+            calculateShippingFee(subtotal)
+          ).toLocaleString();
+      }
     }
 
 
@@ -3821,7 +4031,18 @@ function submitOrderToLine() {
     subtotal: subtotal,
     shipping: shippingFee,
     total: total,
-    store: storeName
+    store: storeName,
+    driveEmail: Array.from(
+      new Set(
+        cart
+          .map(function(item) {
+            return item.driveEmail || '';
+          })
+          .filter(function(value) {
+            return value.trim();
+          })
+      )
+    ).join(', ')
   };
 
   /* =====================================================
@@ -4239,6 +4460,27 @@ function submitOrderToLine() {
       cartTotal.innerText =
         total.toLocaleString();
 
+      const bankTotalEl =
+        document.getElementById(
+          'bank-total'
+        );
+
+      if (bankTotalEl) {
+        const bankSubtotal =
+          cart.reduce(
+            (sum, item) =>
+              sum + (item.price * item.qty),
+            0
+          );
+
+        bankTotalEl.innerText =
+          (
+            bankSubtotal +
+            calculateShippingFee(bankSubtotal)
+          ).toLocaleString();
+      }
+
+      updateShippingFieldVisibility();
 
       localStorage.setItem(
         'kit_cart',
@@ -4255,16 +4497,23 @@ function submitOrderToLine() {
 
       if (cart[index]) {
 
+        if (
+          delta > 0 &&
+          isGroupClassItem(cart[index]) &&
+          cart[index].qty >= 3
+        ) {
+          alert('此場次每次最多購買 3 人；人數大於 3 人請聯絡我們。');
+          return;
+        }
+
         cart[index].qty += delta;
 
-
         if (cart[index].qty <= 0) {
-
           cart.splice(index, 1);
         }
 
-
         updateCartUI();
+        updateShippingFieldVisibility();
       }
     }
 
@@ -4276,6 +4525,7 @@ function submitOrderToLine() {
         cart.splice(index, 1);
 
         updateCartUI();
+        updateShippingFieldVisibility();
       }
     }
 
@@ -4283,6 +4533,16 @@ function submitOrderToLine() {
     /* =========================================================
        13. 初始化
        ========================================================= */
+
+    const initialBankModalContent =
+      document.querySelector(
+        '#bank-modal .modal-content'
+      );
+
+    if (initialBankModalContent) {
+      bankModalDefaultHTML =
+        initialBankModalContent.innerHTML;
+    }
 
     updateCartUI();
 
