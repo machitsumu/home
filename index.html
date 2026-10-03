@@ -3818,10 +3818,18 @@
       }
 
       if (shippingLine) {
+        const shippingSubtotal = cart.reduce(
+          (sum, item) => sum + (item.price * item.qty),
+          0
+        );
+
+        const shippingFee =
+          calculateShippingFee(shippingSubtotal);
+
         shippingLine.textContent = needsShipping
-          ? 'NT$ ' + calculateShippingFee(
-              cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
-            ).toLocaleString()
+          ? (shippingFee > 0
+              ? 'NT$ ' + shippingFee.toLocaleString()
+              : '免運')
           : '免寄送';
       }
     }
@@ -3925,20 +3933,19 @@
     }
 
     function calculateShippingFee(subtotal) {
-      const shippableSubtotal = cart
-        .filter(function(item) { return isShippableItem(item); })
-        .reduce(function(sum, item) {
-          return sum + (item.price * item.qty);
-        }, 0);
-
       const hasShippableItems = cart.some(function(item) {
         return isShippableItem(item);
       });
 
-      // 只有真正需要寄送的材料包／實體商品才計算運費。
-      // 線上課程已含運費；實體課程為現場參加，也不計運費。
-      // 目前免運門檻：可寄送商品小計滿 NT$1,800 免運，未滿收 NT$60。
-      return hasShippableItems && shippableSubtotal < 1800 ? 60 : 0;
+      // 只要購物車中有需要寄送的商品才計算運費。
+      // 免運門檻改為看「整筆訂單商品小計」，不論購買的是哪一種商品。
+      // 商品小計滿 NT$1,800：免運；未滿 NT$1,800：運費 NT$60。
+      // 線上課程本身已含運費；純課程／不需寄送的訂單仍不收運費。
+      if (!hasShippableItems) {
+        return 0;
+      }
+
+      return Number(subtotal) >= 1800 ? 0 : 60;
     }
 
     function openBankModal() {
