@@ -179,7 +179,7 @@
       max-width: 1120px;
       margin: 0 auto 1rem;
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 2rem;
       align-items: stretch;
     }
@@ -277,6 +277,8 @@
       overflow: hidden;
       box-shadow: 0 12px 30px rgba(106, 64, 40, 0.12);
       border: 4px solid var(--bg-card);
+      font-size: 0;
+      line-height: 0;
     }
 
     .hero-slide {
@@ -898,8 +900,8 @@
         </div>
         <div>
           <div class="price">NT$ 1,400</div>
+          <p class="course-note">每次最多購買 3 人<br>每場上限 6 人<br>人數大於 3 人請聯絡我們</p>
           <button class="btn-full" onclick="openDetail('class1')">詳細內容及報名</button>
-          <p class="course-note">每次最多購買 3 人｜每場上限 6 人｜人數大於 3 人請聯絡我們</p>
         </div>
       </div>
 
@@ -915,8 +917,8 @@
         </div>
         <div>
           <div class="price">NT$ 1,500</div>
+          <p class="course-note">每次最多購買 3 人<br>每場上限 6 人<br>人數大於 3 人請聯絡我們</p>
           <button class="btn-full" onclick="openDetail('class2')">詳細內容及報名</button>
-          <p class="course-note">每次最多購買 3 人｜每場上限 6 人｜人數大於 3 人請聯絡我們</p>
         </div>
       </div>
 
@@ -1096,7 +1098,7 @@
               rel="noopener noreferrer"
             >7-ELEVEN 門市查詢</a>
           </div>
-          <p class="store-picker-help">可先用 7-ELEVEN 官方門市查詢找到門市，再將門市名稱或店號填入。</p>
+          <p class="store-picker-help">可先用 7-ELEVEN 官方門市查詢找到門市，再將門市名稱填入。</p>
         </div>
 
         <div class="bank-box">
@@ -1111,6 +1113,11 @@
 
           <p id="bank-shipping-row" style="margin-top: 0.4rem; border-top: 1px dashed var(--border-color); padding-top: 0.4rem;">
             運費：<span id="bank-shipping-line">NT$ 0</span>
+          </p>
+
+          <p id="bank-discount-row" style="margin-top: 0.4rem; border-top: 1px dashed var(--border-color); padding-top: 0.4rem; color: var(--tag-accent); display:none;">
+            優惠：<span id="bank-discount-line"></span>
+            <span id="bank-discount-note" style="display:block; font-size:0.78rem; margin-top:0.15rem;"></span>
           </p>
 
           <p style="margin-top: 0.4rem; border-top: 1px dashed var(--border-color); padding-top: 0.4rem; color: var(--accent); font-weight: 600;">
@@ -3767,7 +3774,9 @@
       const storeInput = document.getElementById('store-name');
       const shippingRow = document.getElementById('bank-shipping-row');
       const shippingLine = document.getElementById('bank-shipping-line');
-      const needsShipping = cartRequiresShipping();
+      const needsShipping = cart.some(function(item) {
+        return isShippableItem(item);
+      });
 
       if (shippingField) {
         shippingField.style.display = needsShipping ? 'block' : 'none';
@@ -3792,20 +3801,89 @@
       }
     }
 
+    function isShippableItem(item) {
+      return !!(
+        item &&
+        !isGroupClassItem(item) &&
+        !isOnlineCourseItem(item)
+      );
+    }
+
+    function calculateCourseDiscount() {
+      const groupQty = cart
+        .filter(function(item) { return isGroupClassItem(item); })
+        .reduce(function(sum, item) {
+          return sum + (item.qty || 0);
+        }, 0);
+
+      return groupQty >= 2 ? 100 : 0;
+    }
+
+    function getDiscountNote() {
+      const groupItems = cart.filter(function(item) {
+        return isGroupClassItem(item);
+      });
+
+      const groupQty = groupItems.reduce(function(sum, item) {
+        return sum + (item.qty || 0);
+      }, 0);
+
+      if (groupQty < 2) return '';
+
+      const hasClass1 = groupItems.some(function(item) {
+        return item.name.includes('基礎鉤織團體課程 (1)');
+      });
+      const hasClass2 = groupItems.some(function(item) {
+        return item.name.includes('基礎鉤織團體課程 (2)');
+      });
+
+      return (hasClass1 && hasClass2) ? '兩堂合報' : '2人以上團報';
+    }
+
+    function updateCheckoutSummary() {
+      const subtotal = cart.reduce(function(sum, item) {
+        return sum + (item.price * item.qty);
+      }, 0);
+
+      const shippingFee = calculateShippingFee(subtotal);
+      const discount = calculateCourseDiscount();
+      const total = subtotal + shippingFee - discount;
+
+      const bankTotal = document.getElementById('bank-total');
+      if (bankTotal) bankTotal.innerText = total.toLocaleString();
+
+      const row = document.getElementById('bank-discount-row');
+      const line = document.getElementById('bank-discount-line');
+      const note = document.getElementById('bank-discount-note');
+
+      if (row && line && note) {
+        if (discount > 0) {
+          row.style.display = 'block';
+          line.textContent = '- NT$ ' + discount.toLocaleString();
+          note.textContent = getDiscountNote();
+        } else {
+          row.style.display = 'none';
+          line.textContent = '';
+          note.textContent = '';
+        }
+      }
+    }
+
     function calculateShippingFee(subtotal) {
       const shippableSubtotal = cart
-        .filter(function(item) { return !isOnlineCourseItem(item); })
+        .filter(function(item) { return isShippableItem(item); })
         .reduce(function(sum, item) {
           return sum + (item.price * item.qty);
         }, 0);
 
-      const hasSeparateShippableItems = cart.some(function(item) {
-        return !isOnlineCourseItem(item);
+      const hasShippableItems = cart.some(function(item) {
+        return isShippableItem(item);
       });
 
-      // 線上課程價格已含寄送費；若購物車只有線上課程，運費為 NT$ 0。
-      // 若與其他實體商品混購，只針對實體商品計算運費。
-      return hasSeparateShippableItems && shippableSubtotal < 1800 ? 60 : 0;
+      // 只有真正需要寄送的材料包／實體商品才計算運費。
+      // 線上課程已含運費；實體課程為現場參加，也不計運費。
+      // 目前免運門檻：可寄送商品小計滿 NT$1,800 免運，未滿收 NT$60。
+      return hasShippableItems && shippableSubtotal < 1800 ? 60 : 0;
     }
 
     function openBankModal() {
@@ -3839,6 +3917,7 @@
 
 
       updateShippingFieldVisibility();
+      updateCheckoutSummary();
 
       closeCart();
 
@@ -4476,11 +4555,13 @@ function submitOrderToLine() {
         bankTotalEl.innerText =
           (
             bankSubtotal +
-            calculateShippingFee(bankSubtotal)
+            calculateShippingFee(bankSubtotal) -
+            calculateCourseDiscount()
           ).toLocaleString();
       }
 
       updateShippingFieldVisibility();
+      updateCheckoutSummary();
 
       localStorage.setItem(
         'kit_cart',
