@@ -3834,37 +3834,67 @@
       );
     }
 
-    function calculateCourseDiscount() {
-      const groupQty = cart
-        .filter(function(item) { return isGroupClassItem(item); })
-        .reduce(function(sum, item) {
-          return sum + (item.qty || 0);
-        }, 0);
-
-      return groupQty >= 2 ? 100 : 0;
-    }
-
-    function getDiscountNote() {
+    function getCourseDiscountDetails() {
       const groupItems = cart.filter(function(item) {
         return isGroupClassItem(item);
       });
 
-      const groupQty = groupItems.reduce(function(sum, item) {
-        return sum + (item.qty || 0);
-      }, 0);
-
-      if (groupQty < 2) return '';
-
       const hasClass1 = groupItems.some(function(item) {
         return item.name.includes('基礎鉤織團體課程 (1)');
       });
+
       const hasClass2 = groupItems.some(function(item) {
         return item.name.includes('基礎鉤織團體課程 (2)');
       });
 
-      return (hasClass1 && hasClass2) ? '兩堂合報' : '2人以上團報';
+      // 同一課程／同一場次購買 2 人以上：團報優惠 NT$100
+      const hasGroupDiscount = groupItems.some(function(item) {
+        return Number(item.qty || 0) >= 2;
+      });
+
+      // 課程 (1) 與課程 (2) 同時報名：兩堂合報優惠 NT$100
+      const hasComboDiscount = hasClass1 && hasClass2;
+
+      const groupDiscount = hasGroupDiscount ? 100 : 0;
+      const comboDiscount = hasComboDiscount ? 100 : 0;
+
+      // 兩種優惠可同時使用，但最高優惠 NT$200
+      const totalDiscount = Math.min(
+        groupDiscount + comboDiscount,
+        200
+      );
+
+      return {
+        groupDiscount: groupDiscount,
+        comboDiscount: comboDiscount,
+        totalDiscount: totalDiscount
+      };
     }
 
+    function calculateCourseDiscount() {
+      return getCourseDiscountDetails().totalDiscount;
+    }
+
+    function getDiscountNote() {
+      const details = getCourseDiscountDetails();
+
+      if (
+        details.groupDiscount > 0 &&
+        details.comboDiscount > 0
+      ) {
+        return '2人以上團報＋兩堂合報';
+      }
+
+      if (details.groupDiscount > 0) {
+        return '2人以上團報';
+      }
+
+      if (details.comboDiscount > 0) {
+        return '兩堂合報';
+      }
+
+      return '';
+    }
     function updateCheckoutSummary() {
       const subtotal = cart.reduce(function(sum, item) {
         return sum + (item.price * item.qty);
@@ -3938,7 +3968,11 @@
       document.getElementById(
         'bank-total'
       ).innerText =
-        subtotal + shippingFee;
+        (
+          subtotal +
+          shippingFee -
+          calculateCourseDiscount()
+        );
 
 
       updateShippingFieldVisibility();
@@ -4005,7 +4039,8 @@
         totalEl.innerText =
           (
             subtotal +
-            calculateShippingFee(subtotal)
+            calculateShippingFee(subtotal) -
+            calculateCourseDiscount()
           ).toLocaleString();
       }
     }
@@ -4023,7 +4058,8 @@
       storeName,
       subtotal,
       shippingFee,
-      total
+      total,
+      discount
     ) {
 
       const itemList =
@@ -4049,6 +4085,7 @@
         '------------------------',
         `商品小計：NT$ ${subtotal.toLocaleString()}`,
         `運費：${cartRequiresShipping() ? 'NT$ ' + shippingFee.toLocaleString() : '免寄送'}`,
+        ...(discount > 0 ? [`優惠：- NT$ ${discount.toLocaleString()}（${getDiscountNote()}）`] : []),
         `應付金額：NT$ ${total.toLocaleString()}`,
         '------------------------',
         '【匯款帳號資訊】',
@@ -4121,7 +4158,8 @@ function submitOrderToLine() {
   /* ---------- 計算金額 ---------- */
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const shippingFee = calculateShippingFee(subtotal);
-  const total = subtotal + shippingFee;
+  const discount = calculateCourseDiscount();
+  const total = subtotal + shippingFee - discount;
 
   /* ---------- 建立 itemsText ---------- */
   const itemsText = cart.map(item => `${item.name} x${item.qty}`).join('\n');
@@ -4134,6 +4172,7 @@ function submitOrderToLine() {
     itemsText: itemsText,
     subtotal: subtotal,
     shipping: shippingFee,
+    discount: discount,
     total: total,
     store: storeName,
     driveEmail: Array.from(
@@ -4361,8 +4400,11 @@ function submitOrderToLine() {
         const shippingFee =
           calculateShippingFee(subtotal);
 
+        const discount =
+          calculateCourseDiscount();
+
         const total =
-          subtotal + shippingFee;
+          subtotal + shippingFee - discount;
 
         const orderText =
           buildOrderText(
@@ -4373,7 +4415,8 @@ function submitOrderToLine() {
             storeName,
             subtotal,
             shippingFee,
-            total
+            total,
+            discount
           );
 
         /* ---------- 嘗試複製訂單明細 ---------- */
