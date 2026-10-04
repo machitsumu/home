@@ -1,0 +1,110 @@
+<svg width="900"
+     height="320"
+     viewBox="0 0 900 320"
+     xmlns="http://www.w3.org/2000/svg">
+
+<style>
+
+.signature{
+  fill:none;
+  stroke:#B28C77;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.zh{
+  fill:#3C3835;
+  font-family:
+    "Tsukushi Mincho",
+    "Hiragino Mincho ProN",
+    "Noto Serif TC",
+    serif;
+
+  font-size:58px;
+  font-weight:300;
+  letter-spacing:0.08em;
+}
+
+.en{
+  fill:#3C3835;
+  font-family:
+    "Cormorant Garamond",
+    serif;
+
+  font-size:28px;
+  letter-spacing:0.18em;
+}
+
+</style>
+
+<!-- Handmade m -->
+
+<path
+ class="signature"
+ d="
+ M235 145
+
+ C255 160
+   278 160
+   292 145
+
+ C308 126
+   326 95
+   356 90
+
+ C380 86
+   396 104
+   406 122
+
+ C414 136
+   423 133
+   434 121
+
+ C446 109
+   463 103
+   482 108
+
+ C498 113
+   516 121
+   532 126
+
+ C552 131
+   570 139
+   585 151
+
+ C597 162
+   604 176
+   604 191
+
+ C604 206
+   600 220
+   594 232
+
+ C590 240
+   588 246
+   589 252
+ "
+/>
+
+<!-- Chinese -->
+
+<text
+ x="450"
+ y="205"
+ text-anchor="middle"
+ class="zh">
+織造所
+</text>
+
+<!-- English -->
+
+<text
+ x="450"
+ y="238"
+ text-anchor="middle"
+ class="en">
+machitsumu
+</text>
+
+</svg>
