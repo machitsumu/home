@@ -437,11 +437,11 @@
       border: 1px solid rgba(154, 136, 123, 0.55);
     }
 
-    /* 熱門手作課程：滑入篩選標籤時保留淡綠色提示 */
+    /* 熱門手作課程：滑入篩選標籤時維持原本樣式 */
     #classes .tab-btn:hover {
-      background-color: #EEF2EC;
-      color: #6A7665;
-      border-color: #C8D2C3;
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border-color: var(--border-color);
     }
 
 
@@ -468,7 +468,7 @@
     .difficulty-filter {
       appearance: none;
       -webkit-appearance: none;
-      border: 0;
+      border: 2px solid var(--border-color);
       margin: 0;
       cursor: pointer;
       font-family: inherit;
