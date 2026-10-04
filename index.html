@@ -296,6 +296,11 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       line-height: 1.55;
+      text-align: center;
+    }
+
+    .about-title-mobile {
+      display: none;
     }
 
     .about-text {
@@ -429,7 +434,19 @@
     .tag-sub {
       background-color: var(--tag-bg);
       color: var(--tag-text);
-      border: 1px solid rgba(127, 140, 120, 0.35);
+      border: 1px solid rgba(154, 136, 123, 0.55);
+    }
+
+    /* 熱門手作課程：滑入篩選標籤時保留淡綠色提示 */
+    #classes .tab-btn:hover {
+      background-color: #EEF2EC;
+      color: #6A7665;
+      border-color: #C8D2C3;
+    }
+
+    /* 原創系列難易度標籤：明確保留外框 */
+    .original-series-section .card-tags .tag-sub {
+      border: 1px solid var(--tag-accent);
     }
 
     .difficulty-tags {
@@ -901,6 +918,15 @@
         font-size: 1.85rem;
         line-height: 1.6;
         letter-spacing: 0.05em;
+        text-align: center;
+      }
+
+      .about-title-desktop {
+        display: none;
+      }
+
+      .about-title-mobile {
+        display: inline;
       }
 
       .about-closing {
@@ -995,7 +1021,10 @@
       <div class="about-copy">
         <h2 class="about-title">
           <span class="machitsumu-word">MACHITSUMU</span>
-          <span class="about-title-cn">編織生活與人際連結的地方</span>
+          <span class="about-title-cn">
+            <span class="about-title-desktop">編織生活與人際連結的地方</span>
+            <span class="about-title-mobile">編織生活<br>與<br>人際連結的地方</span>
+          </span>
         </h2>
 
         <div class="about-text">
