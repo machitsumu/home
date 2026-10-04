@@ -18,17 +18,18 @@
       /* 25%｜杏粉：品牌溫度與主要視覺亮點 */
       --header-bg: #F0E5D8;
       --secondary: #F0E5D8;
-      --accent-hover: #B28C77;
+      --accent-hover: #9E7A66;
+      --accent-active: #8C6C5A;
 
       /* 5%｜灰紫：記憶點，用於卡片邊框與細節提亮 */
-      --border-color: #D8CEC4;
+      --border-color: #CFC2B5;
 
       /* 10%｜灰棕：主要文字、按鈕與穩定視覺 */
       --text-main: #4A433E;
       --accent: #B28C77;
 
       /* 次要文字 */
-      --text-muted: #7A7068;
+      --text-muted: #6A7665;
       --text-light: #F8F6F2;
 
       /* 舊元件共用變數 */
@@ -36,6 +37,9 @@
       --accent-btn: #B28C77;
       --hero-bg: #F0E5D8;
       --tag-accent: #7F8C78;
+      --tag-text: #6A7665;
+      --tag-bg: #EEF2EC;
+      --tag-hover: #74806F;
     }
 
     /* 修正頂部 Header 樣式 */
@@ -60,6 +64,15 @@
       padding: 10px 16px !important;
       cursor: pointer !important;
       font-size: 15px !important;
+      transition: .25s;
+    }
+
+    .card button:hover, .card .btn:hover, .detail-btn:hover, .btn-detail:hover, .btn-full:hover {
+      background-color: var(--accent-hover) !important;
+    }
+
+    .card button:active, .card .btn:active, .detail-btn:active, .btn-detail:active, .btn-full:active {
+      background-color: var(--accent-active) !important;
     }
 
     * {
@@ -114,15 +127,52 @@
     }
 
     .logo {
-      font-size: 1.75rem;
-      color: var(--text-main);
-      letter-spacing: 0.15em;
-      font-weight: 600;
+      display: flex;
+      align-items: center;
+      width: 150px;
+      height: auto;
+      flex: 0 0 auto;
+    }
+
+    .logo-img {
+      width: 150px;
+      height: auto;
+      display: block;
     }
 
     nav {
       display: flex;
       align-items: center;
+      gap: 0;
+    }
+
+    .mobile-nav-select {
+      display: none;
+      appearance: none;
+      -webkit-appearance: none;
+      width: 120px;
+      padding: 0.48rem 0.72rem;
+      margin: 0 0.55rem 0 0;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+
+    .mobile-nav-select:focus {
+      outline: none;
+      border-color: var(--tag-accent);
+    }
+
+    .mobile-nav-select option {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      background: var(--bg-main);
     }
 
     nav a {
@@ -156,6 +206,15 @@
       justify-content: center;
       gap: 6px;
       min-width: 42px;
+      transition: .25s;
+    }
+
+    .cart-btn:hover {
+      background-color: var(--accent-hover) !important;
+    }
+
+    .cart-btn:active {
+      background-color: var(--accent-active) !important;
     }
 
     .cart-icon {
@@ -368,9 +427,13 @@
     }
 
     .tag-sub {
-      background-color: rgba(127, 140, 120, 0.12);
-      color: var(--tag-accent);
+      background-color: var(--tag-bg);
+      color: var(--tag-text);
       border: 1px solid rgba(127, 140, 120, 0.35);
+    }
+
+    .original-series-section .tag-sub {
+      border: none;
     }
 
     .difficulty-tags {
@@ -554,6 +617,17 @@
       cursor: pointer;
       font-size: 0.88rem;
       width: 50%;
+      transition: .25s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-primary:active {
+      background-color: var(--accent-active);
+      border-color: var(--accent-active);
     }
 
     /* Modal */
@@ -598,6 +672,28 @@
       -webkit-overflow-scrolling: touch;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       border: 2px solid var(--border-color);
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--text-main);
+    }
+
+    .modal-content label,
+    .modal-content p,
+    .modal-content input,
+    .modal-content select,
+    .modal-content option,
+    .modal-content button {
+      font-family: 'Noto Sans TC', sans-serif !important;
+    }
+
+    .modal-content label,
+    .modal-content select,
+    .modal-content option {
+      font-size: 0.92rem;
+    }
+
+    .modal-content option {
+      background: var(--bg-card);
+      color: var(--text-main);
     }
 
     .close-btn {
@@ -658,6 +754,15 @@
       cursor: pointer;
       margin-top: 1.5rem;
       box-shadow: 0 4px 12px rgba(171, 59, 58, 0.25);
+      transition: .25s;
+    }
+
+    .checkout-btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .checkout-btn:active {
+      background-color: var(--accent-active);
     }
 
     .checkout-btn:disabled {
@@ -748,6 +853,24 @@
         padding: 0.65rem 1rem;
       }
 
+      .logo {
+        width: 125px;
+      }
+
+      .logo-img {
+        width: 125px;
+      }
+
+      nav {
+        margin-left: auto;
+      }
+
+      .mobile-nav-select {
+        display: block;
+        width: 112px;
+        margin-right: 0.45rem;
+      }
+
       .about-layout {
         grid-template-columns: 1fr;
         gap: 1.4rem;
@@ -799,9 +922,7 @@
       }
 
       nav a.contact-link {
-        display: inline-block;
-        margin-left: 0.8rem;
-        font-size: 0.82rem;
+        display: none;
       }
 
       .cart-btn {
@@ -841,8 +962,21 @@
 
   <!-- 1. 頂部導覽列 -->
   <header>
-    <div class="logo">織造所</div>
+    <div class="logo">
+      <img src="logo.svg" alt="織造所 machitsumu" class="logo-img">
+    </div>
     <nav>
+      <select
+        class="mobile-nav-select"
+        aria-label="網站選單"
+        onchange="handleMobileNav(this.value)"
+      >
+        <option value="">選單</option>
+        <option value="about">關於織造所</option>
+        <option value="classes">熱門手作課程</option>
+        <option value="shop">織造所原創系列</option>
+        <option value="contact">聯絡我們</option>
+      </select>
       <a href="#about">關於織造所</a>
       <a href="#classes">熱門手作課程</a>
       <a href="#shop">織造所原創系列</a>
@@ -951,7 +1085,7 @@
   </div>
 
   <!-- 4. 原創系列 -->
-  <div class="container" id="shop">
+  <div class="container original-series-section" id="shop">
     <h2 class="section-title">織造所原創系列</h2>
     <div class="filter-tabs" aria-label="原創系列難易度篩選">
       <button type="button" class="tab-btn difficulty-filter active" onclick="filterOriginalSeries('all', this)">全部</button>
@@ -1205,6 +1339,33 @@
     /* =========================================================
        2. 頁籤篩選
        ========================================================= */
+
+    function handleMobileNav(value) {
+      if (!value) return;
+
+      if (value === 'contact') {
+        window.open(
+          'https://lin.ee/yyzyhp2',
+          '_blank',
+          'noopener,noreferrer'
+        );
+      } else {
+        const target = document.getElementById(value);
+
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+
+      const select = document.querySelector('.mobile-nav-select');
+
+      if (select) {
+        select.value = '';
+      }
+    }
 
     function filterClasses(category, btn) {
 
@@ -2466,7 +2627,9 @@
           ${data.body}
         </div>
 
-        ${selectsHtml}
+        <div id="modal-purchase-section">
+          ${selectsHtml}
+        </div>
 
         <div
           style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:1.2rem; flex-wrap:wrap; gap:10px;"
@@ -2855,14 +3018,28 @@
       }
 
       content.style.scrollBehavior = 'auto';
-      content.scrollTop = 0;
       modal.style.display = 'flex';
       document.body.classList.add('modal-open');
 
+      const purchaseSection =
+        document.getElementById('modal-purchase-section');
+
       requestAnimationFrame(function() {
-        content.scrollTop = 0;
-        setTimeout(function() {
+
+        if (purchaseSection) {
+          content.scrollTop =
+            Math.max(0, purchaseSection.offsetTop - 12);
+        } else {
           content.scrollTop = 0;
+        }
+
+        setTimeout(function() {
+
+          if (purchaseSection) {
+            content.scrollTop =
+              Math.max(0, purchaseSection.offsetTop - 12);
+          }
+
         }, 0);
       });
     }
