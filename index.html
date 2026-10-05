@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>織造所 machitsumu｜手作生活品牌，從鉤織出發的教學、DIY材料包與原創作品</title>
+  <link rel="canonical" href="https://machitsumu.github.io/machitsumu/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,7 +117,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.72rem 2.2rem;
+      padding: 0.35rem 2.2rem;
       background-color: #F0E5D8;
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-color);
@@ -146,33 +147,9 @@
       gap: 0;
     }
 
-    .mobile-nav-select {
+    .mobile-nav-toggle,
+    .mobile-menu-panel {
       display: none;
-      appearance: none;
-      -webkit-appearance: none;
-      width: 120px;
-      padding: 0.48rem 0.72rem;
-      margin: 0 0.55rem 0 0;
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      background: var(--bg-main);
-      color: var(--text-main);
-      font-family: 'Noto Sans TC', sans-serif;
-      font-size: 0.82rem;
-      line-height: 1.4;
-      cursor: pointer;
-    }
-
-    .mobile-nav-select:focus {
-      outline: none;
-      border-color: var(--tag-accent);
-    }
-
-    .mobile-nav-select option {
-      font-family: 'Noto Sans TC', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-main);
-      background: var(--bg-main);
     }
 
     nav a {
@@ -404,18 +381,23 @@
       font-size: 0.88rem;
       font-weight: 500;
       transition: all 0.2s ease;
+      touch-action: manipulation;
     }
 
     .tab-btn:hover {
-      background-color: rgba(127, 140, 120, 0.10);
-      color: var(--tag-hover);
-      border-color: rgba(127, 140, 120, 0.45);
+      background-color: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
     }
 
-    .tab-btn.active {
-      background-color: var(--tag-accent);
+    .tab-btn.active,
+    .tab-btn.active:hover,
+    .tab-btn:active,
+    .tab-btn:focus-visible {
+      background-color: var(--accent-active);
       color: #FFFFFF;
-      border-color: var(--tag-accent);
+      border-color: var(--accent-active);
+      outline: none;
     }
 
     /* Tags */
@@ -436,14 +418,6 @@
       color: var(--tag-text);
       border: 1px solid rgba(154, 136, 123, 0.55);
     }
-
-    /* 熱門手作課程：滑入篩選標籤時維持原本樣式 */
-    #classes .tab-btn:hover {
-      background-color: var(--bg-card);
-      color: var(--text-main);
-      border-color: var(--border-color);
-    }
-
 
     .difficulty-tags {
       display: flex;
@@ -473,16 +447,17 @@
       cursor: pointer;
       font-family: inherit;
       transition: all 0.2s ease;
+      touch-action: manipulation;
     }
 
-    .difficulty-filter:hover {
-      background-color: rgba(127, 140, 120, 0.10);
-      color: var(--tag-hover);
-    }
-
-    .difficulty-filter.active {
-      background-color: var(--tag-accent);
+    .difficulty-filter.active,
+    .difficulty-filter.active:hover,
+    .difficulty-filter:active,
+    .difficulty-filter:focus-visible {
+      background-color: var(--accent-active);
       color: #FFFFFF;
+      border-color: var(--accent-active);
+      outline: none;
     }
 
     .product-card-image {
@@ -859,7 +834,7 @@
 
     @media (max-width: 768px) {
       header {
-        padding: 0.65rem 1.5rem;
+        padding: 0.25rem 1.5rem;
       }
 
       .logo {
@@ -875,10 +850,80 @@
         margin-left: auto;
       }
 
-      .mobile-nav-select {
+      .mobile-nav-toggle {
+        display: inline-flex;
+        width: 42px;
+        height: 38px;
+        margin-left: 0.7rem;
+        padding: 0;
+        border: 1px solid var(--border-color);
+        border-radius: 7px;
+        background: var(--bg-main);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+        flex: 0 0 auto;
+        touch-action: manipulation;
+      }
+
+      .mobile-nav-toggle span {
         display: block;
-        width: 100px;
-        margin-right: 0.45rem;
+        width: 19px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--text-main);
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+
+      .mobile-nav-toggle.is-open span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+
+      .mobile-nav-toggle.is-open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-nav-toggle.is-open span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      .mobile-menu-panel {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 1.5rem;
+        width: 190px;
+        background: var(--bg-main);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(106, 64, 40, 0.10);
+        overflow: hidden;
+        z-index: 120;
+      }
+
+      .mobile-menu-panel.is-open {
+        display: block;
+      }
+
+      .mobile-menu-panel a {
+        display: block;
+        padding: 0.72rem 1rem;
+        margin: 0 !important;
+        color: var(--text-main) !important;
+        text-decoration: none;
+        font-size: 0.9rem;
+        border-bottom: 1px solid var(--border-color);
+        background: var(--bg-main);
+      }
+
+      .mobile-menu-panel a:last-child {
+        border-bottom: 0;
+      }
+
+      .mobile-menu-panel a:active {
+        background: var(--header-bg);
       }
 
       .cart-btn {
@@ -985,17 +1030,17 @@
       <img src="logo.svg" alt="織造所 machitsumu" class="logo-img">
     </div>
     <nav>
-      <select
-        class="mobile-nav-select"
-        aria-label="網站選單"
-        onchange="handleMobileNav(this.value)"
-      >
-        <option value="">選單</option>
-        <option value="about">關於織造所</option>
-        <option value="classes">熱門手作課程</option>
-        <option value="shop">織造所原創系列</option>
-        <option value="contact">聯絡我們</option>
-      </select>
+      <button type="button" class="mobile-nav-toggle" aria-label="開啟網站選單" aria-expanded="false" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="mobile-menu-panel" id="mobile-menu-panel">
+        <a href="#about" onclick="handleMobileNav('about')">關於織造所</a>
+        <a href="#classes" onclick="handleMobileNav('classes')">熱門手作課程</a>
+        <a href="#shop" onclick="handleMobileNav('shop')">織造所原創系列</a>
+        <a href="https://lin.ee/yyzyhp2" target="_blank" rel="noopener noreferrer" onclick="closeMobileMenu()">聯絡我們</a>
+      </div>
       <a href="#about">關於織造所</a>
       <a href="#classes">熱門手作課程</a>
       <a href="#shop">織造所原創系列</a>
@@ -1362,37 +1407,51 @@
        2. 頁籤篩選
        ========================================================= */
 
+    function closeMobileMenu() {
+      const panel = document.getElementById('mobile-menu-panel');
+      const toggle = document.querySelector('.mobile-nav-toggle');
+
+      if (panel) panel.classList.remove('is-open');
+      if (toggle) {
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function toggleMobileMenu() {
+      const panel = document.getElementById('mobile-menu-panel');
+      const toggle = document.querySelector('.mobile-nav-toggle');
+
+      if (!panel || !toggle) return;
+
+      const isOpen = panel.classList.toggle('is-open');
+      toggle.classList.toggle('is-open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
     function handleMobileNav(value) {
+      closeMobileMenu();
+
       if (!value) return;
 
       if (value === 'contact') {
-        window.open(
-          'https://lin.ee/yyzyhp2',
-          '_blank',
-          'noopener,noreferrer'
-        );
-      } else {
-        const target = document.getElementById(value);
-
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
+        window.open('https://lin.ee/yyzyhp2', '_blank', 'noopener,noreferrer');
+        return;
       }
 
-      const select = document.querySelector('.mobile-nav-select');
-
-      if (select) {
-        select.value = '';
+      const target = document.getElementById(value);
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
       }
     }
 
     function filterClasses(category, btn) {
 
       document
-        .querySelectorAll('.tab-btn')
+        .querySelectorAll('#classes .tab-btn')
         .forEach(b => b.classList.remove('active'));
 
       btn.classList.add('active');
