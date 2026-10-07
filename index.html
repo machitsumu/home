@@ -4051,14 +4051,39 @@
       ));
     }
 
-    function cartRequiresShipping() {
-      // 線上課程仍需填寫 7-11 收貨門市（材料包需寄送），
-      // 因此只要不是現場團體課程，就需要收貨資訊。
-      return cart.some(function(item) { return !isGroupClassItem(item); });
+    function isOnlineCourseItem(item) {
+      return !!(
+        item &&
+        item.name &&
+        item.name.includes('線上基礎課程')
+      );
     }
 
-    function isOnlineCourseItem(item) {
-      return !!(item && item.name && item.name.includes('線上基礎課程'));
+    // 需要填寫 7-11 收貨門市的品項：
+    // - 實體團體課程：不需要寄送
+    // - 線上基礎課程：需要寄送材料包，因此需要收貨門市
+    // - 原創材料包／成品／配件：需要寄送
+    function isShippableItem(item) {
+      return !!(
+        item &&
+        !isGroupClassItem(item)
+      );
+    }
+
+    // 需要實際計算「額外運費」的品項：
+    // 線上基礎課程的材料包價格已含運，因此只需收貨資訊，不再重複收取 NT$60。
+    function isFreightChargeItem(item) {
+      return !!(
+        item &&
+        !isGroupClassItem(item) &&
+        !isOnlineCourseItem(item)
+      );
+    }
+
+    function cartRequiresShipping() {
+      return cart.some(function(item) {
+        return isShippableItem(item);
+      });
     }
 
     function updateShippingFieldVisibility() {
@@ -4066,9 +4091,7 @@
       const storeInput = document.getElementById('store-name');
       const shippingRow = document.getElementById('bank-shipping-row');
       const shippingLine = document.getElementById('bank-shipping-line');
-      const needsShipping = cart.some(function(item) {
-        return isShippableItem(item);
-      });
+      const needsShipping = cartRequiresShipping();
 
       if (shippingField) {
         shippingField.style.display = needsShipping ? 'block' : 'none';
@@ -4079,7 +4102,7 @@
         if (!needsShipping) storeInput.value = '';
       }
 
-      // 基礎鉤織團體課程不需要寄送：整列隱藏，避免顯示 NT$ 0。
+      // 只要訂單中有需要收貨的品項，就顯示 7-11 門市欄位與運費列。
       if (shippingRow) {
         shippingRow.style.display = needsShipping ? 'block' : 'none';
       }
@@ -4090,23 +4113,21 @@
           0
         );
 
-        const shippingFee =
-          calculateShippingFee(shippingSubtotal);
+        const shippingFee = calculateShippingFee(shippingSubtotal);
+        const hasFreightItems = cart.some(function(item) {
+          return isFreightChargeItem(item);
+        });
 
-        shippingLine.textContent = needsShipping
-          ? (shippingFee > 0
-              ? 'NT$ ' + shippingFee.toLocaleString()
-              : '免運')
-          : '免寄送';
+        if (!needsShipping) {
+          shippingLine.textContent = '免寄送';
+        } else if (!hasFreightItems) {
+          shippingLine.textContent = '已含運';
+        } else if (shippingFee > 0) {
+          shippingLine.textContent = 'NT$ ' + shippingFee.toLocaleString();
+        } else {
+          shippingLine.textContent = '免運';
+        }
       }
-    }
-
-    function isShippableItem(item) {
-      return !!(
-        item &&
-        !isGroupClassItem(item) &&
-        !isOnlineCourseItem(item)
-      );
     }
 
     function getCourseDiscountDetails() {
@@ -4200,19 +4221,37 @@
     }
 
     function calculateShippingFee(subtotal) {
-      const hasShippableItems = cart.some(function(item) {
-        return isShippableItem(item);
+      const hasFreightItems = cart.some(function(item) {
+        return isFreightChargeItem(item);
       });
 
-      // 只要購物車中有需要寄送的商品才計算運費。
-      // 免運門檻改為看「整筆訂單商品小計」，不論購買的是哪一種商品。
-      // 商品小計滿 NT$1,800：免運；未滿 NT$1,800：運費 NT$60。
-      // 線上課程本身已含運費；純課程／不需寄送的訂單仍不收運費。
-      if (!hasShippableItems) {
+      // 實體團體課程不需寄送，不收運費。
+      // 線上基礎課程需要寄送材料包，但課程價格已含運，因此不再加收運費。
+      // 原創材料包／成品／配件等需實際寄送的品項：
+      // 商品小計滿 NT$1,800 免運；未滿 NT$1,800 收 NT$60。
+      if (!hasFreightItems) {
         return 0;
       }
 
       return Number(subtotal) >= 1800 ? 0 : 60;
+    }
+
+    function getShippingDisplayText(shippingFee) {
+      if (!cartRequiresShipping()) {
+        return '免寄送';
+      }
+
+      const hasFreightItems = cart.some(function(item) {
+        return isFreightChargeItem(item);
+      });
+
+      if (!hasFreightItems) {
+        return '已含運';
+      }
+
+      return shippingFee > 0
+        ? 'NT$ ' + Number(shippingFee).toLocaleString()
+        : '免運';
     }
 
     function openBankModal() {
@@ -4358,7 +4397,7 @@
         itemList,
         '------------------------',
         `商品小計：NT$ ${subtotal.toLocaleString()}`,
-        `運費：${cartRequiresShipping() ? 'NT$ ' + shippingFee.toLocaleString() : '免寄送'}`,
+        `運費：${getShippingDisplayText(shippingFee)}`,
         ...(discount > 0 ? [`優惠：- NT$ ${discount.toLocaleString()}（${getDiscountNote()}）`] : []),
         `應付金額：NT$ ${total.toLocaleString()}`,
         '------------------------',
