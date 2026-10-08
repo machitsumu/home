@@ -202,6 +202,10 @@
     }
 
     /* Hero */
+    .hero#about {
+      scroll-margin-top: 76px;
+    }
+
     .hero {
       text-align: center;
       padding: 2.2rem 1.5rem 2.5rem;
@@ -1141,6 +1145,21 @@
         </div>
       </div>
 
+      <!-- 一對一精修專班 -->
+      <div class="card" data-craft="crochet" data-type="offline">
+        <div>
+          <div class="card-tags">
+            <span class="tag tag-main">鉤織課程</span>
+            <span class="tag tag-sub">實體課程</span>
+          </div>
+          <h3>一對一精修專班</h3>
+          <p>如果你是：無法配合開課時間／不喜歡團體課上被進度追著跑的壓力／有特定作品想完成，一對一精修專班的彈性排課最能滿足你的需求。</p>
+        </div>
+        <div>
+          <button class="btn-full" onclick="openDetail('oneOnOne')">了解專班</button>
+        </div>
+      </div>
+
       <!-- 課程 4 -->
       <div class="card" data-craft="crochet" data-type="online">
         <div>
@@ -1555,7 +1574,7 @@
         tag: '鉤織課程',
 
         sessions: [
-          "10/17（六）13:00-16:00 嘉義 好好生活",
+          "10/17（六）13:00-16:00 嘉義 好好生活（已額滿）",
           "10/31（六）13:00-16:00 台南 小樹屋 - 虹樹",
           "11/04（三）18:00-21:00 北港 玉津咖啡 (暫定)",
           "11/14（六）13:00-16:00 北港 玉津咖啡 (暫定)",
@@ -1672,6 +1691,29 @@
             <li>報名額滿即不再招生，如人數不足須取消課程，將於上課前 5 天通知並全額退費</li>
             <li>織造所保有修改內容之權利</li>
           </ul>
+        `
+      },
+
+      'oneOnOne': {
+        title: '一對一精修專班',
+        tag: '鉤織課程',
+
+        inquiryOnly: true,
+
+        body: `
+          <p style="margin-bottom:1rem;">
+            如果你是：
+          </p>
+
+          <ul style="line-height:1.9; margin-top:0; margin-bottom:1rem;">
+            <li>無法配合開課時間</li>
+            <li>不喜歡團體課上被進度追著跑的壓力</li>
+            <li>有特定作品想完成</li>
+          </ul>
+
+          <p style="margin-bottom:0;">
+            一對一精修專班的彈性排課最能滿足你的需求。
+          </p>
         `
       },
 
@@ -2092,8 +2134,10 @@
           `<option value="">-- 請選擇開課場次 --</option>` +
           data.sessions
             .map(
-              s =>
-                `<option value="${s}">${s}</option>`
+              s => {
+                const isFull = s.includes('已額滿');
+                return `<option value="${s}" ${isFull ? 'disabled' : ''}>${s}</option>`;
+              }
             )
             .join('');
 
@@ -2131,16 +2175,29 @@
 
       /* ---------- 預設按鈕 ---------- */
 
+      /* ---------- 預設按鈕 ---------- */
+
       let actionBtnHtml = `
         <button
           class="btn-primary"
           style="width:auto; padding:0.7rem 1.8rem;"
-          onclick="addDetailToCart('${data.title}', ${data.price})"
+          onclick="window.open('https://lin.ee/yyzyhp2', '_blank', 'noopener,noreferrer')"
         >
-          加入購物車 / 報名
+          LINE 預約諮詢
         </button>
       `;
 
+      if (!data.inquiryOnly) {
+        actionBtnHtml = `
+          <button
+            class="btn-primary"
+            style="width:auto; padding:0.7rem 1.8rem;"
+            onclick="addDetailToCart('${data.title}', ${data.price})"
+          >
+            加入購物車 / 報名
+          </button>
+        `;
+      }
 
       /* =====================================================
          East-West
