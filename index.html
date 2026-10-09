@@ -1667,7 +1667,15 @@
           </ul>
 
           <p style="margin-top:1.2rem; margin-bottom:0.3rem;">
-            <strong>【報名須知】</strong>
+                      <p style="margin-top:1.2rem; margin-bottom:0.3rem;">
+            <strong>【報名優惠】</strong>
+          </p>
+          <ul style="line-height:1.8; margin-top:0; margin-bottom:0.8rem;">
+            <li>同一場次、同一課程報名 2 人以上，每位學員折 NT$100。</li>
+            <li>同時報名基礎鉤織團體課程 (1) 與 (2)，每位同時報名兩堂的學員可享兩堂各折 NT$100。</li>
+            <li>團報與兩堂合報優惠不重複計算，每位學員最高折 NT$200；優惠依購物車中的課程與場次自動計算。</li>
+          </ul>
+          <strong>【報名須知】</strong>
           </p>
 
           <ul style="line-height:1.8; margin-top:0; margin-bottom:0.8rem;">
@@ -1730,7 +1738,15 @@
           </ul>
 
           <p style="margin-top:1.2rem; margin-bottom:0.3rem;">
-            <strong>【報名須知】</strong>
+                      <p style="margin-top:1.2rem; margin-bottom:0.3rem;">
+            <strong>【報名優惠】</strong>
+          </p>
+          <ul style="line-height:1.8; margin-top:0; margin-bottom:0.8rem;">
+            <li>同一場次、同一課程報名 2 人以上，每位學員折 NT$100。</li>
+            <li>同時報名基礎鉤織團體課程 (1) 與 (2)，每位同時報名兩堂的學員可享兩堂各折 NT$100。</li>
+            <li>團報與兩堂合報優惠不重複計算，每位學員最高折 NT$200；優惠依購物車中的課程與場次自動計算。</li>
+          </ul>
+          <strong>【報名須知】</strong>
           </p>
 
           <ul style="line-height:1.8; margin-top:0; margin-bottom:0.8rem;">
@@ -4243,32 +4259,69 @@
         return isGroupClassItem(item);
       });
 
-      const hasClass1 = groupItems.some(function(item) {
+      const class1Items = groupItems.filter(function(item) {
         return item.name.includes('基礎鉤織團體課程 (1)');
       });
 
-      const hasClass2 = groupItems.some(function(item) {
+      const class2Items = groupItems.filter(function(item) {
         return item.name.includes('基礎鉤織團體課程 (2)');
       });
 
-      // 同一課程／同一場次購買 2 人以上：團報優惠 NT$100
-      const hasGroupDiscount = groupItems.some(function(item) {
-        return Number(item.qty || 0) >= 2;
-      });
+      const class1Qty = class1Items.reduce(function(sum, item) {
+        return sum + Number(item.qty || 0);
+      }, 0);
 
-      // 課程 (1) 與課程 (2) 同時報名：兩堂合報優惠 NT$100
-      const hasComboDiscount = hasClass1 && hasClass2;
+      const class2Qty = class2Items.reduce(function(sum, item) {
+        return sum + Number(item.qty || 0);
+      }, 0);
 
-      const groupDiscount = hasGroupDiscount ? 100 : 0;
-      const comboDiscount = hasComboDiscount ? 100 : 0;
+      // 兩堂合報以兩堂課可配對的人數計算，每位配對學員兩堂各折 NT$100。
+      const comboQty = Math.min(class1Qty, class2Qty);
+      const comboDiscount = comboQty * 200;
 
-      // 兩種優惠可同時使用，但最高優惠 NT$200
-      const totalDiscount = Math.min(
-        groupDiscount + comboDiscount,
-        200
-      );
+      // 同場次、同一課程需達 2 人才符合團報；已享兩堂合報的學員不再重複折抵。
+      function getExtraGroupDiscount(items, comboCoveredQty) {
+        let remainingComboQty = comboCoveredQty;
+        let extraGroupDiscount = 0;
+
+        const sessionGroups = new Map();
+        items.forEach(function(item) {
+          const session = item.session || '';
+          const key = session || item.name;
+          if (!sessionGroups.has(key)) {
+            sessionGroups.set(key, []);
+          }
+          sessionGroups.get(key).push(item);
+        });
+
+        sessionGroups.forEach(function(sessionItems) {
+          const sessionQty = sessionItems.reduce(function(sum, item) {
+            return sum + Number(item.qty || 0);
+          }, 0);
+
+          const coveredInSession = Math.min(sessionQty, remainingComboQty);
+          remainingComboQty -= coveredInSession;
+
+          if (sessionQty >= 2) {
+            const groupEligibleQty = sessionQty - coveredInSession;
+            extraGroupDiscount += groupEligibleQty * 100;
+          }
+        });
+
+        return extraGroupDiscount;
+      }
+
+      const class1GroupDiscount = getExtraGroupDiscount(class1Items, comboQty);
+      const class2GroupDiscount = getExtraGroupDiscount(class2Items, comboQty);
+      const groupDiscount = class1GroupDiscount + class2GroupDiscount;
+
+      // 每位學員最高折 NT$200：兩堂合報者已折 NT$200，不再加團報折扣。
+      const totalDiscount = comboDiscount + groupDiscount;
 
       return {
+        class1Qty: class1Qty,
+        class2Qty: class2Qty,
+        comboQty: comboQty,
         groupDiscount: groupDiscount,
         comboDiscount: comboDiscount,
         totalDiscount: totalDiscount
@@ -4281,23 +4334,19 @@
 
     function getDiscountNote() {
       const details = getCourseDiscountDetails();
+      const notes = [];
 
-      if (
-        details.groupDiscount > 0 &&
-        details.comboDiscount > 0
-      ) {
-        return '2人以上團報＋兩堂合報';
+      if (details.comboDiscount > 0) {
+        notes.push('兩堂合報（' + details.comboQty + ' 人）折 NT$' +
+          details.comboDiscount.toLocaleString());
       }
 
       if (details.groupDiscount > 0) {
-        return '2人以上團報';
+        notes.push('其他符合團報學員折 NT$' +
+          details.groupDiscount.toLocaleString());
       }
 
-      if (details.comboDiscount > 0) {
-        return '兩堂合報';
-      }
-
-      return '';
+      return notes.join('＋');
     }
 
     function updateCheckoutSummary() {
