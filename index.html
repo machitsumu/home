@@ -1932,8 +1932,12 @@
               type="email"
               id="drive-email-input"
               class="form-input"
-              placeholder="例如：example@gmail.com"
+              placeholder="請填寫本人使用的 Gmail，例如：example@gmail.com"
+              autocomplete="email"
             >
+            <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.65; margin-top:-0.25rem;">
+              請填寫本人使用的 Gmail 帳號以開通 Google Drive 影片觀看權限。每個帳號限 1 人使用，線上課程每筆訂單限購 1 份，請勿使用共用帳號。
+            </p>
 
           </div>
         `
@@ -3377,7 +3381,7 @@
         ) {
 
           alert(
-            '請完成必填欄位：Google Drive 影片觀看權限 Email'
+            '請完成必填欄位：Google Drive 影片觀看權限 Gmail'
           );
 
           driveEmail.focus();
@@ -3385,6 +3389,14 @@
           return;
         }
 
+        if (
+          driveEmail &&
+          !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(driveEmail.value.trim())
+        ) {
+          alert('請填寫有效的 Gmail 帳號（需以 @gmail.com 結尾），以便開通影片觀看權限。');
+          driveEmail.focus();
+          return;
+        }
 
         const addonYarnSelected =
           Array.from(selectedAddons).some(
@@ -4096,6 +4108,15 @@
 
 
     function addToCart(name, price, meta) {
+
+      // 線上基礎課程的觀看權限以個人 Gmail 開通，每筆訂單限購 1 份。
+      if (
+        name.includes('線上基礎課程') &&
+        cart.some(item => isOnlineCourseItem(item))
+      ) {
+        alert('線上基礎課程每個 Gmail 帳號限 1 人使用，購物車中已有此課程，無法再加入第二份。');
+        return;
+      }
 
       const existing =
         cart.find(
@@ -5116,6 +5137,15 @@ function submitOrderToLine() {
     function changeQty(index, delta) {
 
       if (cart[index]) {
+
+        if (
+          delta > 0 &&
+          isOnlineCourseItem(cart[index]) &&
+          cart[index].qty >= 1
+        ) {
+          alert('線上基礎課程每筆訂單限購 1 份，每個 Gmail 帳號限 1 人使用。');
+          return;
+        }
 
         if (
           delta > 0 &&
