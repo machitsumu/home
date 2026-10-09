@@ -4243,40 +4243,33 @@
         return isGroupClassItem(item);
       });
 
-      // 依課程類別加總人數；即使選擇不同場次，也視為同一課程類別。
-      const class1Qty = groupItems
-        .filter(function(item) {
-          return item.name.includes('基礎鉤織團體課程 (1)');
-        })
-        .reduce(function(sum, item) {
-          return sum + Number(item.qty || 0);
-        }, 0);
+      const hasClass1 = groupItems.some(function(item) {
+        return item.name.includes('基礎鉤織團體課程 (1)');
+      });
 
-      const class2Qty = groupItems
-        .filter(function(item) {
-          return item.name.includes('基礎鉤織團體課程 (2)');
-        })
-        .reduce(function(sum, item) {
-          return sum + Number(item.qty || 0);
-        }, 0);
+      const hasClass2 = groupItems.some(function(item) {
+        return item.name.includes('基礎鉤織團體課程 (2)');
+      });
 
-      // 規則 1：同一課程購買 2 人以上，該課程每人折 NT$100。
-      const class1GroupDiscount = class1Qty >= 2 ? class1Qty * 100 : 0;
-      const class2GroupDiscount = class2Qty >= 2 ? class2Qty * 100 : 0;
-      const groupDiscount = class1GroupDiscount + class2GroupDiscount;
+      // 同一課程／同一場次購買 2 人以上：團報優惠 NT$100
+      const hasGroupDiscount = groupItems.some(function(item) {
+        return Number(item.qty || 0) >= 2;
+      });
 
-      // 規則 2：課程 (1) 與課程 (2) 同時購買，依兩堂課的較低人數，每人再折 NT$100。
-      const comboQty = Math.min(class1Qty, class2Qty);
-      const comboDiscount = comboQty > 0 ? comboQty * 100 : 0;
+      // 課程 (1) 與課程 (2) 同時報名：兩堂合報優惠 NT$100
+      const hasComboDiscount = hasClass1 && hasClass2;
 
-      // 兩項優惠可累加，不設 NT$200 上限。
-      const totalDiscount = groupDiscount + comboDiscount;
+      const groupDiscount = hasGroupDiscount ? 100 : 0;
+      const comboDiscount = hasComboDiscount ? 100 : 0;
+
+      // 兩種優惠可同時使用，但最高優惠 NT$200
+      const totalDiscount = Math.min(
+        groupDiscount + comboDiscount,
+        200
+      );
 
       return {
-        class1Qty: class1Qty,
-        class2Qty: class2Qty,
         groupDiscount: groupDiscount,
-        comboQty: comboQty,
         comboDiscount: comboDiscount,
         totalDiscount: totalDiscount
       };
@@ -4288,20 +4281,23 @@
 
     function getDiscountNote() {
       const details = getCourseDiscountDetails();
-      const notes = [];
+
+      if (
+        details.groupDiscount > 0 &&
+        details.comboDiscount > 0
+      ) {
+        return '2人以上團報＋兩堂合報';
+      }
 
       if (details.groupDiscount > 0) {
-        notes.push('同課程團報折 NT$' + details.groupDiscount.toLocaleString());
+        return '2人以上團報';
       }
 
       if (details.comboDiscount > 0) {
-        notes.push(
-          '兩堂合報（' + details.comboQty + ' 人）折 NT$' +
-          details.comboDiscount.toLocaleString()
-        );
+        return '兩堂合報';
       }
 
-      return notes.join('＋');
+      return '';
     }
 
     function updateCheckoutSummary() {
