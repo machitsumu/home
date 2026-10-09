@@ -4609,6 +4609,23 @@ function submitOrderToLine() {
     return;
   }
 
+  /* ---------- 線上基礎課程：結帳前再次驗證限購與觀看帳號 ---------- */
+  const onlineCourseItems = cart.filter(item => isOnlineCourseItem(item));
+  const onlineCourseQty = onlineCourseItems.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+
+  if (onlineCourseQty > 1) {
+    alert('線上基礎課程每筆訂單限購 1 份，每個 Gmail 帳號限 1 人使用。請返回購物車調整數量。');
+    return;
+  }
+
+  if (onlineCourseItems.length > 0) {
+    const accessGmail = String(onlineCourseItems[0].driveEmail || '').trim();
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(accessGmail)) {
+      alert('線上基礎課程需填寫有效的 Gmail 帳號才能開通影片觀看權限。請移除課程後重新選購並填寫 Gmail。');
+      return;
+    }
+  }
+
   /* ---------- 取得表單資料 ---------- */
   const name = document.getElementById('buyer-name').value.trim();
   const email = document.getElementById('buyer-email').value.trim();
