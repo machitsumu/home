@@ -1932,11 +1932,11 @@
               type="email"
               id="drive-email-input"
               class="form-input"
-              placeholder="請填寫本人使用的 Gmail，例如：example@gmail.com"
+              placeholder="請填寫本人使用的 Email，例如：name@example.com"
               autocomplete="email"
             >
             <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.65; margin-top:-0.25rem;">
-              請填寫本人使用的 Gmail 帳號以開通 Google Drive 影片觀看權限。每個帳號限 1 人使用，線上課程每筆訂單限購 1 份，請勿使用共用帳號。
+              請填寫本人使用的 Email 以開通 Google Drive 影片觀看權限。每個 Email 限 1 人使用，線上課程每筆訂單限購 1 份，請勿使用共用帳號。
             </p>
 
           </div>
@@ -3391,9 +3391,9 @@
 
         if (
           driveEmail &&
-          !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(driveEmail.value.trim())
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(driveEmail.value.trim())
         ) {
-          alert('請填寫有效的 Gmail 帳號（需以 @gmail.com 結尾），以便開通影片觀看權限。');
+          alert('請填寫有效的 Email 地址，以便開通影片觀看權限。');
           driveEmail.focus();
           return;
         }
@@ -4114,7 +4114,7 @@
         name.includes('線上基礎課程') &&
         cart.some(item => isOnlineCourseItem(item))
       ) {
-        alert('線上基礎課程每個 Gmail 帳號限 1 人使用，購物車中已有此課程，無法再加入第二份。');
+        alert('線上基礎課程每筆訂單限購 1 份；同一個觀看權限 Email 只能購買一次，購物車中已有此課程，無法再加入第二份。');
         return;
       }
 
@@ -4614,14 +4614,14 @@ function submitOrderToLine() {
   const onlineCourseQty = onlineCourseItems.reduce((sum, item) => sum + Number(item.qty || 0), 0);
 
   if (onlineCourseQty > 1) {
-    alert('線上基礎課程每筆訂單限購 1 份，每個 Gmail 帳號限 1 人使用。請返回購物車調整數量。');
+    alert('線上基礎課程每筆訂單限購 1 份，每個觀看權限 Email 限購一次。請返回購物車調整數量。');
     return;
   }
 
   if (onlineCourseItems.length > 0) {
-    const accessGmail = String(onlineCourseItems[0].driveEmail || '').trim();
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(accessGmail)) {
-      alert('線上基礎課程需填寫有效的 Gmail 帳號才能開通影片觀看權限。請移除課程後重新選購並填寫 Gmail。');
+    const accessEmail = String(onlineCourseItems[0].driveEmail || '').trim();
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(accessEmail)) {
+      alert('線上基礎課程需填寫有效的 Email 地址才能開通影片觀看權限。請移除課程後重新選購並填寫 Email。');
       return;
     }
   }
@@ -5160,7 +5160,7 @@ function submitOrderToLine() {
           isOnlineCourseItem(cart[index]) &&
           cart[index].qty >= 1
         ) {
-          alert('線上基礎課程每筆訂單限購 1 份，每個 Gmail 帳號限 1 人使用。');
+          alert('線上基礎課程每筆訂單限購 1 份，每筆訂單限購 1 份；同一個觀看權限 Email 只能購買一次。');
           return;
         }
 
