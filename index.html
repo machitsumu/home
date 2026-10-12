@@ -4620,7 +4620,7 @@ function submitOrderToLine() {
 
   if (onlineCourseItems.length > 0) {
     const accessEmail = String(onlineCourseItems[0].driveEmail || '').trim();
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(accessEmail)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(accessEmail)) {
       alert('線上基礎課程需填寫有效的 Email 地址才能開通影片觀看權限。請移除課程後重新選購並填寫 Email。');
       return;
     }
@@ -5160,7 +5160,7 @@ function submitOrderToLine() {
           isOnlineCourseItem(cart[index]) &&
           cart[index].qty >= 1
         ) {
-          alert('線上基礎課程每筆訂單限購 1 份，每筆訂單限購 1 份；同一個觀看權限 Email 只能購買一次。');
+          alert('線上基礎課程每筆訂單限購 1 份；同一個觀看權限 Email 只能購買一次。');
           return;
         }
 
