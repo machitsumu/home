@@ -3381,7 +3381,7 @@
         ) {
 
           alert(
-            '請完成必填欄位：Google Drive 影片觀看權限 Gmail'
+            '請完成必填欄位：Google Drive 影片觀看權限 Email'
           );
 
           driveEmail.focus();
@@ -4109,7 +4109,7 @@
 
     function addToCart(name, price, meta) {
 
-      // 線上基礎課程的觀看權限以個人 Gmail 開通，每筆訂單限購 1 份。
+      // 線上基礎課程以個人 Email 開通觀看權限，每筆訂單限購 1 份。
       if (
         name.includes('線上基礎課程') &&
         cart.some(item => isOnlineCourseItem(item))
