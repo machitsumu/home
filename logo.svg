@@ -1,110 +1,15 @@
-<svg width="900"
-     height="320"
-     viewBox="0 0 900 320"
-     xmlns="http://www.w3.org/2000/svg">
-
-<style>
-
-.signature{
-  fill:none;
-  stroke:#B28C77;
-  stroke-width:3;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.zh{
-  fill:#3C3835;
-  font-family:
-    "Tsukushi Mincho",
-    "Hiragino Mincho ProN",
-    "Noto Serif TC",
-    serif;
-
-  font-size:58px;
-  font-weight:300;
-  letter-spacing:0.08em;
-}
-
-.en{
-  fill:#3C3835;
-  font-family:
-    "Cormorant Garamond",
-    serif;
-
-  font-size:28px;
-  letter-spacing:0.18em;
-}
-
-</style>
-
-<!-- Handmade m -->
-
-<path
- class="signature"
- d="
- M235 145
-
- C255 160
-   278 160
-   292 145
-
- C308 126
-   326 95
-   356 90
-
- C380 86
-   396 104
-   406 122
-
- C414 136
-   423 133
-   434 121
-
- C446 109
-   463 103
-   482 108
-
- C498 113
-   516 121
-   532 126
-
- C552 131
-   570 139
-   585 151
-
- C597 162
-   604 176
-   604 191
-
- C604 206
-   600 220
-   594 232
-
- C590 240
-   588 246
-   589 252
- "
-/>
-
-<!-- Chinese -->
-
-<text
- x="450"
- y="205"
- text-anchor="middle"
- class="zh">
-織造所
-</text>
-
-<!-- English -->
-
-<text
- x="450"
- y="238"
- text-anchor="middle"
- class="en">
-machitsumu
-</text>
-
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="275" viewBox="0 0 900 275" role="img" aria-labelledby="title desc">
+  <title id="title">織造所 machitsumu</title>
+  <desc id="desc">手寫風格的 m、織造所中文字與 machitsumu 英文字標。</desc>
+  <defs>
+    <style>
+      .signature { fill: none; stroke: #4B3D31; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round; }
+      .zh { fill: #4B3D31; font-family: "Noto Serif TC", "Hiragino Mincho ProN", "Songti TC", serif; font-size: 61px; font-weight: 400; letter-spacing: 0.12em; }
+      .en { fill: #4B3D31; font-family: "Cormorant Garamond", "Times New Roman", serif; font-size: 29px; letter-spacing: 0.22em; }
+    </style>
+  </defs>
+  <path class="signature" d="M72 188 C88 153 111 103 140 75 C154 61 174 57 181 70 C190 86 172 121 158 147 L111 218 C139 181 174 119 207 91 C224 77 242 72 250 83 C260 98 242 130 226 157 L188 218 C215 181 246 129 278 111 C294 102 309 104 313 116 C318 132 299 160 286 178 C272 198 276 213 296 211 C316 209 333 195 351 190"/>
+  <text class="zh" x="510" y="127" text-anchor="middle">織造所</text>
+  <text class="en" x="510" y="170" text-anchor="middle">machitsumu</text>
+  <path class="signature" d="M355 190 C387 184 407 195 431 205 C463 218 500 213 536 197 C570 182 607 183 643 198 C679 213 715 210 748 194 C777 180 802 164 824 151"/>
 </svg>
