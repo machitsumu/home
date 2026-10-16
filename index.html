@@ -2288,11 +2288,9 @@
               <label style="display:block;">
 
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="east-west-option"
-                  value="材料包"
-                  checked
-                  data-price="1380"
+                  value="材料包" required data-required-purchase-option="true" data-price="1380"
                 >
 
                 材料包 $1380
@@ -2310,10 +2308,9 @@
               <label style="display:block;">
 
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="east-west-option"
-                  value="線材＆五金配件加購"
-                  data-price="880"
+                  value="線材＆五金配件加購" required data-required-purchase-option="true" data-price="880"
                 >
 
                 線材 ＆ 五金配件加購 $880（不含織圖及線上課程）
@@ -2350,10 +2347,9 @@
 
               <label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="east-west-option"
-                  value="成品包"
-                  data-price="2680"
+                  value="成品包" required data-required-purchase-option="true" data-price="2680"
                 >
                 成品包 $2680
               </label>
@@ -2393,11 +2389,9 @@
               <label style="display:block;">
 
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="petit-walk-option"
-                  value="材料包"
-                  checked
-                  data-price="1180"
+                  value="材料包" required data-required-purchase-option="true" data-price="1180"
                 >
 
                 材料包 $1180
@@ -2415,10 +2409,9 @@
               <label style="display:block;">
 
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="petit-walk-option"
-                  value="線材＆五金配件加購"
-                  data-price="780"
+                  value="線材＆五金配件加購" required data-required-purchase-option="true" data-price="780"
                 >
 
                 線材 ＆ 五金配件加購 $780（不含織圖及線上課程）
@@ -2455,10 +2448,9 @@
 
               <label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="petit-walk-option"
-                  value="成品包"
-                  data-price="2280"
+                  value="成品包" required data-required-purchase-option="true" data-price="2280"
                 >
                 成品包 $2280
               </label>
@@ -2684,10 +2676,9 @@
 
               <label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="balloon-option"
-                  value="成品包"
-                  data-price="2280"
+                  value="成品包" required data-required-purchase-option="true" data-price="2280"
                 >
                 成品包 $2280
               </label>
@@ -2727,11 +2718,9 @@
               <label style="display:block;">
 
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="mesh-option"
-                  value="材料包"
-                  checked
-                  data-price="680"
+                  value="材料包" required data-required-purchase-option="true" data-price="680"
                 >
 
                 材料包 $680
@@ -2749,10 +2738,9 @@
               <label style="display:block;">
 
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="mesh-option"
-                  value="線材＆配件加購"
-                  data-price="480"
+                  value="線材＆配件加購" required data-required-purchase-option="true" data-price="480"
                 >
 
                 線材 ＆ 配件加購 $480（不含織圖及線上課程）
@@ -2789,10 +2777,9 @@
 
               <label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="mesh-option"
-                  value="成品包"
-                  data-price="1080"
+                  value="成品包" required data-required-purchase-option="true" data-price="1080"
                 >
                 成品包 $1080
               </label>
@@ -3283,6 +3270,16 @@
        ========================================================= */
 
     function addDetailToCart(title, price) {
+
+      /* ---------- 原創包款：購買項目擇一必選 ---------- */
+      const hasRequiredPurchaseOption = document.querySelector('input[data-required-purchase-option]');
+      const selectedRequiredPurchaseOption = document.querySelector('input[data-required-purchase-option]:checked');
+      if (hasRequiredPurchaseOption && !selectedRequiredPurchaseOption) {
+        alert('請完成必填欄位：材料包、線材＆五金配件加購、成品包，請擇一選擇。');
+        hasRequiredPurchaseOption.focus();
+        return;
+      }
+
 
       const isGroupClass = title.includes('基礎鉤織團體課程');
 
