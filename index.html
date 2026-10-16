@@ -2288,9 +2288,9 @@
               <label style="display:block;">
 
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="east-west-option"
-                  value="材料包" required data-required-purchase-option="true" data-price="1380"
+                  value="材料包" data-price="1380"
                 >
 
                 材料包 $1380
@@ -2308,9 +2308,9 @@
               <label style="display:block;">
 
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="east-west-option"
-                  value="線材＆五金配件加購" required data-required-purchase-option="true" data-price="880"
+                  value="線材＆五金配件加購" data-price="880"
                 >
 
                 線材 ＆ 五金配件加購 $880（不含織圖及線上課程）
@@ -2347,11 +2347,12 @@
 
               <label>
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="east-west-option"
-                  value="成品包" required data-required-purchase-option="true" data-price="2680"
+                  value="成品包" data-price="2680"
                 >
                 成品包 $2680
+                <input type="text" id="east-west-finished-color-input" class="form-input" placeholder="請填寫成品包配色" style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);">
               </label>
 
             </div>
@@ -2389,9 +2390,9 @@
               <label style="display:block;">
 
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="petit-walk-option"
-                  value="材料包" required data-required-purchase-option="true" data-price="1180"
+                  value="材料包" data-price="1180"
                 >
 
                 材料包 $1180
@@ -2409,9 +2410,9 @@
               <label style="display:block;">
 
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="petit-walk-option"
-                  value="線材＆五金配件加購" required data-required-purchase-option="true" data-price="780"
+                  value="線材＆五金配件加購" data-price="780"
                 >
 
                 線材 ＆ 五金配件加購 $780（不含織圖及線上課程）
@@ -2448,11 +2449,12 @@
 
               <label>
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="petit-walk-option"
-                  value="成品包" required data-required-purchase-option="true" data-price="2280"
+                  value="成品包" data-price="2280"
                 >
                 成品包 $2280
+                <input type="text" id="petit-walk-finished-color-input" class="form-input" placeholder="請填寫成品包配色" style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);">
               </label>
 
             </div>
@@ -2506,7 +2508,6 @@
                   <option
                     value="材料包 - 草莓布蕾（上: 07*1 / 下: 27*2，示範色）"
                     data-price="1280"
-                    selected
                   >
                     材料包 - 草莓布蕾 （上: 07*1 / 下: 27*2，示範色） $1280
                   </option>
@@ -2676,11 +2677,12 @@
 
               <label>
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="balloon-option"
-                  value="成品包" required data-required-purchase-option="true" data-price="2280"
+                  value="成品包" data-price="2280"
                 >
                 成品包 $2280
+                <input type="text" id="balloon-finished-color-input" class="form-input" placeholder="請填寫成品包配色" style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);">
               </label>
 
             </div>
@@ -2718,9 +2720,9 @@
               <label style="display:block;">
 
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="mesh-option"
-                  value="材料包" required data-required-purchase-option="true" data-price="680"
+                  value="材料包" data-price="680"
                 >
 
                 材料包 $680
@@ -2738,9 +2740,9 @@
               <label style="display:block;">
 
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="mesh-option"
-                  value="線材＆配件加購" required data-required-purchase-option="true" data-price="480"
+                  value="線材＆配件加購" data-price="480"
                 >
 
                 線材 ＆ 配件加購 $480（不含織圖及線上課程）
@@ -2777,11 +2779,12 @@
 
               <label>
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="mesh-option"
-                  value="成品包" required data-required-purchase-option="true" data-price="1080"
+                  value="成品包" data-price="1080"
                 >
                 成品包 $1080
+                <input type="text" id="mesh-finished-color-input" class="form-input" placeholder="請填寫成品包配色" style="margin:0.35rem 0 0 22px; width:calc(100% - 22px);">
               </label>
 
             </div>
@@ -3271,15 +3274,7 @@
 
     function addDetailToCart(title, price) {
 
-      /* ---------- 原創包款：購買項目擇一必選 ---------- */
-      const hasRequiredPurchaseOption = document.querySelector('input[data-required-purchase-option]');
-      const selectedRequiredPurchaseOption = document.querySelector('input[data-required-purchase-option]:checked');
-      if (hasRequiredPurchaseOption && !selectedRequiredPurchaseOption) {
-        alert('請完成必填欄位：材料包、線材＆五金配件加購、成品包，請擇一選擇。');
-        hasRequiredPurchaseOption.focus();
-        return;
-      }
-
+      /* 各原創包款的主要購買項目與配色，於各商品區塊分別驗證。 */
 
       const isGroupClass = title.includes('基礎鉤織團體課程');
 
@@ -3446,12 +3441,9 @@
             'input[name="east-west-option"]:checked'
           );
 
-        if (!selectedOptions.length) {
-
-          alert(
-            '請至少選擇一項購買項目'
-          );
-
+        const mainOptionSelected = Array.from(selectedOptions).some(option => ['材料包', '線材＆五金配件加購', '成品包'].includes(option.value));
+        if (!mainOptionSelected) {
+          alert('請至少選擇一項主要購買項目：材料包、線材＆五金配件加購或成品包。');
           return;
         }
 
@@ -3516,6 +3508,13 @@
           return;
         }
 
+        const finishedColorInput = document.getElementById('east-west-finished-color-input');
+        const finishedSelected = Array.from(selectedOptions).some(option => option.value === '成品包');
+        if (finishedSelected && (!finishedColorInput || !finishedColorInput.value.trim())) {
+          alert('請填寫成品包配色。');
+          if (finishedColorInput) finishedColorInput.focus();
+          return;
+        }
 
         finalPrice = 0;
 
@@ -3555,6 +3554,7 @@
           finalPrice +=
             Number(option.dataset.price);
         });
+        if (finishedSelected && finishedColorInput && finishedColorInput.value.trim()) detailsText.push('成品包配色：' + finishedColorInput.value.trim());
       }
 
 
@@ -3573,12 +3573,9 @@
             'input[name="petit-walk-option"]:checked'
           );
 
-        if (!selectedOptions.length) {
-
-          alert(
-            '請至少選擇一項購買項目'
-          );
-
+        const mainOptionSelected = Array.from(selectedOptions).some(option => ['材料包', '線材＆五金配件加購', '成品包'].includes(option.value));
+        if (!mainOptionSelected) {
+          alert('請至少選擇一項主要購買項目：材料包、線材＆五金配件加購或成品包。');
           return;
         }
 
@@ -3643,6 +3640,13 @@
           return;
         }
 
+        const finishedColorInput = document.getElementById('petit-walk-finished-color-input');
+        const finishedSelected = Array.from(selectedOptions).some(option => option.value === '成品包');
+        if (finishedSelected && (!finishedColorInput || !finishedColorInput.value.trim())) {
+          alert('請填寫成品包配色。');
+          if (finishedColorInput) finishedColorInput.focus();
+          return;
+        }
 
         finalPrice = 0;
 
@@ -3684,6 +3688,7 @@
           finalPrice +=
             Number(option.dataset.price);
         });
+        if (finishedSelected && finishedColorInput && finishedColorInput.value.trim()) detailsText.push('成品包配色：' + finishedColorInput.value.trim());
       }
 
 
@@ -3734,11 +3739,8 @@
             : '';
 
 
-        if (
-          !kitVal &&
-          !addonVal &&
-          !selectedOptions.length
-        ) {
+        const finishedSelected = Array.from(selectedOptions).some(option => option.value === '成品包');
+        if (!kitVal && !addonVal && !finishedSelected) {
 
           alert(
             '請至少選擇一項購買項目'
@@ -3780,6 +3782,12 @@
             balloonAddonCustomColor.focus();
           }
 
+          return;
+        }
+        const balloonFinishedColor = document.getElementById('balloon-finished-color-input');
+        if (finishedSelected && (!balloonFinishedColor || !balloonFinishedColor.value.trim())) {
+          alert('請填寫成品包配色。');
+          if (balloonFinishedColor) balloonFinishedColor.focus();
           return;
         }
 
@@ -3852,12 +3860,13 @@
         selectedOptions.forEach(option => {
 
           detailsText.push(
-            `${option.value} $${Number(option.dataset.price).toLocaleString()}`
+            `${option.value} ${Number(option.dataset.price).toLocaleString()}`
           );
 
           finalPrice +=
             Number(option.dataset.price);
         });
+        if (finishedSelected && balloonFinishedColor && balloonFinishedColor.value.trim()) detailsText.push('成品包配色：' + balloonFinishedColor.value.trim());
       }
 
 
@@ -3877,12 +3886,9 @@
           );
 
 
-        if (!selectedOptions.length) {
-
-          alert(
-            '請至少選擇一項購買項目'
-          );
-
+        const mainOptionSelected = Array.from(selectedOptions).some(option => ['材料包', '線材＆配件加購', '成品包'].includes(option.value));
+        if (!mainOptionSelected) {
+          alert('請至少選擇一項主要購買項目：材料包、線材＆五金配件加購或成品包。');
           return;
         }
 
@@ -3947,6 +3953,13 @@
           return;
         }
 
+        const finishedColorInput = document.getElementById('mesh-finished-color-input');
+        const finishedSelected = Array.from(selectedOptions).some(option => option.value === '成品包');
+        if (finishedSelected && (!finishedColorInput || !finishedColorInput.value.trim())) {
+          alert('請填寫成品包配色。');
+          if (finishedColorInput) finishedColorInput.focus();
+          return;
+        }
 
         finalPrice = 0;
 
@@ -3986,6 +3999,7 @@
           finalPrice +=
             Number(option.dataset.price);
         });
+        if (finishedSelected && finishedColorInput && finishedColorInput.value.trim()) detailsText.push('成品包配色：' + finishedColorInput.value.trim());
       }
 
 
