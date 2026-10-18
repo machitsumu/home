@@ -4973,8 +4973,16 @@ function submitOrderToLine() {
               </h3>
 
               <p style="font-size:0.95rem; color:var(--text-main); line-height:1.9; margin-bottom:0.8rem;">
-                訂單確認信已寄出！若 5 分鐘內未收到，請至『垃圾郵件』匣查看，並保存您的訂單編號：<strong>${escapeHtml_(confirmedOrderNo)}</strong>。
+                ${result.emailSent === true
+                  ? '訂單確認信已送出！若 5 分鐘內未收到，請至「垃圾郵件」匣查看。'
+                  : '訂單已成立，但確認信目前未能成功送出。請先檢查垃圾郵件匣；若仍未收到，請透過 LINE 聯絡我們。'}
+                <br>請保存您的訂單編號：<strong>${escapeHtml_(confirmedOrderNo)}</strong>。
               </p>
+              ${result.duplicatePurchase === true ? `
+                <p style="font-size:0.9rem; color:#9A5A32; line-height:1.9; margin-bottom:0.8rem;">
+                  提醒：這個線上課程觀看 Email 曾出現在既有訂單中。此次訂單仍已成立；若是重複購買或需要確認觀看權限，請先聯絡織造所。
+                </p>
+              ` : ''}
 
               <p style="font-size:0.9rem; color:#827266; line-height:1.9; margin-bottom:1.4rem;">
                 完成付款後，請至官方 LINE 回覆訂單編號與匯款帳號末 5 碼，以便對帳。
