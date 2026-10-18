@@ -4625,7 +4625,7 @@ function submitOrderToLine() {
   const onlineCourseQty = onlineCourseItems.reduce((sum, item) => sum + Number(item.qty || 0), 0);
 
   if (onlineCourseQty > 1) {
-    alert('線上基礎課程每筆訂單限購 1 份，每個觀看權限 Email 限購一次。請返回購物車調整數量。');
+    alert('線上基礎課程每筆訂單限購 1 份。請返回購物車調整數量。');
     return;
   }
 
@@ -5171,7 +5171,7 @@ function submitOrderToLine() {
           isOnlineCourseItem(cart[index]) &&
           cart[index].qty >= 1
         ) {
-          alert('線上基礎課程每筆訂單限購 1 份；同一個觀看權限 Email 只能購買一次。');
+          alert('線上基礎課程每筆訂單限購 1 份。');
           return;
         }
 
