@@ -130,15 +130,18 @@
     .logo {
       display: flex;
       align-items: center;
-      width: 240px;
-      height: auto;
+      width: auto;
+      height: 72px;
       flex: 0 0 auto;
     }
 
     .logo-img {
-      width: 240px;
-      height: auto;
       display: block;
+      width: auto;
+      height: 72px;
+      max-width: 200px;
+      object-fit: contain;
+      object-position: left center;
     }
 
     nav {
@@ -878,12 +881,15 @@
       }
 
       .logo {
-        width: 220px;
-        margin-left: -57px;
+        width: auto;
+        height: 58px;
+        margin-left: 0;
       }
 
       .logo-img {
-        width: 220px;
+        width: auto;
+        height: 58px;
+        max-width: 155px;
       }
 
       nav {
@@ -1076,7 +1082,7 @@
   <!-- 1. 頂部導覽列 -->
   <header>
     <div class="logo">
-      <img src="logo.png?v=2" alt="織造所 machitsumu" class="logo-img">
+      <img src="logo.png?v=3" alt="織造所 machitsumu" class="logo-img">
     </div>
     <nav>
       <button type="button" class="mobile-nav-toggle" aria-label="開啟網站選單" aria-expanded="false" onclick="toggleMobileMenu()">
