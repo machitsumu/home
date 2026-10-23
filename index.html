@@ -141,8 +141,10 @@
       width: 210px;
       height: 76px;
       max-width: none;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center center;
+      /* SVG 圖形視覺重心略高，向下微調以對齊右側導覽文字 */
+      transform: translateY(7px);
     }
 
     nav {
@@ -893,8 +895,9 @@
         width: 165px;
         height: 58px;
         max-width: none;
-        object-fit: cover;
+        object-fit: contain;
         object-position: center center;
+        transform: none;
       }
 
       nav {
