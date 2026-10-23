@@ -2195,7 +2195,7 @@
     }
 
     function getSessionCutoffInfo_(sessionText) {
-      const match = String(sessionText || '').match(/(\\d{1,2})\\/(\\d{1,2})/);
+      const match = String(sessionText || '').match(/(\d{1,2})\/(\d{1,2})/);
       if (!match) return { validDate: false, closed: false };
 
       const month = Number(match[1]);
