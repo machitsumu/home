@@ -2171,6 +2171,70 @@
       JSON.parse(localStorage.getItem('kit_cart')) || [];
 
 
+
+    /* =========================================================
+       實體團體課程報名截止：開課日前 5 天（台灣時間 00:00）
+       ========================================================= */
+    function getTaipeiDateParts_() {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Taipei',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).formatToParts(new Date());
+      const values = {};
+      parts.forEach(part => {
+        if (part.type !== 'literal') values[part.type] = part.value;
+      });
+      return {
+        year: Number(values.year),
+        month: Number(values.month),
+        day: Number(values.day),
+        key: values.year + '-' + values.month + '-' + values.day
+      };
+    }
+
+    function getSessionCutoffInfo_(sessionText) {
+      const match = String(sessionText || '').match(/(\\d{1,2})\\/(\\d{1,2})/);
+      if (!match) return { validDate: false, closed: false };
+
+      const month = Number(match[1]);
+      const day = Number(match[2]);
+      const today = getTaipeiDateParts_();
+      const classDate = new Date(Date.UTC(today.year, month - 1, day));
+      if (
+        classDate.getUTCFullYear() !== today.year ||
+        classDate.getUTCMonth() !== month - 1 ||
+        classDate.getUTCDate() !== day
+      ) {
+        return { validDate: false, closed: false };
+      }
+
+      const cutoffDate = new Date(Date.UTC(today.year, month - 1, day - 5));
+      const cutoffKey = [
+        cutoffDate.getUTCFullYear(),
+        String(cutoffDate.getUTCMonth() + 1).padStart(2, '0'),
+        String(cutoffDate.getUTCDate()).padStart(2, '0')
+      ].join('-');
+      const todayKey = [
+        today.year,
+        String(today.month).padStart(2, '0'),
+        String(today.day).padStart(2, '0')
+      ].join('-');
+
+      return {
+        validDate: true,
+        closed: todayKey >= cutoffKey,
+        cutoffKey: cutoffKey
+      };
+    }
+
+    function isSessionRegistrationClosed_(sessionText) {
+      return getSessionCutoffInfo_(sessionText).closed;
+    }
+
+    const REGISTRATION_CLOSED_MESSAGE = '報名已截止，請直接連絡我們';
+
     /* =========================================================
        5. 開啟商品 / 課程詳細 Modal
        ========================================================= */
@@ -2220,7 +2284,9 @@
             .map(
               s => {
                 const isFull = s.includes('已額滿');
-                return `<option value="${s}" ${isFull ? 'disabled' : ''}>${s}</option>`;
+                const isExpired = !isFull && !s.includes('規劃中') && isSessionRegistrationClosed_(s);
+                const optionLabel = isExpired ? `${s}（報名已截止）` : s;
+                return `<option value="${s}" ${(isFull || isExpired) ? 'disabled' : ''}>${optionLabel}</option>`;
               }
             )
             .join('');
@@ -2251,6 +2317,9 @@
               }
 
             </select>
+            ${data.sessions.some(s => !s.includes('已額滿') && !s.includes('規劃中') && isSessionRegistrationClosed_(s))
+              ? `<p style="margin:0.45rem 0 0; color:#9A5A32; font-size:0.82rem; line-height:1.6;">${REGISTRATION_CLOSED_MESSAGE}</p>`
+              : ''}
 
           </div>
         `;
@@ -3322,6 +3391,12 @@
         return;
       }
 
+
+      /* ---------- 團體課程：截止日期前端防呆 ---------- */
+      if (isGroupClass && sessionSelect && sessionSelect.value && isSessionRegistrationClosed_(sessionSelect.value)) {
+        alert(REGISTRATION_CLOSED_MESSAGE);
+        return;
+      }
 
       /* ---------- 基礎團體課程：單次購買最多 3 人 ---------- */
 
@@ -4628,6 +4703,15 @@ function submitOrderToLine() {
   /* ---------- 檢查購物車 ---------- */
   if (!cart.length) {
     alert('購物車是空的！');
+    return;
+  }
+
+  /* ---------- 結帳前再次檢查團體課程場次截止日期 ---------- */
+  const expiredClassItem = cart.find(item =>
+    isGroupClassItem(item) && item.session && isSessionRegistrationClosed_(item.session)
+  );
+  if (expiredClassItem) {
+    alert(REGISTRATION_CLOSED_MESSAGE + '。請從購物車移除已截止場次後再送出訂單。');
     return;
   }
 
