@@ -141,10 +141,10 @@
       width: 210px;
       height: 76px;
       max-width: none;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center center;
-      /* 保留原本較大的顯示效果，並向下微調對齊右側導覽文字 */
-      transform: translateY(7px);
+      /* 使用裁切留白後的 SVG，讓 Logo 清楚並在 Header 垂直置中 */
+      transform: none;
     }
 
     nav {
@@ -1090,7 +1090,7 @@
   <!-- 1. 頂部導覽列 -->
   <header>
     <div class="logo">
-      <img src="logo.svg?v=4" alt="織造所 machitsumu" class="logo-img">
+      <img src="logo.svg?v=5" alt="織造所 machitsumu" class="logo-img">
     </div>
     <nav>
       <button type="button" class="mobile-nav-toggle" aria-label="開啟網站選單" aria-expanded="false" onclick="toggleMobileMenu()">
