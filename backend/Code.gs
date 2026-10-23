@@ -121,15 +121,15 @@ function validateOrder_(order) {
  * 場次文字目前使用 M/D 格式，年份以台灣當年年份判斷。
  */
 function validateClassRegistrationCutoff_(itemsText) {
-  const lines = String(itemsText || '').split(/\\r?\\n/);
+  const lines = String(itemsText || '').split(/\r?\n/);
   const now = new Date();
   const todayKey = Utilities.formatDate(now, CONFIG.TIMEZONE, 'yyyy-MM-dd');
   const currentYear = Number(Utilities.formatDate(now, CONFIG.TIMEZONE, 'yyyy'));
 
   lines.forEach(function(line) {
-    if (!/基礎鉤織團體課程\\s*\\([12]\\)/.test(line)) return;
+    if (!/基礎鉤織團體課程\s*\([12]\)/.test(line)) return;
 
-    const dateMatch = line.match(/(\\d{1,2})\\/(\\d{1,2})/);
+    const dateMatch = line.match(/(\d{1,2})\/(\d{1,2})/);
     if (!dateMatch) {
       throw new Error('課程場次日期無法辨識，請直接連絡我們確認報名。');
     }
@@ -250,7 +250,7 @@ function sendOrderEmail_(order, orderNo, dateText) {
 
 function createParentResponse_(result) {
   const safeJson = JSON.stringify(result)
-    .replace(/\\/g, '\\\\')
+    .replace(/\/g, '\\\\')
     .replace(/</g, '\\u003c')
     .replace(/>/g, '\\u003e')
     .replace(/&/g, '\\u0026');
