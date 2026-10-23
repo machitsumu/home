@@ -104,12 +104,59 @@ function validateOrder_(order) {
   }
   if (!order.phone || !String(order.phone).trim()) throw new Error('缺少聯絡電話');
   if (!order.itemsText || !String(order.itemsText).trim()) throw new Error('缺少訂購項目');
+
+  // 後端獨立檢查實體團體課程場次，避免略過前端截止狀態直接送單。
+  validateClassRegistrationCutoff_(String(order.itemsText));
+
   if (!Number.isFinite(Number(order.subtotal))) throw new Error('商品小計格式錯誤');
   if (!Number.isFinite(Number(order.shipping))) throw new Error('運費格式錯誤');
   if (!Number.isFinite(Number(order.total))) throw new Error('總金額格式錯誤');
   if (Number(order.total) !== Number(order.subtotal) + Number(order.shipping)) {
     throw new Error('訂單金額驗證失敗');
   }
+}
+
+/**
+ * 實體團體課程於開課日前 5 天的台灣時間 00:00 截止報名。
+ * 場次文字目前使用 M/D 格式，年份以台灣當年年份判斷。
+ */
+function validateClassRegistrationCutoff_(itemsText) {
+  const lines = String(itemsText || '').split(/\\r?\\n/);
+  const now = new Date();
+  const todayKey = Utilities.formatDate(now, CONFIG.TIMEZONE, 'yyyy-MM-dd');
+  const currentYear = Number(Utilities.formatDate(now, CONFIG.TIMEZONE, 'yyyy'));
+
+  lines.forEach(function(line) {
+    if (!/基礎鉤織團體課程\\s*\\([12]\\)/.test(line)) return;
+
+    const dateMatch = line.match(/(\\d{1,2})\\/(\\d{1,2})/);
+    if (!dateMatch) {
+      throw new Error('課程場次日期無法辨識，請直接連絡我們確認報名。');
+    }
+
+    const month = Number(dateMatch[1]);
+    const day = Number(dateMatch[2]);
+    const classDate = new Date(Date.UTC(currentYear, month - 1, day));
+
+    if (
+      classDate.getUTCFullYear() !== currentYear ||
+      classDate.getUTCMonth() !== month - 1 ||
+      classDate.getUTCDate() !== day
+    ) {
+      throw new Error('課程場次日期格式不正確，請直接連絡我們確認報名。');
+    }
+
+    const cutoffDate = new Date(Date.UTC(currentYear, month - 1, day - 5));
+    const cutoffKey = [
+      cutoffDate.getUTCFullYear(),
+      String(cutoffDate.getUTCMonth() + 1).padStart(2, '0'),
+      String(cutoffDate.getUTCDate()).padStart(2, '0')
+    ].join('-');
+
+    if (todayKey >= cutoffKey) {
+      throw new Error('報名已截止，請直接連絡我們。');
+    }
+  });
 }
 
 function getOrderSheet_() {
