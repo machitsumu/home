@@ -1700,7 +1700,7 @@
           "10/31（六）13:00-16:00 台南 小樹屋 - 虹樹",
           "11/14（六）13:00-16:00 北港 玉津咖啡",
           "11/18（三）18:00-21:00 嘉義 好好生活",
-          "11/28（六）13:00-16:00 北港 玉津咖啡"
+          "11/28（六）13:00–16:00 嘉義 好好生活"
         ],
 
         body: `
@@ -2232,7 +2232,7 @@
 
 
     /* =========================================================
-       實體團體課程報名截止：開課日前 5 天（台灣時間 00:00）
+       實體團體課程報名截止：開課日前 7 天（台灣時間 00:00）
        ========================================================= */
     function getTaipeiDateParts_() {
       const parts = new Intl.DateTimeFormat('en-CA', {
@@ -2269,7 +2269,7 @@
         return { validDate: false, closed: false };
       }
 
-      const cutoffDate = new Date(Date.UTC(today.year, month - 1, day - 5));
+      const cutoffDate = new Date(Date.UTC(today.year, month - 1, day - 7));
       const cutoffKey = [
         cutoffDate.getUTCFullYear(),
         String(cutoffDate.getUTCMonth() + 1).padStart(2, '0'),
@@ -2344,7 +2344,7 @@
               s => {
                 const isFull = s.includes('已額滿');
                 const isExpired = !isFull && !s.includes('規劃中') && isSessionRegistrationClosed_(s);
-                const optionLabel = isExpired ? `${s}（報名已截止）` : s;
+                const optionLabel = isExpired ? `${s}（${REGISTRATION_CLOSED_MESSAGE}）` : s;
                 return `<option value="${s}" ${(isFull || isExpired) ? 'disabled' : ''}>${optionLabel}</option>`;
               }
             )
@@ -2376,9 +2376,6 @@
               }
 
             </select>
-            ${data.sessions.some(s => !s.includes('已額滿') && !s.includes('規劃中') && isSessionRegistrationClosed_(s))
-              ? `<p style="margin:0.45rem 0 0; color:#9A5A32; font-size:0.82rem; line-height:1.6;">${REGISTRATION_CLOSED_MESSAGE}</p>`
-              : ''}
 
           </div>
         `;
